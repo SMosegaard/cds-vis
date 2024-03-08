@@ -8,6 +8,10 @@ def file_loader():
     args = parser.parse_args()
     return args
 
+def process(filename):
+    data = np.loadtxt(filename, delimiter = ",")
+    print(data)
+
 def main():
     args = file_loader()
     filename = os.path.join(
@@ -19,8 +23,7 @@ def main():
                             "sample-data",
                             args.input      # take one input argument given by the user in the command line
                             )
-    data = np.loadtxt(filename, delimiter = ",")
-    print(data)
+    process(filename)
 
 # OBS: this filepath must be manually changed depending on where the .py script is executed
 # (remove ".." if its executed from the command line - otherwise dont do anything)
