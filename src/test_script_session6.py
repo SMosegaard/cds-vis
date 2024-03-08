@@ -4,7 +4,7 @@ import numpy as np
 
 def file_loader():
     parser = argparse.ArgumentParser(description = "Loading and printing an array")
-    parser.add_argument("--input", "-i")
+    parser.add_argument("--input", "-i", required = True, help = "Filepath to CSV for loading and printing")
     args = parser.parse_args()
     return args
 
