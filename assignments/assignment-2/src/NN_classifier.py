@@ -39,11 +39,11 @@ def preprocess_data(X_train, X_test):
 
 # Function that defines and fits the neural netork classifier to the data
 def define_and_fit_classifier(X_train_scaled_reshape, y_train):
-    
     classifier = MLPClassifier(activation = "logistic",
-                               hidden_layer_sizes = (20,),
-                               max_iter = 1000,
-                               random_state = 123)
+                                solver = "adam",
+                                hidden_layer_sizes = (20,),
+                                max_iter = 1000,
+                                random_state = 123)
 
     NN_classifier = classifier.fit(X_train_scaled_reshape, y_train)
 
@@ -54,14 +54,14 @@ def define_and_fit_classifier(X_train_scaled_reshape, y_train):
 def evaluate_classifier(NN_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape, y_test):
     y_pred = NN_classifier.predict(X_test_scaled_reshape)     # Generate predictions
 
-    # Change labels from numbers to object names
-    labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-
     # Plot confusion matrix
     metrics.ConfusionMatrixDisplay.from_estimator(NN_classifier,
                                                 X_train_scaled_reshape,
                                                 y_train,
                                                 cmap = plt.cm.Blues)
+
+    # Change labels from numbers to object names
+    labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
     # Calculate classification report
     classifier_metrics = metrics.classification_report(y_test, y_pred, target_names = labels)
@@ -73,9 +73,9 @@ def evaluate_classifier(NN_classifier, X_train_scaled_reshape, y_train, X_test_s
         file.write(classifier_metrics)
 
     # Plot loss curve
-    plt.plot(classifier.loss_curve_)
+    plt.figure(figsize=(8, 6))
+    plt.plot(NN_classifier.loss_curve_)
     plt.title("Loss curve during training for the neural network classifier")
-    plt.xlabel('Iterations')
     plt.ylabel('Loss score')
     plt.savefig("../out/NN_loss_curve.png")
     plt.close()

@@ -53,15 +53,15 @@ def define_and_fit_classifier(X_train_scaled_reshape, y_train):
 # Function that evaluates the trained classifier on new, unseen data
 def evaluate_classifier(LR_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape,  y_test):
     y_pred = LR_classifier.predict(X_test_scaled_reshape)     # Generate predictions
-
-    # Change labels from numbers to object names
-    labels = ['airplane', 'automobile', 'bird', 'cat', 'deer','dog', 'frog', 'horse', 'ship', 'truck']
             
     # Plot confusion matrix
     metrics.ConfusionMatrixDisplay.from_estimator(LR_classifier,
                                                 X_train_scaled_reshape,
                                                 y_train,
                                                 cmap = plt.cm.Blues)
+
+    # Change labels from numbers to object names
+    labels = ['airplane', 'automobile', 'bird', 'cat', 'deer','dog', 'frog', 'horse', 'ship', 'truck']
 
     # Calculate classification report
     classifier_metrics = metrics.classification_report(y_test, y_pred, target_names = labels)
@@ -71,15 +71,6 @@ def evaluate_classifier(LR_classifier, X_train_scaled_reshape, y_train, X_test_s
     filepath_report = "../out/LR_classification_report.txt"
     with open(filepath_report, 'w') as file:
         file.write(classifier_metrics)
-
-    # Plot loss curve
-    ### !!!OBS: LogisticRegression' object has no attribute 'loss_curve_' #####
-    #plt.plot(LR_classifier.loss_curve_)
-    #plt.title("Loss curve during training for the logistic regression classifier")
-    #plt.xlabel('Iterations')
-    #plt.ylabel('Loss score')
-    #plt.savefig("../out/LR_loss_curve.png")
-    #plt.close()
 
 # Function that executes all the functions above in a structered manner on the CIFAR-10 dataset
 def main():

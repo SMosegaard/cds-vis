@@ -1,43 +1,17 @@
 # Assignment 2 - Classification benchmarks with Logistic Regression and Neural Networks
+By Sofie Mosegaard, 15-03-2023
 
-For this assignment, we'll be writing scripts which classify the ```Cifar10``` dataset. You can read more about this dataset [here](https://www.cs.toronto.edu/~kriz/cifar.html)
+This assignment is designed to train two multiclass classification models on image data from the ```Cifar10``` dataset and assess their performances using ```scikit-learn```. More information about the ```Cifar10``` dataset can be found [here](https://www.cs.toronto.edu/~kriz/cifar.html)
 
-You should write code which does the following:
+The assignment has the objective:
+-   To ensure that you can use ```scikit-learn``` to build simple benchmark classifiers on image classification data
+-   To demonstrate that you can build reproducible pipelines for machine learning projects
+-   To make sure that you can structure repos appropriately
 
-- Load the Cifar10 dataset (its already split into train:test)
-- Preprocess the data (e.g. greyscale, normalize, reshape)
-- Train a classifier on the data
-    - A logistic regression classifier *and* a neural network classifier
-- Save a classification report
-- Save a plot of the loss curve during training
+## Installation and requirements
+-   Clone the repository: $ git clone "https://github.com/SMosegaard/cds-vis/tree/main/assignments/assignment-2"
+-   Select Python 3 kernel
+-   Install the required packages (cv2, numpy, scikit-learn, matplot, tensorflow)
 
-You should write **two scripts** for this assignment one script which does this for a logistic regression classifier **and** one which does it for a neural network classifier. In both cases, you should use the machine learning tools available via ```scikit-learn``` to evaluate model performance.
-
-## Starter code
-
-The data already has a train/test split and can be loaded in the following way:
-
-```python
-from tensorflow.keras.datasets import cifar10
-(X_train, y_train), (X_test, y_test) = cifar10.load_data()
-```
-
-Once you have loaded the data, made it greyscale, and scaled the values then you will need to *reshape* the array to be the correct dimensions - essentially flattening the 2d array like we saw with greyscale histograms. 
-
-You can do that in the following way using ```numpy```:
-
-```python
-X_train_scaled.reshape(-1, 1024)
-X_test_scaled.reshape(-1, 1024)
-```
-
-## Tips
-
-- The Cifar10 dataset you download does not have explict label names but instead has numbers from 0-9. You'll need to make a list of labels based on the object names - you can find these on the website.
-- You should structure your project by having scripts saved in a folder called ```src```, and have a folder called ```out``` where you save the classification reports.
-
-## Purpose
-
-- To ensure that you can use ```scikit-learn``` to build simple benchmark classifiers on image classification data
-- To demonstrate that you can build reproducible pipelines for machine learning projects
-- To make sure that you can structure repos appropriately
+## Usage
+When cloned, your repository 'assignment 2' will contain two folders. The folder ```src``` consists of two python scripts for Logistic Regression (LR_classifier.py) and Neural Network (NN_classifier.py) classification. Both scripts will preform preprocessing of the image data (including greyscaled, standardized, and reshaped), training of the classifiers, and evaluation of the models. The results (i.e., the classification reports for both models and the loss curve of the neural networks training) will be saved in the folder ```out```.
