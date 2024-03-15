@@ -43,7 +43,8 @@ def define_and_fit_classifier(X_train_scaled_reshape, y_train):
     classifier = LogisticRegression(tol = 0.1,
                                     solver = 'saga',
                                     multi_class = 'multinomial',
-                                    random_state = 123)
+                                    random_state = 123,
+                                    verbose = True)
 
     LR_classifier = classifier.fit(X_train_scaled_reshape, y_train)
 
