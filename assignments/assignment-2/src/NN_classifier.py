@@ -43,7 +43,8 @@ def define_and_fit_classifier(X_train_scaled_reshape, y_train):
                                 solver = "adam",
                                 hidden_layer_sizes = (20,),
                                 max_iter = 1000,
-                                random_state = 123)
+                                random_state = 123,
+                                verbose = True)
 
     NN_classifier = classifier.fit(X_train_scaled_reshape, y_train)
 
