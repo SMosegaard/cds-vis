@@ -1,10 +1,10 @@
 # Create virtual envoriment called env
 python -m venv env
 
-# Go to file called avtivate - run it and activate the virt env
+# Activate the virtual env
 source ./env/bin/activate   
 
-# Install requirements and all the packages specified in the requirements.txt file
+# Install requirements
 pip install --upgrade pip
 pip install -r requirements.txt 
 
