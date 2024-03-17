@@ -4,7 +4,7 @@
 source ./env/bin/activate
 
 # Run the code
-python src/test.py
+python src/session7.py
 
 # Close the environment
 deactivate
