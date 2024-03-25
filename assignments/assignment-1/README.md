@@ -1,7 +1,7 @@
 # Portfolio 1 - Building a simple image search algorithm
 *By Sofie Mosegaard, 01-03-2024*
 
-This repository is designed to design a simple image search algorithm on flower images. The project primarily uses ```OpenCV``` and ```Pandas```. The output will 
+This repository is designed to design a simple image search algorithm on flower images. The project primarily uses ```OpenCV``` and ```Pandas``` to retrieve images that are similar to a given target image based on histograms and color distributions.
 
 The assignment has the objective:
 -   Work with larger datasets of images
