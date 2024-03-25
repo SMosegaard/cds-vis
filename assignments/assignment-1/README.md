@@ -3,7 +3,7 @@
 
 This repository is designed to design a simple image search algorithm on flower images. The project primarily uses ```OpenCV``` and ```Pandas``` to retrieve images that are similar to a given target image based on histograms and color distributions.
 
-The assignment has the objective:
+The project has the objective:
 -   Work with larger datasets of images
 -   Extract structured information from image data using ```OpenCV```
 -   Quantaitively compare images based on these features, performing *distant viewing*
@@ -41,6 +41,6 @@ The image search algoritm will perform as follows on the flowers dataset:
 |image_0876|188.548|
 |image_1316|190.222|
 
-The algorithm's primary objective is to retrieve images that are visually similar to a given target image. By utilizing techniques as histogram comparison, the algorithm assesses the similarity between images based on their color distributions. The results illustrates the images that are the most similar to the target image in distance, which serves as a measure of similarity. A lower distance indicates a higher degree of resemblance, while a higher distance equals greater dissimilarity. The target image itself serves as the reference point, denoted by a distance of 0.0.
+The algorithm's primary objective is to retrieve images that are visually similar to a given target image. By utilizing histogram comparison, the algorithm assesses the similarity between images based on their color distributions. The results illustrates the images that are the most similar to the target image in distance, which serves as a measure of similarity. A lower distance indicates a higher degree of resemblance, while a higher distance equals greater dissimilarity. The target image itself serves as the reference point, denoted by a distance of 0.0.
 
 In summary, the results provide insights into the similarity between images and potential patterns within the dataset. The image search algorithm can be applied to numerous image datasets.
