@@ -1,14 +1,8 @@
-# Import packages
-#sudo apt-get update
-#sudo apt-get install -y python3-opencv
-#pip install opencv-python matplotlib
 import cv2
-
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn import metrics
 import matplotlib.pyplot as plt
-
 import tensorflow
 from tensorflow.keras.datasets import cifar10
 

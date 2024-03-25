@@ -6,29 +6,51 @@ import matplotlib.pyplot as plt
 import tensorflow
 from tensorflow.keras.datasets import cifar10
 
+# Convert images to greyscale
+def greyscale(X):
+    greyscaled_images  = np.zeros((X.shape[0], X.shape[1], X.shape[2]))
+    for i in range(X.shape[0]):
+        greyscaled_images [i] = cv2.cvtColor(X[i], cv2.COLOR_RGB2GRAY)
+    return greyscaled_images
 
-# Function that preprocesses the data
+# Scale image features
+def scale(X):
+    scaled_images  = X  / 255.0
+    return scaled_images 
+
+# Reshape images to 2D
+def reshape(X):
+    reshaped_images = X.reshape(-1, 1024)
+    return reshaped_images
+
 def preprocess_data(X_train, X_test):
-    
-    # Convert training images to grayscale
-    X_train_greyed = np.zeros((X_train.shape[0], X_train.shape[1], X_train.shape[2]))
-    for i in range(X_train.shape[0]):
-        X_train_greyed[i] = cv2.cvtColor(X_train[i], cv2.COLOR_RGB2GRAY)
-        
-    # Convert test images to grayscale
-    X_test_greyed = np.zeros((X_test.shape[0], X_test.shape[1], X_test.shape[2]))
-    for i in range(X_test.shape[0]):
-        X_test_greyed[i] = cv2.cvtColor(X_test[i], cv2.COLOR_RGB2GRAY)
+    """
+    Preprocesses the data - greyscale, scale, and reshape.
 
-    # Scale features
-    X_train_scaled = X_train_greyed / 255.0
-    X_test_scaled = X_test_greyed / 255.0
+    Parameters:
+    X_train : numpy array
+        Array of training images in RGB format.
+    X_test : numpy array
+        Array of testing images in RGB format.
 
-    # Reshape images to 2D (number of images, number of pixels for each flattened image)
-    X_train_scaled_reshape = X_train_scaled.reshape(-1, 1024)   # (50000, 1024)
-    X_test_scaled_reshape = X_test_scaled.reshape(-1, 1024)     # (10000, 1024)
+    Returns:
+    X_train_processed : numpy array
+        Preprocessed training images.
+    X_test_processed : numpy array
+        Preprocessed testing images.
+    """
+    X_train_greyed = greyscale(X_train)
+    X_test_greyed = greyscale(X_test)
+
+    X_train_scaled = scale(X_train_greyed)
+    X_test_scaled = scale(X_test_greyed)
+
+    X_train_scaled_reshape = reshape(X_train_scaled)
+    X_test_scaled_reshape = reshape(X_test_scaled)
 
     return X_train_scaled_reshape, X_test_scaled_reshape
+
+
 
 
 # Function that defines and fits the neural netork classifier to the data
@@ -66,6 +88,7 @@ def evaluate_classifier(LR_classifier, X_train_scaled_reshape, y_train, X_test_s
     filepath_report = "../out/LR_classification_report.txt"
     with open(filepath_report, 'w') as file:
         file.write(classifier_metrics)
+
 
 # Function that executes all the functions above in a structered manner on the CIFAR-10 dataset
 def main():
