@@ -1,41 +1,46 @@
-# Building a simple image search algorithm
+# Portfolio 1 - Building a simple image search algorithm
+*By Sofie Mosegaard, 01-03-2024*
 
-For this assignment, you'll be using ```OpenCV``` to design a simple image search algorithm.
+This repository is designed to design a simple image search algorithm on flower images. The project primarily uses ```OpenCV``` and ```Pandas```. The output will 
+
+The assignment has the objective:
+-   Work with larger datasets of images
+-   Extract structured information from image data using ```OpenCV```
+-   Quantaitively compare images based on these features, performing *distant viewing*
+
+### Data source
 
 The dataset is a collection of over 1000 images of flowers, sampled from 17 different species. The dataset comes from the Visual Geometry Group at the University of Oxford, and full details of the data can be found [here](https://www.robots.ox.ac.uk/~vgg/data/flowers/17/).
 
-For this exercise, you should write some code which does the following:
+Please download the data and place it in the folder called ```in```. Note, that you will need to unzip the data inside the folder before, you can execude the code as described below (see: Reproducibility). 
 
-- Define a particular image that you want to work with
-- For that image
-  - Extract the colour histogram using ```OpenCV```
-- Extract colour histograms for all of the **other* images in the data
-- Compare the histogram of our chosen image to all of the other histograms 
-  - For this, use the ```cv2.compareHist()``` function with the ```cv2.HISTCMP_CHISQR``` metric
-- Find the five images which are most simlar to the target image
-  - Save a CSV file to the folder called ```out```, showing the five most similar images and the distance metric:
+### Repository structure
 
-|Filename|Distance]
+The repository consists of 2 bash scripts, 1 README.md file, and 3 folders. The folders contains the following:
+-   in: contains the data. 
+-   src: consists of the scipt that will perform the repository objective.
+-   out: holds the saved results in a .csv format.
+
+### Reproducibility 
+
+-   Clone the repository: $ git clone "https://github.com/SMosegaard/cds-vis/tree/main/assignments/assignment-1"
+-   Navigate into the folder in your terminal.
+-   Run the setup bash script to create a virtual envoriment and install required packages specified in the requirement.txt: $ source setup.sh
+-   Run the run bash script in the terminal to execude the code: $ source run.sh
+
+### Discussion
+
+The image search algoritm will perform as follows on the flowers dataset:
+
+|Filename|Distance
 |---|---|
 |target|0.0|
-|filename1|---|
-|filename2|---|
+|image_0928|178.124|
+|image_0773|190.081|
+|image_0142|190.209|
+|image_0876|188.548|
+|image_1316|190.222|
 
-## Objective
+The algorithm's primary objective is to retrieve images that are visually similar to a given target image. By utilizing techniques as histogram comparison, the algorithm assesses the similarity between images based on their color distributions. The results illustrates the images that are the most similar to the target image in distance, which serves as a measure of similarity. A lower distance indicates a higher degree of resemblance, while a higher distance equals greater dissimilarity. The target image itself serves as the reference point, denoted by a distance of 0.0.
 
-This assignment is designed to test that you can:
-
-1. Work with larger datasets of images
-2. Extract structured information from image data using ```OpenCV```
-3. Quantaitively compare images based on these features, performing *distant viewing*
-
-## Some notes
-- You'll need to first ```unzip``` the flowers before you can use the data!
-
-## Additional comments
-
-Your code should include functions that you have written wherever possible. Try to break your code down into smaller self-contained parts, rather than having it as one long set of instructions.
-
-For this assignment, you are welcome to submit your code either as a Jupyter Notebook, or as ```.py``` script. If you do not know how to write ```.py``` scripts, don't worry - we're working towards that!
-
-Lastly, you are welcome to edit this README file to contain whatever information you like. Remember - documentation is important!
+In summary, the results provide insights into the similarity between images and potential patterns within the dataset. The image search algorithm can be applied to numerous image datasets.
