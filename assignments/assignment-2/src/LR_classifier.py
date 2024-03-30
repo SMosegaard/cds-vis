@@ -6,7 +6,7 @@ from sklearn import metrics
 import matplotlib.pyplot as plt
 import tensorflow
 from tensorflow.keras.datasets import cifar10
-
+import shap
 
 # Convert images to greyscale
 def greyscale(X):
@@ -53,7 +53,7 @@ def preprocess_data(X_train, X_test):
     return X_train_scaled_reshape, X_test_scaled_reshape
 
 
-def define_and_fit_classifier(X_train_scaled_reshape, y_train):
+def define_and_fit_classifier(X_train, y_train):
     
     """
     Function that defines and fits the neural netork classifier to the data 
@@ -64,7 +64,7 @@ def define_and_fit_classifier(X_train_scaled_reshape, y_train):
                                     random_state = 123,
                                     verbose = True)
 
-    classifier = classifier.fit(X_train_scaled_reshape, y_train)
+    #classifier = classifier.fit(X_train, y_train)
 
     return classifier
 
@@ -72,7 +72,7 @@ def define_and_fit_classifier(X_train_scaled_reshape, y_train):
 def grid_search(classifier, X_train, y_train):
 
     param_grid = {'tol': [0.01, 0.1, 1], 'max_iter': [100, 200, 300]}
-
+    
     grid_search = GridSearchCV(estimator = classifier, param_grid = param_grid, cv = 5, n_jobs = -1)
     grid_result = grid_search.fit(X_train, y_train)
 
@@ -128,7 +128,6 @@ def main():
 
     # Evaluate classifier
     evaluate_classifier(best_LR_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape, y_test)
-
 
 if __name__ == "__main__":
     main()
