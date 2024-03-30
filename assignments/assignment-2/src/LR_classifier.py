@@ -1,12 +1,11 @@
 import cv2
 import numpy as np
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import ShuffleSplit, GridSearchCV, learning_curve
+from sklearn.model_selection import GridSearchCV
 from sklearn import metrics
 import matplotlib.pyplot as plt
 import tensorflow
 from tensorflow.keras.datasets import cifar10
-import shap
 
 # Convert images to greyscale
 def greyscale(X):
@@ -87,16 +86,16 @@ def grid_search(classifier, X_train, y_train):
     return grid_result.best_estimator_
 
 
-def evaluate_classifier(classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape,  y_test):
+def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
 
     """
     Function that evaluates the trained classifier on new, unseen data. This includes plotting a confusion
     matrix and calculating a classification report, which will be saved.
     """
-    y_pred = classifier.predict(X_test_scaled_reshape) 
+    y_pred = classifier.predict(X_test) 
             
     metrics.ConfusionMatrixDisplay.from_estimator(classifier,
-                                                X_train_scaled_reshape,
+                                                X_train,
                                                 y_train,
                                                 cmap = plt.cm.Blues)
 
@@ -123,7 +122,7 @@ def main():
     # Define and fit classifier
     LR_classifier = define_and_fit_classifier(X_train_scaled_reshape, y_train)
 
-    # Grid search
+    # GridSearch
     best_LR_classifier = grid_search(LR_classifier, X_train_scaled_reshape, y_train)
 
     # Evaluate classifier
