@@ -6,6 +6,20 @@ from sklearn import metrics
 import matplotlib.pyplot as plt
 import tensorflow
 from tensorflow.keras.datasets import cifar10
+import argparse
+from NN_gridsearch import main as grid_search_main 
+
+def parser():
+    """
+    The user can specify to perform GridSearch or not
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--GridSearch",
+                        "-gs",
+                        required = True,
+                        help = "Perform GridSearch (yes or no)")
+    args = parser.parse_args()
+    return args
 
 # Convert images to greyscale
 def greyscale(X):
@@ -40,36 +54,19 @@ def preprocess_data(X_train, X_test):
 
 
 # Function that defines and fits the neural netork classifier to the data
-def define_and_fit_classifier(X_train, y_train):
+def define_classifier():
 
     classifier = MLPClassifier(max_iter = 1000,
                                 random_state = 123,
                                 verbose = True)
 
-    #classifier = classifier.fit(X_train, y_train)
-
     return classifier
 
-# GridsearchCV
-def grid_search(classifier, X_train, y_train):
 
-    param_grid = {'activation': ('logistic', 'relu'),
-                'solver': ('adam', 'sgd'),
-                'learning_rate_init': [0.01, 0.001],
-                'hidden_layer_sizes': [20, 50]}
-    
-    grid_search = GridSearchCV(estimator = classifier, param_grid = param_grid, cv = 5, n_jobs = -1)
-    grid_result = grid_search.fit(X_train, y_train)
+def fit_classifier(classifier, X_train, y_train):
+    classifier = classifier.fit(X_train, y_train)
+    return classifier
 
-    print(f'Best Accuracy for {grid_result.best_score_} using the parameters {grid_result.best_params_}')
-
-    means = grid_result.cv_results_['mean_test_score']
-    stds = grid_result.cv_results_['std_test_score']
-    params = grid_result.cv_results_['params']
-    for mean, stdev, param in zip(means, stds, params):
-        print(f' mean={mean:.4}, std={stdev:.4} using {param}')
-
-    return grid_result.best_estimator_
 
 # Function that evaluates the trained classifier on new, unseen data
 def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
@@ -103,31 +100,50 @@ def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
     plt.close()
 
 
-def shap_values(classifier, X_train, X_test):
-    #explainer = shap.Explainer(classifier.predict_proba, X_test)
-    explainer = shap.GradientExplainer(classifier, X_train[:5])
-    shap_values = explainer.shap_values(X_test)
-    shap.image_plot([shap_values[i] for i in range(10)], X_test[:5])
-    
-    plt.savefig("../out/LR_SHAP.png")
+def permutation_test(classifier, X_test, y_test):
+
+    score, permutation_scores, pvalue = permutation_test_score(classifier, X_test, y_test, cv = 5, 
+                                                                n_permutations = 50, n_jobs = 1,
+                                                                random_state = 123, verbose = True,
+                                                                scoring = None)
+
+    n_classes = 10
+
+    plt.figure(figsize = (8, 6))
+    plt.hist(permutation_scores, 20, label = 'Permutation scores', edgecolor = 'black')
+    ylim = plt.ylim()
+    plt.plot(2 * [score], ylim, '--g', linewidth = 3,label = 'Classification Score'' (pvalue %s)' % pvalue)
+    plt.plot(2 * [1. / n_classes], ylim, '--k', linewidth = 3, label = 'Chance level')
+    plt.title("Permutation test neural network classifier")
+    plt.ylim(ylim)
+    plt.legend()
+    plt.xlabel('Score')
+    plt.show()
+    plt.savefig("out/NN_permutation.png")
+    plt.close()
+
 
 # Function that executes all the functions above in a structered manner on the CIFAR-10 dataset
 def main():
-    # Load CIFAR-10 dataset
-    (X_train, y_train), (X_test, y_test) = cifar10.load_data()
 
-    # Preprocess data
+    args = parser()
+
+    (X_train, y_train), (X_test, y_test) = cifar10.load_data()
     X_train_scaled_reshape, X_test_scaled_reshape = preprocess_data(X_train, X_test)
     
-    # Define and fit classifier
-    NN_classifier = define_and_fit_classifier(X_train_scaled_reshape, y_train)
+    if args.GridSearch.lower() == 'yes':
+        best_NN_classifier = grid_search_main()
+    else:
+        best_NN_classifier = define_classifier()
 
-    # GridSearch
-    best_NN_classifier = grid_search(NN_classifier, X_train_scaled_reshape, y_train)
+    # Fit classifier
+    best_NN_classifier = fit_classifier(best_NN_classifier, X_train_scaled_reshape, y_train)
 
     # Evaluate classifier
-    evaluate_classifier(NN_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape, y_test)
+    evaluate_classifier(best_NN_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape, y_test)
 
+    # Permutation test for significance
+    permutation_test(best_NN_classifier, X_test_scaled_reshape, y_test)
 
 if __name__ == "__main__":
     main()

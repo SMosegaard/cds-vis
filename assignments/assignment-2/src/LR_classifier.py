@@ -1,11 +1,26 @@
 import cv2
 import numpy as np
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import permutation_test_score
 from sklearn import metrics
 import matplotlib.pyplot as plt
 import tensorflow
 from tensorflow.keras.datasets import cifar10
+import argparse
+from LR_gridsearch import main as grid_search_main 
+
+
+def parser():
+    """
+    The user can specify to perform GridSearch or not
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--GridSearch",
+                        "-gs",
+                        required = True,
+                        help = "Perform GridSearch (yes or no)")
+    args = parser.parse_args()
+    return args
 
 # Convert images to greyscale
 def greyscale(X):
@@ -52,38 +67,25 @@ def preprocess_data(X_train, X_test):
     return X_train_scaled_reshape, X_test_scaled_reshape
 
 
-def define_and_fit_classifier(X_train, y_train):
-    
+def define_classifier():
     """
-    Function that defines and fits the neural netork classifier to the data 
+    Function that defines LR classifier
     """
-
-    classifier = LogisticRegression(solver = 'saga',
+    classifier = LogisticRegression(tol = 0.1,
+                                    max_iter = 100,
+                                    solver = 'saga',
                                     multi_class = 'multinomial',
                                     random_state = 123,
                                     verbose = True)
-
-    #classifier = classifier.fit(X_train, y_train)
-
     return classifier
 
 
-def grid_search(classifier, X_train, y_train):
-
-    param_grid = {'tol': [0.01, 0.1, 1], 'max_iter': [100, 200, 300]}
-    
-    grid_search = GridSearchCV(estimator = classifier, param_grid = param_grid, cv = 5, n_jobs = -1)
-    grid_result = grid_search.fit(X_train, y_train)
-
-    print(f'Best Accuracy for {grid_result.best_score_} using the parameters {grid_result.best_params_}')
-
-    means = grid_result.cv_results_['mean_test_score']
-    stds = grid_result.cv_results_['std_test_score']
-    params = grid_result.cv_results_['params']
-    for mean, stdev, param in zip(means, stds, params):
-        print(f' mean={mean:.4}, std={stdev:.4} using {param}')
-
-    return grid_result.best_estimator_
+def fit_classifier(classifier, X_train, y_train):
+    """
+    Function that fits the LR classifier to the data
+    """
+    classifier = classifier.fit(X_train, y_train)
+    return classifier
 
 
 def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
@@ -104,29 +106,54 @@ def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
     classifier_metrics = metrics.classification_report(y_test, y_pred, target_names = labels)
     print(classifier_metrics)
 
-    filepath_report = "../out/LR_classification_report.txt"
+    filepath_report = "out/LR_classification_report.txt"
     with open(filepath_report, 'w') as file:
         file.write(classifier_metrics)
 
 
+def permutation_test(classifier, X_test, y_test):
 
-# Main function that executes all the functions above in a structered manner on the CIFAR-10 dataset
+    score, permutation_scores, pvalue = permutation_test_score(classifier, X_test, y_test, cv = 5, 
+                                                                n_permutations = 100, n_jobs = 1,
+                                                                random_state = 123, verbose = True,
+                                                                scoring = None)
+
+    n_classes = 10
+
+    plt.figure(figsize = (8, 6))
+    plt.hist(permutation_scores, 20, label = 'Permutation scores', edgecolor = 'black')
+    ylim = plt.ylim()
+    plt.plot(2 * [score], ylim, '--g', linewidth = 3,label = 'Classification Score'' (pvalue %s)' % pvalue)
+    plt.plot(2 * [1. / n_classes], ylim, '--k', linewidth = 3, label = 'Chance level')
+    plt.title("Permutation test logistic regression classifier")
+    plt.ylim(ylim)
+    plt.legend()
+    plt.xlabel('Score')
+    plt.show()
+    plt.savefig("out/LG_permutation.png")
+    plt.close()
+
+
 def main():
+    
+    args = parser()
 
-    # Load CIFAR-10 dataset
     (X_train, y_train), (X_test, y_test) = cifar10.load_data()
-
-    # Preprocess data
     X_train_scaled_reshape, X_test_scaled_reshape = preprocess_data(X_train, X_test)
 
-    # Define and fit classifier
-    LR_classifier = define_and_fit_classifier(X_train_scaled_reshape, y_train)
-
-    # GridSearch
-    best_LR_classifier = grid_search(LR_classifier, X_train_scaled_reshape, y_train)
+    if args.GridSearch.lower() == 'yes':
+        best_LR_classifier = grid_search_main()
+    else:
+        best_LR_classifier = define_classifier()
+    
+    #Fit classifier
+    best_LR_classifier = fit_classifier(best_LR_classifier, X_train_scaled_reshape, y_train)
 
     # Evaluate classifier
     evaluate_classifier(best_LR_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape, y_test)
+
+    # Permutation test for significance
+    permutation_test(best_LR_classifier, X_test_scaled_reshape, y_test)
 
 if __name__ == "__main__":
     main()
