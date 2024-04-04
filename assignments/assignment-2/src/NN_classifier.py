@@ -71,10 +71,10 @@ def fit_classifier(classifier, X_train, y_train):
 # Function that evaluates the trained classifier on new, unseen data
 def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
 
-    y_pred = NN_classifier.predict(X_test)     # Generate predictions
+    y_pred = classifier.predict(X_test)     # Generate predictions
 
     # Plot confusion matrix
-    metrics.ConfusionMatrixDisplay.from_estimator(NN_classifier,
+    metrics.ConfusionMatrixDisplay.from_estimator(classifier,
                                                 X_train,
                                                 y_train,
                                                 cmap = plt.cm.Blues)
@@ -87,23 +87,23 @@ def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
     print(classifier_metrics)
 
     # Save classification report
-    filepath_report = "../out/NN_classification_report.txt"
+    filepath_report = "out/NN_classification_report.txt"
     with open(filepath_report, 'w') as file:
         file.write(classifier_metrics)
 
     # Plot loss curve
     plt.figure(figsize=(8, 6))
-    plt.plot(NN_classifier.loss_curve_)
+    plt.plot(classifier.loss_curve_)
     plt.title("Loss curve during training for the neural network classifier")
     plt.ylabel('Loss score')
-    plt.savefig("../out/NN_loss_curve.png")
+    plt.savefig("out/NN_loss_curve.png")
     plt.close()
 
 
 def permutation_test(classifier, X_test, y_test):
 
     score, permutation_scores, pvalue = permutation_test_score(classifier, X_test, y_test, cv = 5, 
-                                                                n_permutations = 50, n_jobs = 1,
+                                                                n_permutations = 5, n_jobs = 1,
                                                                 random_state = 123, verbose = True,
                                                                 scoring = None)
 
