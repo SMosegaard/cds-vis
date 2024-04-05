@@ -1,4 +1,5 @@
 # Assignment 3 - Document classification using pretrained image embeddings
+*By Sofie Mosegaard, 12-04-2024*
 
 In Language Analytics so far, we've done lots of document classification based on linguistic features of documents. This week, we are working on a slightly different problem - can we predict what type of document we have based only on its *appearance* rather than its contents?
 
@@ -13,9 +14,14 @@ You should write code which does the following:
 - Present a classification report and learning curves for the trained classifier
 - Your repository should **also** include a short description of what the classification report and learning curve show.
 
-## Data access
+## Data source
 
-The data for the assignment is available in the shared drive on UCloud. For the purposes of this assignment, you can link to [this version](https://www.kaggle.com/datasets/patrickaudriaz/tobacco3482jpg?resource=download) in your README files.
+For this assignment, we'll be working with the *```Tobacco3482```* dataset. You can learn more about this dataset in the original paper which uses it [here](https://dl.acm.org/doi/pdf/10.1145/1148170.1148307). The dataset we are working with is only a small subset of this larger corpus.
+
+For the purposes of this assignment, you can link to [this version](https://www.kaggle.com/datasets/patrickaudriaz/tobacco3482jpg?resource=download) in your README files.
+
+- all images is in black and white
+- images in the categories adds, emails, forms, letters, memos, news, notes, reports, resumes, and scientific articles.
 
 
 ## Tips
@@ -28,3 +34,10 @@ The data for the assignment is available in the shared drive on UCloud. For the 
 - To demonstrate that you can use ```tensorflow``` to train Convolutional Neural Networks
 - To synthesize existing skills to create pipelines for transfer learning with pretrained CNNs
 - To show understanding of how to interpret machine learning outputs
+
+
+## Discussion
+
+-   Your repository should also include a short description of what the classification report and learning curve show.
+
+-   To show understanding of how to interpret machine learning outputs
