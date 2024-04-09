@@ -1,4 +1,5 @@
 # Assignment 3 - Document classification using pretrained image embeddings
+## Transfer learning w/ pretrained CNNs
 *By Sofie Mosegaard, 12-04-2024*
 
 In Language Analytics so far, we've done lots of document classification based on linguistic features of documents. This week, we are working on a slightly different problem - can we predict what type of document we have based only on its *appearance* rather than its contents?
@@ -34,6 +35,13 @@ For the purposes of this assignment, you can link to [this version](https://www.
 - To demonstrate that you can use ```tensorflow``` to train Convolutional Neural Networks
 - To synthesize existing skills to create pipelines for transfer learning with pretrained CNNs
 - To show understanding of how to interpret machine learning outputs
+
+## Summary 
+
+To increate the robustness and generalizability of the model, batch normalization and augmentation were implemented. 
+
+The best models were ... based on acc. score and loss curve during training..
+
 
 
 ## Discussion
