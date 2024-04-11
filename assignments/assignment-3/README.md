@@ -4,16 +4,8 @@
 
 This repository is designed to perform transfer learning with pretrained CNN's on document classification using.
 
-The project will utilize the VGG16 model, which ...
-
-16 layers; 134 million trainable parameters
-Deep, complex
-
-Multiple stacked pooling and convolution layers
-
-Massive – around 500MB
-
-Final output layer of 1000 nodes
+The project will utilize the VGG16 model, which has an extremly deep and complex architecture with 16 layers and 134 million trainable parameters. It consists of multiple stacked pooling and convolutional layers with a final output layer of 1000 nodes...
+...
 
 
 I will test, whether we can predict types of document purely based only on its appearance rather than its contents? As a scientific paper appears differently to a poem, this repository tries to leverage this knowledge to try to predict what type of document we have, based on its visual appearance.
@@ -58,7 +50,11 @@ src: consists of two python scripts for Logistic Regression (LR_classifier.py) a
 when the data are loaded in, the images will be added to a numpy array
 additionally, the labels will be extracted and added to an array as well
 
+as CNNs are prone to overfitting, the pretrained CNNs will be tested with  batch normalization and data augmentation ...
+
 To increate the robustness and generalizability of the model, batch normalization and augmentation were implemented. 
+
+additionally, the models will be tested on two optimizers: sgd and adam.
 
 - the saved results were obtained by training the models on 10 epochs and a batch size of 64. Natrually, the models havent fully learned on so few epochs, but as the models are computationally heavy to run, they still provide an indication of their performance. 
 
