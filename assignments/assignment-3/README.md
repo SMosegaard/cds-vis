@@ -1,5 +1,4 @@
 # Assignment 3 - Document classification using pretrained image embeddings
-## Transfer learning w/ pretrained CNNs
 *By Sofie Mosegaard, 12-04-2024*
 
 This repository is designed to perform document classification using transfer learning with pretrained Convolutional Neural Networks (CNNs). The project aims to investigate whether document types can be predicted based on appearance rather than contents. Leveraging the differences in appearance for example between scientific papers and poems, the repository seeks to exploit these variations for accurate document classification.
@@ -54,19 +53,26 @@ The model will then be compiled with the given optimizer (i.e., sgd/adam).
 
 Please note that the bash script will run all three models (baseline, with batch normalization, and with data augmentation) sequentially. If you wish to run only specific models, you can uncomment the corresponding scripts within the run.sh file.
 
+## Summary of results
+
+The reported results are based on training the models for 10 epochs with a batch size of 32.
+
+In the baseline model trained with the SGD optimizer, the overall accuracy stands at 48%. Certain classes like Email and Memo exhibit relatively high precision and recall, while others such as Report and Resume show significantly low performance metrics. When changing the optimizer to Adam, there's a notable improvement in the model's performance, with an average classification accuracy at 69%. Both learning curves demonstrated a good fit for the model. The curves showed a steady decrease in training loss and an increase in training accuracy over the epochs, suggesting effective learning and model optimization
+
+Greater average classification accuracy is observed with the inclusion of batch normalization in the model architecture. This modification leads to a higher accuracy of 71% with SGD optimizer and 76% with Adam optimizer. Both reports demonstrates balanced performance across all classes, which suggests a well-optimized and effective model configuration. However, the learning curve of the batch normalized model with Adam optimizer do suggest overfitting. It can be seen, that the model becomes to specialized in learning the training data, so it is not able to generalize to new data.
+
+Finally, models incorporating data augmentation show mixed results. While they both optimizers achieve an average accuracy of 62% and exhibit some improvements over the baseline, their learning curves do not reflect the same good fit.
+
+It can be concluded, that inclusion of batch normalization and SGD optimizer yields the best reulsts while not overfitting.
+
 ## Discussion
 
--   Your repository should also include a short description of what the classification report and learning curve show.
--   To show understanding of how to interpret machine learning outputs
+Several factors have been identified that may influence the model's effectiveness:
 
-The best models were ... based on acc. score and loss curve during training..
+Firstly, the utilization of the data augmentation technique, including horizontal flipping and rotation of 90 degrees, have not yielded significant improvements in performance. It could be that the generated images were too different from the real data, which leads to a steep learning curve and a model struggeling to navigate.
 
-The DatAug models didnt perform very well, which might be bacuse, the generated data was too different from the real data. The DatAug method is used to improve robustness, but as they were to different, the learning curve was too steep for the models to learn the patterns.
+The dataset itself posses challenges as its classes are imbalanced, which is possibly the reason why some classes are extremely difficult for the model to classify. A solution could be to balance all classes using upsampling or downsampling. It is also relevant to consider, that the pretrained VGG16 model is trained on specific sets of images. If reports and resumes were not included, it could potentially result in poorer performance even after finetuning.
 
-To increate the robustness and generalizability of the model, batch normalization and augmentation were implemented. 
-- difference between techiniques?
+Additionally, the choice of optimizer plays a crucial role in model training. The models were tested with both SGD and Adam optimizers to assess their performance under different optimization strategies. Generally, the Adam optimizer performs very well on complex data such as images and is robust to noisy data, which likely likely contributed to its effectiveness in optimizing the models on the Tobacco3482 dataset.
 
-additionally, the models will be tested on two optimizers: sgd and adam.
-- difference between optimizers?
-
-- the saved results were obtained by training the models on 10 epochs and a batch size of 64. Natrually, the models havent fully learned on so few epochs, but as the models are computationally heavy to run, they still provide an indication of their performance. 
+Finally, it is worth noting that the models were trained for a relatively small number of epochs (10 epochs) and a batch size of 64 due to computational constraints. While the models may not have fully converged within this setup, the results still provide valuable insights into their performance and capabilities. It would be relevant to further explore the potential of the models with longer training.
