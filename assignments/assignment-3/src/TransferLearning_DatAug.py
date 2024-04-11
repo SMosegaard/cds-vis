@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 def parser():
     """
-    The user can specify which optimizer to use
+    Parses command-line arguments to specify which optimizer (SGD or Adam) to use.
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--optimizer",
@@ -28,7 +28,10 @@ def parser():
 
 
 def load_images(folder_path):
-
+    """
+    Loads the data from the specified folder path, generates labels for each image, and preprocesses
+    them for model input.
+    """
     list_of_images = [] 
     list_of_labels = []
     
@@ -57,7 +60,10 @@ def load_images(folder_path):
 
 
 def data_split(X, y):
-    
+    """
+    Splits the data into training and testing sets by stratifing y.
+    Normalizes X and performs label binarization on y.
+    """
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, stratify = y, random_state = 123)
     X_train = X_train.astype("float32") / 255.
     X_test = X_test.astype("float32") / 255.
@@ -69,7 +75,12 @@ def data_split(X, y):
 
 
 def define_model():
-
+    """
+    Defines the model architecture. First, the VGG16 model is loaded without the classification layers and 
+    the convolutional layers are marked as not trainable to retain their pretrained weights.
+    Subsequently, a new fully connected layer with ReLU activation is added followed by an output layer with
+    softmax activation for multi-class classification.
+    """
     model = VGG16(include_top = False, pooling = 'avg', input_shape = (224, 224, 3))
 
     for layer in model.layers:
@@ -86,7 +97,9 @@ def define_model():
 
 
 def compile_model(model, optimizer):
-
+    """
+    Compiles the model with the specified optimizer.
+    """
     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(initial_learning_rate = 0.01,
                                                                  decay_steps = 10000,
                                                                  decay_rate = 0.9)
@@ -99,7 +112,9 @@ def compile_model(model, optimizer):
 
 
 def data_generator():
-    
+    """
+    Creates an image data generator with data augmentation settings as horizontal flipping and rotation.
+    """
     datagen = ImageDataGenerator(horizontal_flip = True, 
                                 rotation_range = 90,
                                 validation_split = 0.1)
@@ -107,18 +122,22 @@ def data_generator():
 
 
 def fit_model(model, datagen, X_train, y_train):
-
+    """
+    Fits the compiled model to the training data using data augmentation and returns the training history.
+    """
     datagen.fit(X_train)
     H = model.fit(datagen.flow(X_train, y_train, batch_size = 32),
                                validation_data = datagen.flow(X_train, y_train, 
                                                               batch_size = 32,
                                                               subset = "validation"),
                                                               epochs = 10) 
-
     return H
 
 
 def plot_history(H, epochs, outpath):
+    """
+    Plots the training and validation loss and accuracy curves and saves the plot.
+    """
     plt.figure(figsize = (12,6))
     plt.subplot(1,2,1)
     plt.plot(np.arange(0, epochs), H.history["loss"], label = "train_loss")
@@ -141,7 +160,9 @@ def plot_history(H, epochs, outpath):
 
 
 def evaluate(X_test, y_test, model, H, optimizer):
-    
+    """
+    Evaluates the model on the test data, generates classification reports, and saves the results.
+    """
     label_names = ["ADVE", "Email", "Form", "Letter", "Memo", "News", "Note", "Report", "Resume", "Scientific"]
 
     predictions = model.predict(X_test, batch_size = 32)
@@ -172,6 +193,7 @@ def main():
 
     model = compile_model(model, args.optimizer)
 
+    datagen = data_generator()
     H = fit_model(model, datagen, X_train, y_train)
 
     evaluate(X_test, y_test, model, H, args.optimizer)
