@@ -2,3 +2,7 @@ pandas
 numpy
 matplotlib
 cv2
+tqdm
+tensorflow
+tensorflow_hub
+scikit-learn
