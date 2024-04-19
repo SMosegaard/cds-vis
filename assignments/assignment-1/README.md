@@ -3,6 +3,13 @@
 
 This repository is designed to design a simple image search algorithm on flower images. The project primarily uses ```OpenCV``` and ```Pandas``` to retrieve images that are similar to a given target image based on histograms and color distributions.
 
+
+Two pipelines
+- one that uses color histograms
+- one that uses the pretrained VGG16 model
+.. define pipeline with argparse??
+
+
 The project has the objective:
 -   Work with larger datasets of images
 -   Extract structured information from image data using ```OpenCV```
