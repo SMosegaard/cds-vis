@@ -1,4 +1,5 @@
 # Assignment 4 - Detecting faces in historical newspapers
+*By Sofie Mosegaard, 16-04-2024*
 
 If you have ever looked at old newspapers, you might notice that they are very verbose. There is a lot of text, perhaps some illustrations - but, ultimately, they are very text heavy data sources. However, this begins to change in the 19th century with the advent of new technology and with the adoption of personal cameras in the 20th century, images become increasingly dominant.
 
@@ -55,3 +56,15 @@ The data for the assignment is available in the shared drive on UCloud. For the 
 - To demonstrate that you can pretrained CNNs to extract meaningful information from image data
 - To convey the kinds of datasets and problems encountered doing image processing for cultural analytics
 - To show understanding of how to interpret machine learning outputs
+
+
+######
+
+My notes:
+
+
+In recent years, face detection has emerged as a crucial technology for a wide range of applications. With the advancements in machine learning and computer vision, face detection algorithms have become ...
+
+In this repository, we will explore ...
+
+The Multi-Task Cascaded Convolutional Networks (MTCNN) is a deep learning algorithm used for face detection. The model uses a cascading series of neural networks to detect, localise, and align facial features from images. 
