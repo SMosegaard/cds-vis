@@ -1,100 +1,83 @@
 #!/usr/bin/env python
-"""
-tools for teaching image classification with sklearn
-
-"""
 import numpy as np
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_validate, ShuffleSplit, learning_curve
 
-def plot_sample(X, y, classes, samples_per_class):
+# Function for balancing datasets using pandas
+def balance(dataframe, n=500):
     """
-    Plots a grid of samples for each class
+    Create a balanced sample from imbalanced datasets.
     
-    data: the data to be plotted
-    classes: list of all classes
-    samples_per_class: number of samples to show
+    dataframe: 
+        Pandas dataframe with a column called 'text' and one called 'label'
+    n:         
+        Number of samples from each label, defaults to 500
     """
-    nclasses = len(classes)
-    figure = plt.figure(figsize=(nclasses*2,(1+samples_per_class*2)))
-
-    # for each value in classes
-    for idx_cls, cls in enumerate(classes):
-        # pick some at random to plot
-        idxs = np.flatnonzero(y == cls)
-        idxs = np.random.choice(idxs, samples_per_class, replace=False)
-        # plot on a grid for comparison
-        for i, idx in enumerate(idxs):
-            plt_idx = i * nclasses + idx_cls + 1
-            p = plt.subplot(samples_per_class, nclasses, plt_idx);
-            p = sns.heatmap(np.reshape(X[idx], (28,28)), cmap=plt.cm.gray, 
-                            xticklabels=False, yticklabels=False, cbar=False)
-            p = plt.axis('off')
+    # Use pandas select a random bunch of examples from each label
+    out = (dataframe.groupby('label', as_index=False)
+            .apply(lambda x: x.sample(n=n))
+            .reset_index(drop=True))
     
-    return None
+    return out
 
-def plot_coefs(coefficients, nclasses):
+# Show the most informative features
+def show_features(vectorizer, training_labels, classifier, n=20):
     """
-    Plot the coefficients for each label
+    Return the most informative features from a classifier, i.e. the 'strongest' predictors.
     
-    coefficients: output from clf.coef_
-    nclasses: total number of possible classes
-    """
-    scale = np.max(np.abs(coefficients))
-
-    p = plt.figure(figsize=(25, 5))
-
-    for i in range(nclasses):
-        p = plt.subplot(1, nclasses, i + 1)
-        p = plt.imshow(coefficients[i].reshape(28, 28),
-                      cmap=plt.cm.RdBu, vmin=-scale, vmax=scale)
-        p = plt.axis('off')
-        p = plt.title('Class %i' % i)
+    vectorizer:
+        A vectorizer defined by the user, e.g. 'CountVectorizer'
+    classifier:
+        A classifier defined by the user, e.g. 'MultinomialNB'
+    n:
+        Number of features to display, defaults to 20
         
+    """
+    # Get feature names and coefficients
+    feature_names = vectorizer.get_feature_names_out()
+    coefs_with_fns = sorted(zip(classifier.coef_[0], feature_names))
+    # Get ordered labels
+    labels = sorted(set(training_labels))
+    # Select top n results, where n is function argument
+    top = zip(coefs_with_fns[:n], coefs_with_fns[:-(n + 1):-1])
+    # Pretty print columns showing most informative features
+    print(f"{labels[0]}\t\t\t\t{labels[1]}\n")
+    for (coef_1, fn_1), (coef_2, fn_2) in top:
+        for (coef_1, fn_1), (coef_2, fn_2) in top:
+            print("%.4f\t%-15s\t\t%.4f\t%-15s" % (coef_1, fn_1, coef_2, fn_2))
+
     return None
 
-def plot_individual(X, y, sample_idx):
+# Create an ROC plot to evaluate classifier
+def plot_ROC(fpr, tpr, AUC):
     """
-    Show individual data point
+    Create an 'ROC' plot, used to evaluate the accuracy of a classifier.
     
-    X: data source
-    y: label source
-    sample_idx: index of sample to be plotted 
+    fpr:
+        False positive rate, calculated by the user
+    tpr:
+        True positive rate, calculated by the user
+    AUC:
+        'Area under curve', calculated by the user
     """
-    #plotting image
-    plt.imshow(X[sample_idx].reshape(28,28), cmap='gray')
-    plt.title(f'Label: {y[sample_idx]}\n')
-    plt.axis('off')
-    
+    # Create standard ROC plot from defined values
+    ax = plt.plot(fpr, tpr, color='red', label = (f'AUC = {AUC}'))
+    # Plot diagonal from (0,0) to (1,1)
+    plt.plot([0,1],[0,1], color = 'lightgrey',linestyle = '--')
+    # Add title; add labels for x and y axes; add legend
+    plt.title('ROC')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.legend(loc = 'lower right')
+    # Show plot
+    plt.show()
+
     return None
 
-def plot_probs(X, sample_idx, model, classes):
-    """
-    Plot probability distribution for individual test case
-    
-    X: input data source
-    sample_idx: the data point to study
-    model: trained classifier model
-    classes: predefined list of classes
-    """
-    nclasses = len(classes)
-    z = [model.intercept_[k] + np.dot(model.coef_[k], X[sample_idx]) for k in range(nclasses)]
-    #conditional probability
-    exps = [np.exp(z[k])/1+np.exp(z[k]) for k in range(10)]
-    exps_sum = np.sum(exps)
-    probs = exps/exps_sum
-    #plot
-    sns.barplot(x=classes, y=probs);
-    plt.ylabel("Probability");
-    plt.xlabel("Class");
-    
-    #predictied label
-    idx_cls = np.argmax(probs)
-    print(f"I think that this is class {classes[idx_cls]}")
-    
-    return None
-
+# Create heatmap visualisation
 def plot_cm(y_test, y_pred, normalized:bool):
     """
     Plot confusion matrix
@@ -109,52 +92,129 @@ def plot_cm(y_test, y_pred, normalized:bool):
                                rownames=['Actual'], colnames=['Predicted'], normalize='index')
         p = plt.figure(figsize=(10,10));
         p = sns.heatmap(cm, annot=True, fmt=".2f", cbar=False)
-        
-def predict_unseen(image, model, classes):
-    """
-    Predict the category of unseen data, show probabilities 
+
+        return None
     
-    image: unseen data
-    model: trained model
-    classes: list of possible classes
+# Plot learning-validation curve
+def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None,
+                        n_jobs=None, scoring="accuracy", train_sizes=np.linspace(.1, 1.0, 5)):
     """
-    # Reshape array
-    test_probs = model.predict_proba(image.reshape(1,784))
-    # plot prediction
-    sns.barplot(x=classes, y=test_probs.squeeze());
-    plt.ylabel("Probability");
-    plt.xlabel("Class")
+    Function taken from sklearn documentation
     
-    #predictied label
-    idx_cls = np.argmax(test_probs)
-    print(f"I think that this is class {classes[idx_cls]}")
+    Generate 3 plots: the test and training learning curve, the training
+    samples vs fit times curve, the fit times vs score curve.
+
+    Parameters
+    ----------
+    estimator : estimator instance
+        An estimator instance implementing `fit` and `predict` methods which
+        will be cloned for each validation.
+
+    title : str
+        Title for the chart.
+
+    X : array-like of shape (n_samples, n_features)
+        Training vector, where ``n_samples`` is the number of samples and
+        ``n_features`` is the number of features.
+
+    y : array-like of shape (n_samples) or (n_samples, n_features)
+        Target relative to ``X`` for classification or regression;
+        None for unsupervised learning.
+
+    axes : array-like of shape (3,), default=None
+        Axes to use for plotting the curves.
+
+    ylim : tuple of shape (2,), default=None
+        Defines minimum and maximum y-values plotted, e.g. (ymin, ymax).
+
+    cv : int, cross-validation generator or an iterable, default=None
+        Determines the cross-validation splitting strategy.
+        Possible inputs for cv are:
+
+          - None, to use the default 5-fold cross-validation,
+          - integer, to specify the number of folds.
+          - :term:`CV splitter`,
+          - An iterable yielding (train, test) splits as arrays of indices.
+
+        For integer/None inputs, if ``y`` is binary or multiclass,
+        :class:`StratifiedKFold` used. If the estimator is not a classifier
+        or if ``y`` is neither binary nor multiclass, :class:`KFold` is used.
+
+        Refer :ref:`User Guide <cross_validation>` for the various
+        cross-validators that can be used here.
+
+    n_jobs : int or None, default=None
+        Number of jobs to run in parallel.
+        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.
+        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`
+        for more details.
+
+    train_sizes : array-like of shape (n_ticks,)
+        Relative or absolute numbers of training examples that will be used to
+        generate the learning curve. If the ``dtype`` is float, it is regarded
+        as a fraction of the maximum size of the training set (that is
+        determined by the selected validation method), i.e. it has to be within
+        (0, 1]. Otherwise it is interpreted as absolute sizes of the training
+        sets. Note that for classification the number of samples usually have
+        to be big enough to contain at least one sample from each class.
+        (default: np.linspace(0.1, 1.0, 5))
+    """
+    if axes is None:
+        _, axes = plt.subplots(1, 3, figsize=(20, 5))
+
+    axes[0].set_title(title)
+    if ylim is not None:
+        axes[0].set_ylim(*ylim)
+    axes[0].set_xlabel("Training examples")
+    axes[0].set_ylabel("Score")
+
+    train_sizes, train_scores, test_scores, fit_times, _ = \
+        learning_curve(estimator, X, y, cv=cv, n_jobs=n_jobs,
+                       scoring=scoring,
+                       train_sizes=train_sizes,
+                       return_times=True)
+    train_scores_mean = np.mean(train_scores, axis=1)
+    train_scores_std = np.std(train_scores, axis=1)
+    test_scores_mean = np.mean(test_scores, axis=1)
+    test_scores_std = np.std(test_scores, axis=1)
+    fit_times_mean = np.mean(fit_times, axis=1)
+    fit_times_std = np.std(fit_times, axis=1)
+
+    # Plot learning curve
+    axes[0].grid()
+    axes[0].fill_between(train_sizes, train_scores_mean - train_scores_std,
+                         train_scores_mean + train_scores_std, alpha=0.1,
+                         color="r")
+    axes[0].fill_between(train_sizes, test_scores_mean - test_scores_std,
+                         test_scores_mean + test_scores_std, alpha=0.1,
+                         color="g")
+    axes[0].plot(train_sizes, train_scores_mean, 'o-', color="r",
+                 label="Training score")
+    axes[0].plot(train_sizes, test_scores_mean, 'o-', color="g",
+                 label="Cross-validation score")
+    axes[0].legend(loc="best")
+
+    # Plot n_samples vs fit_times
+    axes[1].grid()
+    axes[1].plot(train_sizes, fit_times_mean, 'o-')
+    axes[1].fill_between(train_sizes, fit_times_mean - fit_times_std,
+                         fit_times_mean + fit_times_std, alpha=0.1)
+    axes[1].set_xlabel("Training examples")
+    axes[1].set_ylabel("fit_times")
+    axes[1].set_title("Scalability of the model")
+
+    # Plot fit_time vs score
+    axes[2].grid()
+    axes[2].plot(train_sizes, test_scores_mean, 'o-')
+    axes[2].fill_between(train_sizes, test_scores_mean - test_scores_std,
+                         test_scores_mean + test_scores_std, alpha=0.1)
+    axes[2].set_xlabel("Training examples")
+    axes[2].set_ylabel("Score")
+    axes[2].set_title("Performance of the model")
+
+    plt.show()
     
     return None
 
-def prediction_coefficients(image, model, classes):
-    # get number of classes
-    nclasses = len(classes)
-    # scale the output based on max values
-    scale = np.max(np.abs(model.coef_))
-
-    p = plt.figure(figsize=(25, 5));
-    
-    for i in range(nclasses):
-        p = plt.subplot(2, nclasses, i + 1)
-        p = plt.imshow(model.coef_[i].reshape(28, 28),
-                      cmap=plt.cm.RdBu, vmin=-scale, vmax=scale);
-        p = plt.title('Class %i' % i);
-        p = plt.axis('off')
-
-    for i in range(nclasses):
-        p = plt.subplot(2, nclasses, nclasses + i + 1)
-        p = plt.imshow(image*model.coef_[i].reshape(28, 28),
-                      cmap=plt.cm.RdBu, vmin=-scale/2, vmax=scale/2);
-        # note: you can adjust the scaling factor if necessary,
-        # to make the visualization easier to understand
-        p = plt.axis('off')
-        
-    return None
-    
 if __name__=="__main__":
     pass
