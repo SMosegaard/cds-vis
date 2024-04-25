@@ -1,0 +1,5 @@
+pandas
+facenet_pytorch
+torch
+matplotlib
+seaborn
