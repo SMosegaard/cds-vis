@@ -68,3 +68,5 @@ In recent years, face detection has emerged as a crucial technology for a wide r
 In this repository, we will explore ...
 
 The Multi-Task Cascaded Convolutional Networks (MTCNN) is a deep learning algorithm used for face detection. The model uses a cascading series of neural networks to detect, localise, and align facial features from images. 
+
+In the script, all functions have a short descriptive text  
