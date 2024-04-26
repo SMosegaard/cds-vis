@@ -76,9 +76,9 @@ def calculate_pages_with_faces(df):
     The function calculates the total number of faces, total number of pages, and percentage of pages with faces.
     """
     total_faces = df.groupby(["Newspaper", "Decade"]).agg({"Number of faces": "sum", "Present face": "sum"}).reset_index()
-    total_pages = df.groupby(["Newspaper", "Decade"]).size().reset_index(name = "Number of Pages")
+    total_pages = df.groupby(["Newspaper", "Decade"]).size().reset_index(name = "Number of pages")
     pages_with_faces = pd.merge(total_faces, total_pages, on = ["Newspaper", "Decade"])
-    pages_with_faces["Pages with Faces (%)"] = (pages_with_faces["Present face"] / pages_with_faces["Number of Pages"]) * 100
+    pages_with_faces["Pages with faces (%)"] = (pages_with_faces["Present face"] / pages_with_faces["Number of pages"]) * 100
     pages_with_faces["Decade"] = pages_with_faces["Decade"].astype(str)
     return pages_with_faces
 
