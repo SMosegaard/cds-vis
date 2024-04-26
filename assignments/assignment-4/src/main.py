@@ -16,7 +16,7 @@ def initialize_MTCNN():
     return mtcnn
 
 
-def initialize_df():
+def initialize_df(filepath):
     """
     Initializes an empty dataframe with predefined columns to store face detection results. The dataframe
     will have a column indicating the newspaper, the decade to which the newpaper issue (i.e., image) belongs to,
@@ -25,8 +25,8 @@ def initialize_df():
     """
     df = pd.DataFrame(columns = ("Newspaper", "Decade", "Number of faces", "Present face", "Pages with faces (%)"))
     
-    newspaper = filepaths.split('-')[0]
-    df.loc(len(df)) = [newspaper, 0, 0, 0, 0]
+    newspaper = filepath.split('-')[0]
+    df.loc[len(df)] = [newspaper, 0, 0, 0, 0]
     return df
 
 
@@ -46,9 +46,9 @@ def face_detection(image, mtcnn, df, newspaper, decade):
     """ 
     boxes, _ = mtcnn.detect(image)
     if boxes is not None:
-        n_faces = boxes.shape[0]
-        for i in range(n_faces):
-            df.loc[len(df)] = [newspaper, decade, n_faces, 1, 0]
+        detected_faces = boxes.shape[0]
+        #for i in range(detected_faces):
+        df.loc[len(df)] = [newspaper, decade, detected_faces, 1, 0]
     else:
         df.loc[len(df)] = [newspaper, decade, 0, 0, 0]
     return df 
@@ -59,9 +59,9 @@ def process_newspaper(filepath, mtcnn, df):
     The function iterates through all issues of the three newspapers. Then, it calls the function "face_detection"
     to detect faces in the issue and updates the dataframe accordingly. 
     """
-    for newspaper in os.listdir(filepath):
+    for newspaper in sorted(os.listdir(filepath)):
         newspaper_path = os.path.join(filepath, newspaper)
-        for issue in os.listdir(newspaper_path):
+        for issue in sorted(os.listdir(newspaper_path)):
             issue_year = int(issue.split('-')[1])
             decade = get_decade(issue_year)
             issue_dir = os.path.join(newspaper_path, issue)
@@ -75,10 +75,11 @@ def calculate_pages_with_faces(df):
     """
     The function calculates the total number of faces, total number of pages, and percentage of pages with faces.
     """
-    total_faces = df.groupby(["Newspaper", "Decade"]).sum(["Number of faces", "Present face"]).reset_index()
-    total_pages = df.groupby(["Newspaper", "Decade"]).size().reset_index(name="Number of Pages")
-    pages_with_faces = total_faces.merge(total_pages, on = ["Newspaper", "Decade"])
+    total_faces = df.groupby(["Newspaper", "Decade"]).agg({"Number of faces": "sum", "Present face": "sum"}).reset_index()
+    total_pages = df.groupby(["Newspaper", "Decade"]).size().reset_index(name = "Number of Pages")
+    pages_with_faces = pd.merge(total_faces, total_pages, on = ["Newspaper", "Decade"])
     pages_with_faces["Pages with Faces (%)"] = (pages_with_faces["Present face"] / pages_with_faces["Number of Pages"]) * 100
+    pages_with_faces["Decade"] = pages_with_faces["Decade"].astype(str)
     return pages_with_faces
 
 
@@ -86,8 +87,11 @@ def plot(pages_with_faces, outpath):
     """
     Plots the percentage of pages with faces per decade and save the plot as an image.
     """
+    plt.figure(figsize = (15, 10))
+    pages_with_faces = pages_with_faces[pages_with_faces['Newspaper'].isin(['GDL', 'IMP', 'JDG'])]
     sns.relplot(data = pages_with_faces, kind = "line", x = "Decade", y = "Pages with faces (%)", hue = "Newspaper")
-    plt.title('Percentage of pages with faces per pecade')
+    plt.xticks(rotation = 45, fontsize = 8)
+    plt.title('Percentage of pages with faces per pecade', fontsize = 12)
     plt.savefig(outpath)
     return print("The plot has been saved to the out folder")
 
@@ -105,14 +109,14 @@ def main():
 
     mtcnn = initialize_MTCNN()
 
-    df = initialize_df()
+    df = initialize_df(filepath)
 
     df = process_newspaper(filepath, mtcnn, df)
 
     pages_with_faces = calculate_pages_with_faces(df)
-    save_df_to_csv(pages_with_faces, "out/face_count.csv")
+    save_df_to_csv(pages_with_faces, "out/face_count_v3.csv")
 
-    plot(pages_with_faces, "out/face_plot.png")
+    plot(pages_with_faces, "out/face_plot_v3.png")
 
 if __name__ == "__main__":
     main()
