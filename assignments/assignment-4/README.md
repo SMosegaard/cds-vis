@@ -1,18 +1,18 @@
 # Assignment 4 - Detecting faces in historical newspapers
 *By Sofie Mosegaard, 26-04-2024*
 
-This repository is designed to utilize a pretrained Convolutional Neural Network (CNN) for extracting meaningful information from image data. With the increase in image content in printed media and advancements in technology, exploring this trend through automated face detection in newspapers becomes interesting.
+This repository is designed to utilize a pretrained Convolutional Neural Network (CNN) for extracting meaningful information from image data. With the increase in image content in print media and advancements in technology, exploring this trend through automated face detection in newspapers becomes interesting.
 
-In recent years, face detection has emerged as a crucial technology for a wide range of applications. With the advancements in machine learning and computer vision, face detection algorithms have gained great accuracy and efficiency. The project utilizes the pretrained Multi-Task Cascaded Convolutional Network (MTCNN), which is a deep learning algorithm used for face detection. The model uses a cascading series of neural networks to detect, localise, and align facial features from images. More detailed information about the MTCNN model can be found [here](https://medium.com/@danushidk507/facenet-pytorch-pretrained-pytorch-face-detection-mtcnn-and-facial-recognition-b20af8771144).
+In recent years, face detection has emerged as a crucial technology for a wide range of applications. With the advancements in machine learning and computer vision, face detection algorithms have gained great accuracy and efficiency. The project employ the pretrained Multi-Task Cascaded Convolutional Network (MTCNN), which is a deep learning algorithm used for face detection. The model uses a cascading series of neural networks to detect, localise, and align facial features from images. More detailed information about the MTCNN model can be found [here](https://medium.com/@danushidk507/facenet-pytorch-pretrained-pytorch-face-detection-mtcnn-and-facial-recognition-b20af8771144).
 
-This project will specifically investigate the prevelance of images of human faces in historic newspapers over the last 200 years, by exploring the following:
+This project will specifically investigate the prevelance of images of human faces in historic newspapers over the last 200 years, by doing the following:
 - Load the MTCNN model and initialize a dataframe with columns to store the results.
 - Iterate through historic newspapers to detect human faces using the MTCNN model and update the dataframe accordingly.
 - Calculate the total number of faces per decade and the percentage of issues with faces per dacade.
 - Visualize the percentage of issues with faces per decade across newspapers.
 - Save the dataframe and the plot in the out folder.
 
-To get a better understanding of the code, all functions in the script ```main.py``` will have a short descriptive text.
+To gain a better understanding of the code, all functions in the script ```main.py``` will have a short descriptive text.
 
 ## Data source
 
@@ -52,19 +52,13 @@ $ source run.sh
 
 ## Summary of results
 
--   Finally, remember your repository should include a writtens summary and interpretation of what you think this analysis might being showing. You do not need to be an expert in the history of printed Swiss media - just describe what you see and what that might mean in this context. Make sure also to mention any possible limitations of your approach!
+The project aims to highlight the increase in images of human faces in historic newspapers over a span of 200 years. The findings reveal a rise in the prevalence of images of human faces per decade. This is indeed anticipated with the advent of new technology in the 19th century and the adoption of personal cameras in the 20th century.
 
-...
-- er der betydeligt flere billeder efter 19th century?? 
-- how has the prevelance of images of human faces changed in print media over the last roughly 200 years?
-
-The project aims to highlight the increasement of images of human faces in historic newspapers over 200 years.
-...
-
+The visualisation of the percentage of issues with faces illustrate this trend across all three newspapers. 
+However, the growth patternes of the newspapers are not identical. The newspaper IMP exhibits a very steep increase and generally maintains a higher percentage of pages with faces compared to GDL and JDG, whose developments are remarkably similar. It could be that GDL and JDG, being more traditional newspapers, may not fully embrace technological advancements. Contrary, IMG is a newer newpaper and also the only one with issues from the 21th century. Therefore, it may feature content that aligns more closely with norms and technological trends.
 
 ## Discussion
-- To show understanding of how to interpret machine learning outputs
 
-...
+It is important to acknowledge that the results generated by the face detection algorithm are not objectively true nor correct. Since it operates on unsupervised machine learning principles and relies solely on predictions, the model has its limitations. The model might detect non-facial 'images' as human faces such as drawings or cartoons or vice versa, which influences the results.
 
-still purely predictions, so the model might detect something that is not a face as a face or visa versa.
+Utilizing a different pretrained model might have yielded different results. Therefore, it is important to interpret the results with caution. Nonetheless, the findings of the project do reflect an increase in the prevalence of images of human faces across newspapers in time.
