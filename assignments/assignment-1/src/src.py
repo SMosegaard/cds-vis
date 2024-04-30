@@ -7,7 +7,7 @@ from utils.imutils import jimshow_channel as show_channel
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from numpy.linalg import norm
-from tqdm import notebook
+import tqdm
 import tensorflow_hub as hub
 from tensorflow.keras.preprocessing.image import (load_img, img_to_array)
 from tensorflow.keras.applications.vgg16 import (VGG16, preprocess_input)
@@ -17,14 +17,22 @@ from sklearn.neighbors import NearestNeighbors
 def parser():
     """
     The user can specify whether to perform image search using color histograms or a pretrained CNN VGG16 model
-    and K-Nearst Neighbour
+    and K-Nearst Neighbour.
+    Additionally, the user must provide a target image, that will form the basis of the image search.
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--method",
                         "-m",
                         required = True,
-                        help = "Color histogram or VGG16?")
+                        help = "Color histogram or pretrained models?")
+    parser.add_argument("--target",
+                        "-t",
+                        required = True,
+                        default = "image_0001.jpg",
+                        help = "Enter a taget image")
     args = parser.parse_args()
+    args.method = args.method.lower()
+    args.target = args.target.lower()
     return args
 
 
@@ -52,7 +60,7 @@ def save_dataframe_to_csv(distance_df, csv_outpath):
     distance_df.to_csv(csv_outpath)
 
 
-def process_images(filepath_f1, filepath):
+def process_images(target_image, filepath):
 
     """
     The process_images function systematically analyzes images by extracting and comparing normalized histograms.
@@ -68,7 +76,7 @@ def process_images(filepath_f1, filepath):
     current image has a smaller distance. If so, the dataframe is updated accordingly.
     """
 
-    image_f1 = read_image(filepath_f1)
+    image_f1 = read_image(target_image)
     hist_f1 = calculate_histogram(image_f1)
     norm_hist_f1 = normalize_histogram(hist_f1)
 
@@ -76,7 +84,7 @@ def process_images(filepath_f1, filepath):
     distance_df = pd.DataFrame(columns=("Filename", "Distance"))
 
     for file in sorted(os.listdir(filepath)):
-        if file != filepath_f1:
+        if file != target_image:
             individual_filepath = os.path.join(filepath, file)
             image = read_image(individual_filepath)
             image_name = file.split(".jpg")[0]
@@ -99,9 +107,22 @@ def process_images(filepath_f1, filepath):
     return distance_df
 
 
+### code for method pretrained
+
+def pretrained_model():
+    """
+    Load pretrained VGG16 model with default weights
+    """
+    model = VGG16(weights = 'imagenet',
+                include_top = False,          
+                pooling = 'avg',
+                input_shape = (224, 224, 3))
+    return model
+
+
 def extract_features_input(filepath, model):
     """
-    Extract features from image input using the pretrained VGG16 model
+    Extract features from the preprocessed target image using the pretrained VGG16 model
     """
     input_shape = (224, 224, 3)
     img = load_img(filepath, target_size = (input_shape[0], input_shape[1]))
@@ -114,17 +135,7 @@ def extract_features_input(filepath, model):
     return flattened_features
 
 
-def pretrained_model():
-    """
-    Load pretrained VGG16 model
-    """
-    model = VGG16(weights = 'imagenet',
-                include_top = False,          
-                pooling = 'avg',
-                input_shape = (224, 224, 3))
-    return model
-
-def load_classifier():
+def load_classifier(feature_list):
     """
     Load the K-Nearst Neighbour classification model
     """
@@ -136,31 +147,44 @@ def load_classifier():
 
 def extract_features_image(model, feature_list, filenames):
     feature_list = []
-    for i in notebook.tqdm(range(len(filenames))):
+    for i in tqdm(range(len(filenames))):
         feature_list.append(extract_features(filenames[i], model))
     return feature_list
 
 
 def calculate_nn(model, feature_list, target_image):
     """
-    Calculate the nearest neighbours for target image
+    Calculate the nearest neighbours for target image and returns
+    their index and distances to the target image
     """
     distances, indices = neighbors.kneighbors([feature_list[target_image]])
     return distances, indices
 
 
 def save_indices(distances, indices):
+    """
+    Saves the indices of similar images to the target and
+    respectively their distance
+    """
+    distance_df = pd.DataFrame(columns=("Filename", "Distance"))
     idx = []
     for i in range(1, 6):
-        distances[0][i], indices[0][i]
+        #distances[0][i], indices[0][i]
+        
+        distance = distances[0][i]
+        filename = indices[0][i]
+        distance_df = distance_df.append({"Filename": filename, "Distance": distance}, ignore_index = True)
+        
         idx.append(indices[0][i])
-    return idx
+    return idx, distance_df
 
 
 def plot_target_vs_closest(idx, filenames, target_image):
-    
+    """
+    Plot the target image and the 5 most similar images
+    """
     plt.imshow(mpimg.imread(filenames[target_image]))
-    f, axarr = plt.subplots(1,5)
+    f, axarr = plt.subplots(1,6)
     axarr[0].imshow(mpimg.imread(filenames[idxs[0]]))
     axarr[1].imshow(mpimg.imread(filenames[idxs[1]]))
     axarr[2].imshow(mpimg.imread(filenames[idxs[2]]))
@@ -173,35 +197,38 @@ def main():
 
     args = parser()
 
-    if args.method.lower() == 'histogram':
+    if args.method == 'hist':
 
-        filepath_f1 = os.path.join("in", "image_0001.jpg")
-        filepath = os.path.join("in")
+        target_image = os.path.join("..", "..", "..", "cds-vis-data", "flowers", args.target) # "in", args.target
+        filepath = os.path.join("..", "..", "..", "cds-vis-data", "flowers") # "in"
 
-        distance_df = process_images(filepath_f1, filepath)
+        distance_df = process_images(target_image, filepath)
 
         print(distance_df)
 
-        csv_outpath = os.path.join("out", "output.csv")
+        csv_outpath = os.path.join("out", "output_hist.csv")
         save_dataframe_to_csv(distance_df, csv_outpath)
 
     else:
         
         model = pretrained_model()
 
-        target_image = os.path.join("..", "..", "..", "cds-vis-data", "flowers") # "in", "image_0001.jpg"
+        target_image = os.path.join("..", "..", "..", "cds-vis-data", "flowers", args.target) # "in", args.target
         features = extract_features_input(target_image, model)
 
-        root_dir = os.path.join("..", "..", "..", "cds-vis-data", "flowers") # # "in", "image_0001.jpg
+        root_dir = os.path.join("..", "..", "..", "cds-vis-data", "flowers") # # "in", args.target
         filenames = [root_dir + "/" + name for name in sorted(os.listdir(root_dir))]
 
         feature_list = extract_features_image(model, feature_list, filenames)
 
-        neighbors, feature_list = load_classifier()
+        neighbors, feature_list = load_classifier(feature_list)
         distances, indices = calculate_nn(neighbors, feature_list, target_image)
 
-        idx = save_indices(distances, indices)
+        idx, distance_df = save_indices(distances, indices)
         plot_target_vs_closest(idx, filenames, target_image)
+
+        csv_outpath = os.path.join("out", "output_pretrained.csv")
+        save_dataframe_to_csv(distance_df, csv_outpath)
 
 if __name__ == "__main__":
     main()
