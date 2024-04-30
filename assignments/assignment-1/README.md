@@ -9,11 +9,18 @@ The project consists of two pipelines, that consists of the following...
 
 .. define pipeline with argparse
 
-
 The project has the objective:
 -   Work with larger datasets of images
 -   Extract structured information from image data using ```OpenCV```
 -   Quantaitively compare images based on these features, performing *distant viewing*
+
+This project will specifically investigate ..., by doing the following:
+- Color hist:
+    - ...
+- pretrained:
+    - ...
+
+To gain a better understanding of the code, all functions in the script ```src.py``` will have a short descriptive text.
 
 ### Data source
 
@@ -23,10 +30,15 @@ Please download the data and place it in the folder called ```in```. Note, that 
 
 ### Repository structure
 
-The repository consists of 2 bash scripts, 1 README.md file, and 3 folders. The folders contains the following:
--   in: contains the data. 
--   src: consists of the scipt that will perform the repository objective.
--   out: holds the saved results in a .csv format.
+The repository consists of the following elements:
+
+- 2 bash scripts for setup of the virtual environments, installqtion of requirements, and execution of the code
+- 1 .txt file specifying the required packages
+- 1 README.md file
+- 3 folders
+    - in: contains data to be processed
+    - src: consists of the Python code to be executed
+    - out: stores the saved results in a .csv format
 
 ### Reproducibility 
 
@@ -34,6 +46,36 @@ The repository consists of 2 bash scripts, 1 README.md file, and 3 folders. The 
 -   Navigate into the folder in your terminal.
 -   Run the setup bash script to create a virtual envoriment and install required packages specified in the requirement.txt: $ source setup.sh
 -   Run the run bash script in the terminal to execude the code: $ source run.sh
+
+1.   Clone the repository:
+```python
+$ git clone "https://github.com/SMosegaard/cds-vis/tree/main/assignments/assignment-1"
+```
+2.  Navigate into the folder in your terminal.
+```python
+$ cd assignment-1
+```
+3.  Run the setup bash script to create a virtual envoriment and install required packages specified in the requirement.txt:
+```python
+$ source setup.sh
+```
+
+## Usage
+
+Run the run bash script in the terminal with the required input information (```--method / -m``` and ```--target / -t```). 
+
+You can specify the pipeline by writing ```--method / -m```. You can either execute the image search algorithm using color histograms (enter ```hist```) or a pretrained CNN and K-Nearst Neighbour (enter ```pretrained```).
+
+Additionally, you must provide a target image, that will form the basis of the image search. If none specified, the code will by default use image 'image_0001.jpg'.
+
+```python
+$ source run.sh --method {hist/pretrained} --target {'image_xxxx.jpg'}
+```
+The code will then execude image search utilizing the given method and retrieve similar images to the provided input, target image.
+
+## Summary of results
+
+
 
 ### Discussion
 
