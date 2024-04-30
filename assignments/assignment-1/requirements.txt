@@ -1,8 +1,9 @@
-pandas
-numpy
+numpy == 1.26.4
 matplotlib
-cv2
+opencv-python
 tqdm
-tensorflow
-tensorflow_hub
+tensorflow == 2.16.1
+tensorflow_hub == 0.16.1
 scikit-learn
+pandas == 2.2.2
+argparse
