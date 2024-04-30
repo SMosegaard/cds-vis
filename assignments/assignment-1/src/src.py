@@ -194,24 +194,6 @@ def calculate_nn(neighbors, feature_list, target_image_index):
     return distances, indices
 
 
-def save_indices(distances, indices):
-    """ 
-    Saves the indices of similar images to the target and
-    respectively their distance
-    """
-    distance_df = pd.DataFrame(columns=("Filename", "Distance"))
-    idx = []
-    for i in range(1, 6):
-        #distances[0][i], indices[0][i]
-        
-        distance = distances[0][i]
-        filename = indices[0][i]
-        distance_df = distance_df.append({"Filename": filename, "Distance": distance}, ignore_index = True)
-        
-        idx.append(indices[0][i])
-    return idx, distance_df
-
-
 def save_indices(distances, indices, filenames):
     """
     Saves the indices of similar images to the target and their distances
@@ -225,7 +207,7 @@ def save_indices(distances, indices, filenames):
 
     # Add the closest images to the DataFrame and idx list
     for i in range(1, 6):
-        distance = distances[0][i]
+        distance = round(distances[0][i], 3)
         filename_index = indices[0][i]
         filename = os.path.basename(filenames[filename_index])
         distance_df.loc[i] = [filename, distance]
@@ -251,8 +233,8 @@ def plot_target_vs_closest(idxs, filenames, target_image, outpath):
         ax.axis('off')
 
     plt.tight_layout()
-    plt.show()
     plt.savefig(outpath)
+    plt.show()
     return print("The plot has been saved to the out folder")
 
 
@@ -263,25 +245,23 @@ def main():
     if args.method == 'hist':
 
         target_image = os.path.join("..", "..", "..", "..", "cds-vis-data", "flowers", args.target) # "in", args.target
+        target_image_filename = os.path.basename(target_image)
         filepath = os.path.join("..", "..", "..", "..", "cds-vis-data", "flowers") # "in"
 
         distance_df = process_images(target_image, filepath)
 
-        filenames = [os.path.join(filepath, filename + ".jpg") for filename in distance_df['Filename'].tolist()]
+        save_dataframe_to_csv(distance_df, f"out/distances_{target_image_filename}_hist.csv")
 
-        save_dataframe_to_csv(distance_df, "out/output_hist.csv")
-        
-        # Plot
-        # Extract inxs??
         filenames = [os.path.join(filepath, filename + ".jpg") for filename in distance_df['Filename'].tolist()]
-
-        plot_target_vs_closest(idx, filenames, target_image, "out/target_closest_hist.png")
+        idxs = distance_df.index.tolist()
+        plot_target_vs_closest(idxs, filenames, target_image, f"out/target_closest_{target_image_filename}_hist.png")
 
     else:
         
         model = pretrained_model()
 
         target_image = os.path.join("..", "..", "..", "..", "cds-vis-data", "flowers", args.target) # "in", args.target
+        target_image_filename = os.path.basename(target_image)
         features = extract_features_input(target_image, model)
 
         root_dir = os.path.join("..", "..", "..", "..", "cds-vis-data", "flowers") # # "in", args.target
@@ -292,12 +272,14 @@ def main():
         neighbors, feature_list = load_classifier(feature_list)
         
         target_image_index = find_target_index(target_image, filenames)
+
         distances, indices = calculate_nn(neighbors, feature_list, target_image_index)
 
         distance_df, idxs = save_indices(distances, indices, filenames)
-        plot_target_vs_closest(idxs, filenames, target_image, "out/target_closest_pretrained.png")
+
+        plot_target_vs_closest(idxs, filenames, target_image, f"out/target_closest_{target_image_filename}_pretrained.png")
         
-        save_dataframe_to_csv(distance_df, "out/output_pretrained.csv")
+        save_dataframe_to_csv(distance_df, f"out/distances_{target_image_filename}_pretrained.csv")
 
 
 if __name__ == "__main__":
