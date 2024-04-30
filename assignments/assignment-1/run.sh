@@ -5,4 +5,4 @@ source ./env/bin/activate
 python src/src.py "$@"
 
 # Close the envoriment
-deactivate
+deactivate 
