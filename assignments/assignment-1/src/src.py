@@ -36,31 +36,46 @@ def parser():
 
 
 def read_image(filepath):
+    """
+    Reads an image file from a specified filepath.
+    The returned image will be a NumPy array.
+    """
     return cv2.imread(filepath)
 
 
 def calculate_histogram(image):
+    """Calculates a histogram encompassing all color channel of an image"""
     return cv2.calcHist([image], [0, 1, 2], None, [255, 255, 255], [0, 256, 0, 256, 0, 256])
 
 
 def normalize_histogram(hist):
+    """
+    Normalizes the full histogram using MinMax, which involces subtracting the minimum pixel value for all pixels
+    in the image, then dividing that difference by the range of pixel values (max minus min).
+    All pixel values will now be between 0 and 1. 
+    """
     return cv2.normalize(hist, hist, 0, 1.0, cv2.NORM_MINMAX)
 
 
 def update_distance_df(distance_df, filename, distance):
+    """
+    Updates the distance dataframe with a new entry containing the filename and its corresponding 
+    distance from the target image.
+    """
     distance_df.loc[len(distance_df.index)] = [filename, distance]
 
 
 def compare_histograms(hist1, hist2):
+    """ Compares two histograms using the chi-squared distance metric """
     return round(cv2.compareHist(hist1, hist2, cv2.HISTCMP_CHISQR), 3)
 
 
 def save_dataframe_to_csv(distance_df, csv_outpath):
+    """ Saves the dataframe as a .csv file"""
     distance_df.to_csv(csv_outpath)
 
 
-def process_images(target_image, filepath):
-
+def process_images(target_image, filepath):    
     """
     The process_images function systematically analyzes images by extracting and comparing normalized histograms.
     Initially, a normalized histogram encompassing all color channels is extracted from the target image (f1).
@@ -145,8 +160,8 @@ def load_classifier(feature_list):
 
 def extract_features_image(model, filenames):
     """
-    will extract features for all images in the filepath...
-    returns a list of numpy arrays
+    Extracts features for all images in the filepath using the pretrainged VGG16 model
+    and returns a list of numpy arrays
     """
     feature_list = []
     for i in range(len(filenames)):
@@ -155,12 +170,15 @@ def extract_features_image(model, filenames):
 
 
 def find_target_index(target_image, filenames):
+    """
+    Finds the index of the target image in the list of filenames
+    """
     for i, filename in enumerate(filenames):
         if filename == target_image:
             target_image_index = i
             break
     else:
-        print("Target image filename not found in the list of filenames.")
+        print("Target image filename not found in the list of filenames")
         target_image_index = None
     
     return target_image_index
@@ -192,6 +210,7 @@ def save_indices(distances, indices):
         
         idx.append(indices[0][i])
     return idx, distance_df
+
 
 def save_indices(distances, indices, filenames):
     """
