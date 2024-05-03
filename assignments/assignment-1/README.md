@@ -42,11 +42,6 @@ The repository consists of the following elements:
 
 ## Reproducibility 
 
--   Clone the repository: $ git clone "https://github.com/SMosegaard/cds-vis/tree/main/assignments/assignment-1"
--   Navigate into the folder in your terminal.
--   Run the setup bash script to create a virtual envoriment and install required packages specified in the requirement.txt: $ source setup.sh
--   Run the run bash script in the terminal to execude the code: $ source run.sh
-
 1.   Clone the repository:
 ```python
 $ git clone "https://github.com/SMosegaard/cds-vis/tree/main/assignments/assignment-1"
@@ -89,7 +84,6 @@ For example, using image 0001 of a daffodil from the flower dataset, the histogr
 |image_0773|190.081|
 |image_0142|190.209|
 |image_1316|190.222|
-
 ![Visualisation of results for the histogram pipeline](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_hist.png)
 
 In comparison, the pretrained pipeline provides the following results:
@@ -102,7 +96,6 @@ In comparison, the pretrained pipeline provides the following results:
 |image_0036|0.161|
 |image_0017|0.162|
 |image_0049|0.164|
-
 ![Visualisation of results for the pretrained pipeline](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_pretrained.png)
 
 The pretrained pipeline outperforms the histogram comparison method, showing significantly smaller distances and presenting images of the same flower variety as the target. Contrary, the histogram method finds images with varying degrees of similarity, including other yellow flowers.
