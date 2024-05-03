@@ -1,7 +1,7 @@
-pandas
-numpy
-matplotlib
-cv2
-scikit-learn
-tensorflow
-argparse
+pandas == 2.2.2
+numpy == 1.26.4
+matplotlib == 3.8.4
+opencv-python == 4.9.0
+scikit-learn == 1.4.2
+tensorflow == 2.16.1
+argparse == 1.1
