@@ -32,8 +32,8 @@ You can download the dataset [here](https://www.robots.ox.ac.uk/~vgg/data/flower
 
 The repository consists of the following elements:
 
-- 2 bash scripts for setup of the virtual environments, installqtion of requirements, and execution of the code
-- 1 .txt file specifying the required packages
+- 2 bash scripts for setup of the virtual environments, installation of requirements, and execution of the code
+- 1 .txt file specifying the required packages including versioned dependencies
 - 1 README.md file
 - 3 folders
     - in: contains data to be processed
