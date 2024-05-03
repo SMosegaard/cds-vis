@@ -14,9 +14,15 @@ The two classification models will be trained on image data from ```Cifar10```, 
 
 ## Repository structure
 
-The repository consists of 2 bash scripts, 1 README.md file, and 2 folders. The folders contains the following:
--   src: consists of two python scripts for Logistic Regression (```LR_classifier.py```) and Neural Network (```NN_classifier.py```) classification. Additionally, there are two python scripts performing GridSearch (```LR_classifier.py```, ```NN_classifier.py```).
--   out: holds the saved results, consisting of classification reports in .txt format, plots of permutation testing, and loss curve of the NN classifier.
+The repository consists of the following elements:
+
+- 2 bash scripts for setup of the virtual environments, installation of requirements, and execution of the code
+- 1 .txt file specifying the required packages including versioned dependencies
+- 1 README.md file
+- 3 folders
+    - in: contains data to be processed
+    - src: consists of the Python code to be executed. Specifically, two scripts performing classification (LR_classifier.py, NN_classifier.py) and GridSearch (LR_gridsearch.py, NN_gridsearch.py).
+    - out: stores the saved results, i.e., classification reports in .txt format, plots of permutation testing, and loss curve of the NN classifier.
 
 ## Reproducibility 
 
@@ -25,6 +31,9 @@ The repository consists of 2 bash scripts, 1 README.md file, and 2 folders. The 
 $ git clone "https://github.com/SMosegaard/cds-vis/tree/main/assignments/assignment-2"
 ```
 2.  Navigate into the folder in your terminal.
+```python
+$ cd assignment-2
+```
 3.  Run the setup bash script to create a virtual envoriment and install required packages specified in the requirement.txt:
 ```python
 $ source setup.sh
@@ -36,10 +45,10 @@ Run the run bash script in the terminal and specify, whether you want to perform
 ```python
 $ source run.sh --gs {yes/no}
 ```
-The input will be converted to lowercase, so it makes no difference how it's spelled. Also, 
-script to run both classifiers sequentially
+The input will be converted to lowercase, so it makes no difference how it's spelled.
 
-Based on the input (i.e., yes/no), the script will perform GridSearch or simply use default parameters. The GridSearch will be performed in other scripts (LR_gridsearch.py, NN_gridsearch.py). The parameters will be tuned through k-fold cross-validation with 5 folds to improve robustness of the model and the tested parameters. In your terminal, it will print the grid results and used parameters like so:
+Based on the input (i.e., yes/no), the script will perform GridSearch or simply use default parameters. The GridSearch will be performed in other scripts. The parameters will be tuned through k-fold cross-validation with 5 folds to improve robustness of the model and the tested parameters. In your terminal, it will print the grid results and used parameters like so:
+
 ```python
 Best Accuracy for 0.30062 using the parameters {'max_iter': 100, 'tol': 0.1}
  mean=0.2886, std=0.005596 using {'max_iter': 100, 'tol': 0.01}
@@ -54,13 +63,64 @@ Best Accuracy for 0.30062 using the parameters {'max_iter': 100, 'tol': 0.1}
 ```
 *(This is for the logistic regression tuning)*
 
-Be aware that permutation tuning using GridSearch is very computationally heavy and will take some time to perform.
-
 The best parameters will then be imported to the main script and used to fit the classifier.
+
+Be aware that permutation tuning using GridSearch is very computationally heavy and will take some time to perform.
 
 If you choose to use the default parameters, the models will use the parameters:
 -   LR: {'max_iter': 100, 'tol': 0.1}
 -   NN: {'activation': 'logistic', 'learning_rate_init' = 0.001, 'solver': 'adam', 'hidden_layer_sizes': 20}
+
+Please note, that the script will run both classifiers sequentially. If you wish to run a specific model, you can uncomment the corresponding scripts within the run.sh file.
+
+## Summary of results
+
+
+LR:
+||precision|recall|f1-score|support|
+|---|---|---|---|---|
+|airplane|0.29|0.35|0.32|1000|
+|automobile|0.36|0.39|0.37|1000|
+|bird|0.25|0.20|0.22|1000|
+|cat|0.23|0.16|0.19|1000|
+|deer|0.25|0.21|0.23|1000|
+|dog|0.31|0.30|0.31|1000|
+|frog|0.28|0.28|0.28|1000|
+|horse|0.30|0.31|0.31|1000|
+|ship|0.33|0.41|0.37|1000|
+|truck|0.38|0.43|0.41|1000|
+||||||1000|
+|accuracy|||0.30|10000|
+|macro avg|0.30|0.30|0.30|10000|
+|weighted avg|0.30|0.30|0.30|10000|
+
+![Permutation test LR](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LG_permutation.png)
+
+NN:
+
+||precision|recall|f1-score|support|
+|---|---|---|---|---|
+|airplane|0.40|0.29|0.33|1000|
+|automobile|0.46|0.49|0.43|1000|
+|bird|0.28|0.30|0.29|1000|
+|cat|0.27|0.12|0.17|1000|
+|deer|0.31|0.22|0.26|1000|
+|dog|0.40|0.30|0.34|1000|
+|frog|0.28|0.49|0.36|1000|
+|horse|0.30|0.54|0.39|1000|
+|ship|0.50|0.42|0.45|1000|
+|truck|0.43|0.46|0.44|1000|
+||||||1000|
+|accuracy|||0.35|10000|
+|macro avg|0.36|0.35|0.35|10000|
+|weighted avg|0.36|0.35|0.35|10000|
+
+![Loss curve NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png)
+
+![Permutation test NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png)
+
+
+https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png
 
 ## Discussion
 
