@@ -22,13 +22,13 @@ Specifically, the project will image search on flower images. In order to extrac
 
 To gain a better understanding of the code, all functions in the script ```src.py``` will have a short descriptive text.
 
-### Data source
+## Data source
 
 The dataset is a collection of over 1000 images of flowers, sampled from 17 different species. The dataset comes from the Visual Geometry Group at the University of Oxford. All images are in color.
 
 You can download the dataset [here](https://www.robots.ox.ac.uk/~vgg/data/flowers/17/) and place it in the ```in``` folder. Ensure to unzip the data within the folder before executing the code.
 
-### Repository structure
+## Repository structure
 
 The repository consists of the following elements:
 
@@ -40,7 +40,7 @@ The repository consists of the following elements:
     - src: consists of the Python code to be executed
     - out: stores the saved results in a .csv format
 
-### Reproducibility 
+## Reproducibility 
 
 -   Clone the repository: $ git clone "https://github.com/SMosegaard/cds-vis/tree/main/assignments/assignment-1"
 -   Navigate into the folder in your terminal.
@@ -74,13 +74,6 @@ $ source run.sh --method {hist/pretrained} --target {'image_xxxx.jpg'}
 The code will then execude image search utilizing the given method and retrieve similar images to the provided input, target image.
 
 ## Summary of results
-
-The algorithm aims to find visually similar images to a specified target image using two pipelines: histogram comparison and a pretrained VGG16 model with K-Nearest Neighbors (K-NN) classification.
-
-The results present the most similar images to the target image based on their distances, indicating their level of resemblance. A lower distance signifies higher similarity, with the target image itself having a distance of 0.0.
-
-For example, using image 0001 of a daffodil from the flower dataset, the histogram comparison pipeline yields the following results:
---
 
 The algorithm's primary objective is to retrieve visually similar images to a specified target image using two pipelines: histogram comparison and a pretrained VGG16 model with K-NN classification.
  
@@ -118,7 +111,7 @@ This pattern is consistent across multiple examples tested. This indicates the e
 
 In summary, the results provide insights into the similarity between images and potential patterns within a dataset. The image search algorithm can be applied to numerous image datasets. All results are available in the out folder.
 
-### Discussion
+## Discussion
 
 The comparison between the two methods utilized in this project, color histogram comparison and pretrained models (VGG16 and K-NN), sheds light on their respective strengths and limitations in image search.
 
