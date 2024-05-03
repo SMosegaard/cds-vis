@@ -196,38 +196,46 @@ def calculate_nn(neighbors, feature_list, target_image_index):
 
 def save_indices(distances, indices, filenames):
     """
-    Saves the indices of similar images to the target and their distances
+    Saves the indices of similar images to the target and their distances.
+    The distances are converted to  strings with two decimals to ensure the format of the saved distances.
     """
     distance_df = pd.DataFrame(columns=["Filename", "Distance"])
     idxs = []
 
     # Add the target image to the DataFrame with distance 0
     target_filename = os.path.basename(filenames[0])
-    distance_df.loc[0] = [target_filename, 0]
+    distance_df.loc[0] = [target_filename, "0.00"]
 
     # Add the closest images to the DataFrame and idx list
     for i in range(1, 6):
         distance = round(distances[0][i], 3)
         filename_index = indices[0][i]
         filename = os.path.basename(filenames[filename_index])
+        distance_str = "{:.2f}".format(distance)
         distance_df.loc[i] = [filename, distance]
         idxs.append(filename_index)
 
     return distance_df, idxs
- 
     
 
 def plot_target_vs_closest(idxs, filenames, target_image, outpath):
     """
-    Plot the target image and the 5 most similar images
+    Plot the target image and the 5 most similar images.
+    As the list of idxs of the two pipelines are not the same length, the function accommodates both cases.
     """
     fig, axes = plt.subplots(1, 6, figsize=(20, 4))
     axes[0].imshow(mpimg.imread(target_image))
     axes[0].set_title('Target Image')
 
-    for i in range(1, 6):
-        axes[i].imshow(mpimg.imread(filenames[idxs[i-1]]))
-        axes[i].set_title(f'Closest Image {i}')
+    if len(idxs) == 6:  # For the histogram method
+        for i in range(6):
+            axes[i].imshow(mpimg.imread(filenames[idxs[i]]))
+            axes[i].set_title(f'Closest Image {i}')
+
+    elif len(idxs) == 5:  # For the pretrained method
+        for i in range(5):
+            axes[i+1].imshow(mpimg.imread(filenames[idxs[i]]))
+            axes[i+1].set_title(f'Closest Image {i+1}')
 
     for ax in axes:
         ax.axis('off')
@@ -249,7 +257,8 @@ def main():
         filepath = os.path.join("..", "..", "..", "..", "cds-vis-data", "flowers") # "in"
 
         distance_df = process_images(target_image, filepath)
-
+        
+        distance_df = distance_df.sort_values(by = "Distance")
         save_dataframe_to_csv(distance_df, f"out/distances_{image_number}_hist.csv")
 
         filenames = [os.path.join(filepath, filename + ".jpg") for filename in distance_df['Filename'].tolist()]
