@@ -22,38 +22,28 @@ def parser():
     args = parser.parse_args()
     return args
 
-# Convert images to greyscale
 def greyscale(X):
+    """ Convert images to greyscale """
     greyscaled_images  = np.zeros((X.shape[0], X.shape[1], X.shape[2]))
     for i in range(X.shape[0]):
         greyscaled_images [i] = cv2.cvtColor(X[i], cv2.COLOR_RGB2GRAY)
     return greyscaled_images
 
-# Scale image features
+
 def scale(X):
+    """ Scale image features """
     scaled_images  = X  / 255.0
     return scaled_images 
 
-# Reshape images to 2D
+
 def reshape(X):
+    """ Reshape images to 2D """
     reshaped_images = X.reshape(-1, 1024)
     return reshaped_images
 
 def preprocess_data(X_train, X_test):
     """
-    Preprocesses the data - greyscale, scale, and reshape.
-
-    Parameters:
-    X_train : numpy array
-        Array of training images in RGB format.
-    X_test : numpy array
-        Array of testing images in RGB format.
-
-    Returns:
-    X_train_processed : numpy array
-        Preprocessed training images.
-    X_test_processed : numpy array
-        Preprocessed testing images.
+    Preprocesses the data, which includes greyscaling, scaling, and reshaping.
     """
     X_train_greyed = greyscale(X_train)
     X_test_greyed = greyscale(X_test)
@@ -89,7 +79,6 @@ def fit_classifier(classifier, X_train, y_train):
 
 
 def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
-
     """
     Function that evaluates the trained classifier on new, unseen data. This includes plotting a confusion
     matrix and calculating a classification report, which will be saved.
@@ -109,12 +98,13 @@ def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
     filepath_report = "out/LR_classification_report.txt"
     with open(filepath_report, 'w') as file:
         file.write(classifier_metrics)
+    return print("The classification report has been saved to the out folder")
 
 
-def permutation_test(classifier, X_test, y_test):
+def permutation_test(classifier, X_test, y_test, outpath):
 
     score, permutation_scores, pvalue = permutation_test_score(classifier, X_test, y_test, cv = 5, 
-                                                                n_permutations = 100, n_jobs = 1,
+                                                                n_permutations = 100, n_jobs = -1,
                                                                 random_state = 123, verbose = True,
                                                                 scoring = None)
 
@@ -129,9 +119,9 @@ def permutation_test(classifier, X_test, y_test):
     plt.ylim(ylim)
     plt.legend()
     plt.xlabel('Score')
+    plt.savefig(outpath)
     plt.show()
-    plt.savefig("out/LG_permutation.png")
-    plt.close()
+    return print("The permutation test has been saved to the out folder")
 
 
 def main():
@@ -146,14 +136,11 @@ def main():
     else:
         best_LR_classifier = define_classifier()
     
-    #Fit classifier
     best_LR_classifier = fit_classifier(best_LR_classifier, X_train_scaled_reshape, y_train)
 
-    # Evaluate classifier
     evaluate_classifier(best_LR_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape, y_test)
 
-    # Permutation test for significance
-    permutation_test(best_LR_classifier, X_test_scaled_reshape, y_test)
+    permutation_test(best_LR_classifier, X_test_scaled_reshape, y_test, "out/LR_permutation.png")
 
 if __name__ == "__main__":
     main()
