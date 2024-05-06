@@ -1,12 +1,12 @@
 # Portfolio 1 - Building a simple image search algorithm
 *By Sofie Mosegaard, 01-03-2024*
 
-This repository aims at designing a simple image search algorithm. The algorithm allows its users to retrive similar images to a given target image and potentially unveiling patterns and similarities within a dataset.
+This repository aims to design a simple image search algorithm. The algorithm allows its users to retrive similar images to a given target image and potentially unveil patterns and similarities within a dataset.
 
-Specifically, the project will image search on flower images. In order to extract the five most similar images to a given target image, the project offers two methods:
+Specifically, the project will conduct image search on flower images. In order to extract the most similar images to a given target image, the project offers two methods:
 
 1. Color histogram comparison:
-    - Initiates a dataframe to store image filenames and corresponding distances
+    - Initializes a dataframe to store image filenames and corresponding distances
     - Extracts a normalized histogram encompassing all color channels for the target image using OpenCV
     - Iterates through all images, calculating and normalizing histograms
     - Compares the normalized histogram to that of the target image
@@ -24,7 +24,7 @@ To gain a better understanding of the code, all functions in the script ```src.p
 
 ## Data source
 
-The dataset is a collection of over 1000 images of flowers, sampled from 17 different species. The dataset comes from the Visual Geometry Group at the University of Oxford. All images are in color.
+In this repository, image search will be done on images of flowers. The dataset is a collection of over 1000 images of flowers, sampled from 17 different species. The dataset comes from the Visual Geometry Group at the University of Oxford. All images are in color.
 
 You can download the dataset [here](https://www.robots.ox.ac.uk/~vgg/data/flowers/17/) and place it in the ```in``` folder. Ensure to unzip the data within the folder before executing the code.
 
@@ -38,7 +38,7 @@ The repository consists of the following elements:
 - 3 folders
     - in: contains data to be processed
     - src: consists of the Python code to be executed
-    - out: stores the saved results in a .csv format
+    - out: stores the saved results, i.e., the dataframe in a .csv format and the visualisation as .png.
 
 ## Reproducibility 
 
@@ -67,6 +67,8 @@ Additionally, you must provide a target image, that will form the basis of the i
 $ source run.sh --method {hist/pretrained} --target {'image_xxxx.jpg'}
 ```
 The code will then execude image search utilizing the given method and retrieve similar images to the provided input, target image.
+
+When the code has finished running, it will print that the results have been saved in the terminal.
 
 ## Summary of results
 
