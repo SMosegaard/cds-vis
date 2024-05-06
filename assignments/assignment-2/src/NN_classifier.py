@@ -8,6 +8,8 @@ import tensorflow
 from tensorflow.keras.datasets import cifar10
 import argparse
 from NN_gridsearch import main as grid_search_main 
+import matplotlib
+
 
 def parser():
     """
@@ -21,25 +23,30 @@ def parser():
     args = parser.parse_args()
     return args
 
-# Convert images to greyscale
 def greyscale(X):
+    """ Convert images to greyscale """
     greyscaled_images  = np.zeros((X.shape[0], X.shape[1], X.shape[2]))
     for i in range(X.shape[0]):
         greyscaled_images [i] = cv2.cvtColor(X[i], cv2.COLOR_RGB2GRAY)
     return greyscaled_images
 
-# Scale image features
+
 def scale(X):
+    """ Scale image features """
     scaled_images  = X  / 255.0
     return scaled_images 
 
-# Reshape images to 2D
+
 def reshape(X):
+    """ Reshape images to 2D """
     reshaped_images = X.reshape(-1, 1024)
     return reshaped_images
 
-# Preprocesses the data - greyscale, scale, and reshape 
+
 def preprocess_data(X_train, X_test):
+    """
+    Preprocesses the data, which includes greyscaling, scaling, and reshaping.
+    """
 
     X_train_greyed = greyscale(X_train)
     X_test_greyed = greyscale(X_test)
@@ -53,9 +60,10 @@ def preprocess_data(X_train, X_test):
     return X_train_scaled_reshape, X_test_scaled_reshape
 
 
-# Function that defines and fits the neural netork classifier to the data
 def define_classifier():
-
+    """
+    Function that defines NN classifier
+    """
     classifier = MLPClassifier(max_iter = 1000,
                                 random_state = 123,
                                 verbose = True)
@@ -64,46 +72,54 @@ def define_classifier():
 
 
 def fit_classifier(classifier, X_train, y_train):
+    """
+    Function that fits the LR classifier to the data
+    """
     classifier = classifier.fit(X_train, y_train)
     return classifier
 
 
-# Function that evaluates the trained classifier on new, unseen data
-def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
+def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test, outpath):
+    """
+    Function that evaluates the trained classifier on new, unseen data. This includes plotting a confusion
+    matrix and calculating a classification report, which will be saved.
+    """
+    y_pred = classifier.predict(X_test)
 
-    y_pred = classifier.predict(X_test)     # Generate predictions
-
-    # Plot confusion matrix
     metrics.ConfusionMatrixDisplay.from_estimator(classifier,
                                                 X_train,
                                                 y_train,
                                                 cmap = plt.cm.Blues)
 
-    # Change labels from numbers to object names
     labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
-    # Calculate classification report
     classifier_metrics = metrics.classification_report(y_test, y_pred, target_names = labels)
     print(classifier_metrics)
 
-    # Save classification report
-    filepath_report = "out/NN_classification_report.txt"
-    with open(filepath_report, 'w') as file:
+    #filepath_report = "out/NN_classification_report.txt"
+    #with open(filepath_report, 'w') as file:
+    with open(outpath, 'w') as file:
         file.write(classifier_metrics)
+    return print("The classification report has been saved to the out folder")
 
-    # Plot loss curve
+
+def plot_loss_curve(classifier, outpath):
+    """
+    Function that plots the loss curve during training 
+    """
     plt.figure(figsize=(8, 6))
     plt.plot(classifier.loss_curve_)
     plt.title("Loss curve during training for the neural network classifier")
     plt.ylabel('Loss score')
-    plt.savefig("out/NN_loss_curve.png")
-    plt.close()
+    plt.savefig(outpath)
+    plt.show()
+    return print("The loss curve has been saved to the out folder")
 
 
-def permutation_test(classifier, X_test, y_test):
+def permutation_test(classifier, X_test, y_test, outpath):
 
     score, permutation_scores, pvalue = permutation_test_score(classifier, X_test, y_test, cv = 5, 
-                                                                n_permutations = 5, n_jobs = 1,
+                                                                n_permutations = 5, n_jobs = -1,
                                                                 random_state = 123, verbose = True,
                                                                 scoring = None)
 
@@ -118,12 +134,11 @@ def permutation_test(classifier, X_test, y_test):
     plt.ylim(ylim)
     plt.legend()
     plt.xlabel('Score')
+    plt.savefig(outpath)
     plt.show()
-    plt.savefig("out/NN_permutation.png")
-    plt.close()
+    return print("The permutation test has been saved to the out folder")
 
 
-# Function that executes all the functions above in a structered manner on the CIFAR-10 dataset
 def main():
 
     args = parser()
@@ -136,14 +151,14 @@ def main():
     else:
         best_NN_classifier = define_classifier()
 
-    # Fit classifier
     best_NN_classifier = fit_classifier(best_NN_classifier, X_train_scaled_reshape, y_train)
 
-    # Evaluate classifier
-    evaluate_classifier(best_NN_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape, y_test)
+    evaluate_classifier(best_NN_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape,
+                        y_test, "out/NN_classification_report_2.txt")
 
-    # Permutation test for significance
-    permutation_test(best_NN_classifier, X_test_scaled_reshape, y_test)
+    plot_loss_curve(best_NN_classifier, "out/NN_loss_curve_2.png")
+
+    permutation_test(best_NN_classifier, X_test_scaled_reshape, y_test, "out/NN_permutation_2.png")
 
 if __name__ == "__main__":
     main()
