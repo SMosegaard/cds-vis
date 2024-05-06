@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from utils.imutils import jimshow as show
 from utils.imutils import jimshow_channel as show_channel
-import matplotlib.pyplot as chan
+import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from numpy.linalg import norm
 import tensorflow_hub as hub
@@ -73,6 +73,7 @@ def compare_histograms(hist1, hist2):
 def save_dataframe_to_csv(distance_df, csv_outpath):
     """ Saves the dataframe as a .csv file"""
     distance_df.to_csv(csv_outpath)
+    return print("The results have been saved in the out folder")
 
 
 def process_images(target_image, filepath):    
@@ -211,8 +212,8 @@ def save_indices(distances, indices, filenames):
         distance = round(distances[0][i], 3)
         filename_index = indices[0][i]
         filename = os.path.basename(filenames[filename_index])
-        distance_str = "{:.2f}".format(distance)
-        distance_df.loc[i] = [filename, distance]
+        distance_str = "{:.3f}".format(distance)
+        distance_df.loc[i] = [filename, distance_str]
         idxs.append(filename_index)
 
     return distance_df, idxs
@@ -223,14 +224,17 @@ def plot_target_vs_closest(idxs, filenames, target_image, outpath):
     Plot the target image and the 5 most similar images.
     As the list of idxs of the two pipelines are not the same length, the function accommodates both cases.
     """
-    fig, axes = plt.subplots(1, 6, figsize=(20, 4))
+    fig, axes = plt.subplots(1, 6, figsize = (20, 4))
     axes[0].imshow(mpimg.imread(target_image))
     axes[0].set_title('Target Image')
 
     if len(idxs) == 6:  # For the histogram method
         for i in range(6):
-            axes[i].imshow(mpimg.imread(filenames[idxs[i]]))
-            axes[i].set_title(f'Closest Image {i}')
+            if i != 0:
+                axes[i].imshow(mpimg.imread(filenames[idxs[i]]))
+                axes[i].set_title(f'Closest Image {i}')
+            else:
+                continue
 
     elif len(idxs) == 5:  # For the pretrained method
         for i in range(5):
@@ -259,11 +263,12 @@ def main():
         distance_df = process_images(target_image, filepath)
         
         distance_df = distance_df.sort_values(by = "Distance")
-        save_dataframe_to_csv(distance_df, f"out/distances_{image_number}_hist.csv")
+        save_dataframe_to_csv(distance_df, f"out/distances_{image_number}_hist_2.csv")
 
         filenames = [os.path.join(filepath, filename + ".jpg") for filename in distance_df['Filename'].tolist()]
-        idxs = distance_df.index.tolist()
-        plot_target_vs_closest(idxs, filenames, target_image, f"out/target_closest_{image_number}_hist.png")
+        #idxs = distance_df.index.tolist()
+        idxs = [filenames.index(filename) for filename in filenames]
+        plot_target_vs_closest(idxs, filenames, target_image, f"out/target_closest_{image_number}_hist_2.png")
 
     else:
         
@@ -286,9 +291,9 @@ def main():
 
         distance_df, idxs = save_indices(distances, indices, filenames)
 
-        plot_target_vs_closest(idxs, filenames, target_image, f"out/target_closest_{image_number}_pretrained.png")
+        plot_target_vs_closest(idxs, filenames, target_image, f"out/target_closest_{image_number}_pretrained_2.png")
         
-        save_dataframe_to_csv(distance_df, f"out/distances_{image_number}_pretrained.csv")
+        save_dataframe_to_csv(distance_df, f"out/distances_{image_number}_pretrained_2.csv")
 
 
 if __name__ == "__main__":
