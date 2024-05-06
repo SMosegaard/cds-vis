@@ -1,4 +1,4 @@
-import cv2
+import cv2 
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import GridSearchCV
@@ -21,16 +21,12 @@ def reshape(X):
     return reshaped_images
 
 def preprocess_data(X_train, X_test):
-
     X_train_greyed = greyscale(X_train)
     X_test_greyed = greyscale(X_test)
-
     X_train_scaled = scale(X_train_greyed)
     X_test_scaled = scale(X_test_greyed)
-
     X_train_scaled_reshape = reshape(X_train_scaled)
     X_test_scaled_reshape = reshape(X_test_scaled)
-
     return X_train_scaled_reshape, X_test_scaled_reshape
 
 
@@ -53,7 +49,7 @@ def grid_search():
                 'solver': ('adam', 'sgd'),
                 'learning_rate_init': [0.01, 0.001],
                 'hidden_layer_sizes': [20, 50, 100]}
-    
+
     grid_search = GridSearchCV(estimator = NN_classifier, param_grid = param_grid, cv = 5, n_jobs = -1)
     grid_result = grid_search.fit(X_train_scaled_reshape, y_train)
 
