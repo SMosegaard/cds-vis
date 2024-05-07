@@ -198,16 +198,14 @@ def calculate_nn(neighbors, feature_list, target_image_index):
 def save_indices(distances, indices, filenames):
     """
     Saves the indices of similar images to the target and their distances.
-    The distances are converted to  strings with two decimals to ensure the format of the saved distances.
+    The distances are converted to strings with three decimals to ensure the format of the saved distances.
     """
     distance_df = pd.DataFrame(columns=["Filename", "Distance"])
     idxs = []
 
-    # Add the target image to the DataFrame with distance 0
     target_filename = os.path.basename(filenames[0])
     distance_df.loc[0] = [target_filename, "0.00"]
 
-    # Add the closest images to the DataFrame and idx list
     for i in range(1, 6):
         distance = round(distances[0][i], 3)
         filename_index = indices[0][i]
