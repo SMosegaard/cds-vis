@@ -133,7 +133,7 @@ Finally, the loss curve during training of the NN classifier was visualized to a
 
 <div align="center">
 
-![Loss curve NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png)
+<img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png" width="400"/>
 
 </div>
 
