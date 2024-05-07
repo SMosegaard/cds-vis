@@ -80,7 +80,7 @@ it is possible to adjust the parameters to do grid search on in the gridsearch.p
 results from the best paramters found from the grid search, which is also the default parameters
 
 
-|LR|NN |
+|LR||||||||NN |
 |---|---|---|---|---|---|---|---|---|
 ||precision|recall|f1-score||precision|recall|f1-score|support|
 |---|---|---|---|---|---|---|---|---|
