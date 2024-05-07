@@ -94,7 +94,6 @@ LR:
 |macro avg|0.30|0.30|0.30|10000|
 |weighted avg|0.30|0.30|0.30|10000|
 
-![Permutation test LR](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LG_permutation.png)
 
 NN:
 
@@ -117,10 +116,14 @@ NN:
 
 ![Loss curve NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png)
 
+ |  
+:-------------------------:|:-------------------------:
+![Permutation test NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png)  |  ![Permutation test LR](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LG_permutation.png)
+
 ![Permutation test NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png)
 
+![Permutation test LR](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LG_permutation.png)
 
-https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png
 
 ## Discussion
 
