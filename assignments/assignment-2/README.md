@@ -92,7 +92,7 @@ The bash script for execution of the code will run both classifiers sequentially
 
 The results present the performance metrics for both the logistic regression and neural network models in a multiclass image classification task when utilizing default parameters:
 
-<center>
+<div align="center">
 |*LR*|precision|recall|f1-score||*NN*|precision|recall|f1-score|support|
 |---|---|---|---|---|---|---|---|---|---|
 |airplane|0.29|0.35|0.32|||0.41|0.46|0.43|1000|
@@ -109,7 +109,7 @@ The results present the performance metrics for both the logistic regression and
 |accuracy|||0.30|||||0.40|10000|
 |macro avg|0.30|0.30|0.30|||0.40|0.40|0.39|10000|
 |weighted avg|0.30|0.30|0.30|||0.40|0.40|0.39|10000|
-</center>
+</div>
 
 The logistic regression model achieved an overall accuracy of 30% on the CIFAR-10 dataset. The model demonstrated strong performance classifying categories such as "truck" and "automobile" with precision scores of 0.38 and 0.36, however it struggled with the categories "cat" and "bird" with notably lower precision scores.
 
