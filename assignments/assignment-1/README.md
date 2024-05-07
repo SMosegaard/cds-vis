@@ -87,7 +87,11 @@ For example, using image 0001 of a daffodil from the flower dataset, the histogr
 |image_0142|190.209|
 |image_1316|190.222|
 
-![Visualisation of results for the histogram pipeline](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_hist.png)
+<div align="center">
+
+<img src="(https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_hist.png" width="400"/>
+
+</div>
 
 In comparison, the pretrained pipeline provides the following results:
 
@@ -100,7 +104,49 @@ In comparison, the pretrained pipeline provides the following results:
 |image_0017|0.162|
 |image_0049|0.164|
 
-![Visualisation of results for the pretrained pipeline](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_pretrained.png)
+<div align="center">
+
+<img src="(https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_pretrained.png" width="400"/>
+
+</div>
+
+<div style="display: flex;">
+    <!-- Table -->
+    <table style="width: 50%;">
+        <tr>
+            <th>Filename</th>
+            <th>Distance</th>
+        </tr>
+        <tr>
+            <td>image_0001</td>
+            <td>0.0</td>
+        </tr>
+        <tr>
+            <td>image_0037</td>
+            <td>0.133</td>
+        </tr>
+        <tr>
+            <td>image_0016</td>
+            <td>0.139</td>
+        </tr>
+        <tr>
+            <td>image_0036</td>
+            <td>0.161</td>
+        </tr>
+        <tr>
+            <td>image_0017</td>
+            <td>0.162</td>
+        </tr>
+        <tr>
+            <td>image_0049</td>
+            <td>0.164</td>
+        </tr>
+    </table>
+    
+    <!-- Image -->
+    <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_pretrained.png" alt="Image" style="width: 50%;">
+</div>
+
 
 The pretrained pipeline outperforms the histogram comparison method, showing significantly smaller distances and presenting images of the same flower variety as the target. Contrary, the histogram method finds images with varying degrees of similarity, including other yellow flowers.
 
