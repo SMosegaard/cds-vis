@@ -91,9 +91,9 @@ The bash script for execution of the code will run both classifiers sequentially
 ## Summary of results
 
 The results present the performance metrics for both the logistic regression and neural network models in a multiclass image classification task when utilizing default parameters:
- 
+
 |*LR*|precision|recall|f1-score||*NN*|precision|recall|f1-score|support|
-|---|---|---|---|---|---|---|---|---|---|
+|:---|---|---|---|---|---|---|---|---|---:|
 |airplane|0.29|0.35|0.32|||0.41|0.46|0.43|1000|
 |automobile|0.36|0.39|0.37|||0.48|0.51|0.49|1000|
 |bird|0.25|0.20|0.22|||0.30|0.39|0.34|1000|
@@ -117,8 +117,8 @@ Both multiclass classification tasks significantly surpasses chance level of 10%
 
 
 <p float="left">
-    <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LR_permutation.png" width="300">
-    <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png" width="300">
+    <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LR_permutation.png" width="400">
+    <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png" width="400">
 </p>
 
 Finally, the loss curve during training of the NN classifier was visualized to assess the models training process and performance:
