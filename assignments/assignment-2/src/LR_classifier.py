@@ -78,7 +78,7 @@ def fit_classifier(classifier, X_train, y_train):
     return classifier
 
 
-def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
+def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test, outpath):
     """
     Function that evaluates the trained classifier on new, unseen data. This includes plotting a confusion
     matrix and calculating a classification report, which will be saved.
@@ -95,8 +95,7 @@ def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test):
     classifier_metrics = metrics.classification_report(y_test, y_pred, target_names = labels)
     print(classifier_metrics)
 
-    filepath_report = "out/LR_classification_report.txt"
-    with open(filepath_report, 'w') as file:
+    with open(outpath, 'w') as file:
         file.write(classifier_metrics)
     return print("The classification report has been saved to the out folder")
 
@@ -138,7 +137,8 @@ def main():
     
     best_LR_classifier = fit_classifier(best_LR_classifier, X_train_scaled_reshape, y_train)
 
-    evaluate_classifier(best_LR_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape, y_test)
+    evaluate_classifier(best_LR_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape,
+                        y_test, "out/LR_classification_report.txt")
 
     permutation_test(best_LR_classifier, X_test_scaled_reshape, y_test, "out/LR_permutation.png")
 

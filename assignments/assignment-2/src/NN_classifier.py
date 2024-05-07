@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from sklearn.neural_network import MLPClassifier
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import permutation_test_score
 from sklearn import metrics
 import matplotlib.pyplot as plt
 import tensorflow
@@ -96,12 +96,9 @@ def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test, outpath):
     classifier_metrics = metrics.classification_report(y_test, y_pred, target_names = labels)
     print(classifier_metrics)
 
-    #filepath_report = "out/NN_classification_report.txt"
-    #with open(filepath_report, 'w') as file:
     with open(outpath, 'w') as file:
         file.write(classifier_metrics)
     return print("The classification report has been saved to the out folder")
-
 
 def plot_loss_curve(classifier, outpath):
     """
