@@ -116,13 +116,10 @@ NN:
 
 ![Loss curve NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png)
 
+![Permutation test NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png) ![Permutation test LR](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LG_permutation.png)
+
+
  |  
-:-------------------------:|:-------------------------:
-![Permutation test NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png)  |  ![Permutation test LR](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LG_permutation.png)
-
-![Permutation test NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png)
-
-![Permutation test LR](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LG_permutation.png)
 
 
 ## Discussion
