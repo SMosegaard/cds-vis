@@ -92,8 +92,9 @@ The bash script for execution of the code will run both classifiers sequentially
 
 The results present the performance metrics for both the logistic regression and neural network models in a multiclass image classification task when utilizing default parameters:
 
+<center>
 |*LR*|precision|recall|f1-score||*NN*|precision|recall|f1-score|support|
-|:---|---|---|---|---|---|---|---|---|---:|
+|---|---|---|---|---|---|---|---|---|---|
 |airplane|0.29|0.35|0.32|||0.41|0.46|0.43|1000|
 |automobile|0.36|0.39|0.37|||0.48|0.51|0.49|1000|
 |bird|0.25|0.20|0.22|||0.30|0.39|0.34|1000|
@@ -108,6 +109,7 @@ The results present the performance metrics for both the logistic regression and
 |accuracy|||0.30|||||0.40|10000|
 |macro avg|0.30|0.30|0.30|||0.40|0.40|0.39|10000|
 |weighted avg|0.30|0.30|0.30|||0.40|0.40|0.39|10000|
+</center>
 
 The logistic regression model achieved an overall accuracy of 30% on the CIFAR-10 dataset. The model demonstrated strong performance classifying categories such as "truck" and "automobile" with precision scores of 0.38 and 0.36, however it struggled with the categories "cat" and "bird" with notably lower precision scores.
 
@@ -115,15 +117,18 @@ The neural network model produced even better accuracies with an overall accurac
 
 Both multiclass classification tasks significantly surpasses chance level of 10%. To examine whether the obtained accuracy scores are statistically significant, both models were permutation tested. The tests demonstrated, that both models are statistically independed and that the classification accuracies are significantly better than what could be expected by chance. 
 
-
+<center>
 <p float="left">
     <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LR_permutation.png" width="400">
     <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png" width="400">
 </p>
+</center>
 
 Finally, the loss curve during training of the NN classifier was visualized to assess the models training process and performance:
 
+<center>
 ![Loss curve NN](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png)
+</center>
 
 The loss curve indicates a consistent decrease in the loss function as the model undergoes training. This suggests that the model is effectively learning from the training data and gradually improving its ability to make accurate predictions.
 
