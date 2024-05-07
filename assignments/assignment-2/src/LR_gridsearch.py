@@ -12,13 +12,16 @@ def greyscale(X):
         greyscaled_images [i] = cv2.cvtColor(X[i], cv2.COLOR_RGB2GRAY)
     return greyscaled_images
 
+
 def scale(X):
     scaled_images  = X  / 255.0
     return scaled_images 
 
+
 def reshape(X):
     reshaped_images = X.reshape(-1, 1024)
     return reshaped_images
+
 
 def preprocess_data(X_train, X_test):
 
@@ -32,7 +35,6 @@ def preprocess_data(X_train, X_test):
     X_test_scaled_reshape = reshape(X_test_scaled)
 
     return X_train_scaled_reshape, X_test_scaled_reshape
-
 
 
 def define_classifier():
