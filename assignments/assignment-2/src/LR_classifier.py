@@ -12,7 +12,8 @@ from LR_gridsearch import main as grid_search_main
 
 def parser():
     """
-    The user can specify to perform GridSearch or not
+    The user can specify whether to perform GridSearch by typing --GridSearch/-gs yes/no when executing
+    the script. The function will then parse command-line arguments.
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--GridSearch",
@@ -22,8 +23,11 @@ def parser():
     args = parser.parse_args()
     return args
 
+
 def greyscale(X):
-    """ Convert images to greyscale """
+    """
+    Converts images to greyscale
+    """
     greyscaled_images  = np.zeros((X.shape[0], X.shape[1], X.shape[2]))
     for i in range(X.shape[0]):
         greyscaled_images [i] = cv2.cvtColor(X[i], cv2.COLOR_RGB2GRAY)
@@ -31,19 +35,24 @@ def greyscale(X):
 
 
 def scale(X):
-    """ Scale image features """
+    """
+    Scale image features to range between 0 and 1-
+    """
     scaled_images  = X  / 255.0
     return scaled_images 
 
 
 def reshape(X):
-    """ Reshape images to 2D """
+    """
+    Reshape images to 2D
+    """
     reshaped_images = X.reshape(-1, 1024)
     return reshaped_images
 
+
 def preprocess_data(X_train, X_test):
     """
-    Preprocesses the data, which includes greyscaling, scaling, and reshaping.
+    Preprocesses train and test data, which includes greyscaling, scaling, and reshaping.
     """
     X_train_greyed = greyscale(X_train)
     X_test_greyed = greyscale(X_test)
@@ -59,7 +68,7 @@ def preprocess_data(X_train, X_test):
 
 def define_classifier():
     """
-    Function that defines LR classifier
+    Function that defines logistic regression classifier with specified parameters
     """
     classifier = LogisticRegression(tol = 0.1,
                                     max_iter = 100,
@@ -101,12 +110,14 @@ def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test, outpath):
 
 
 def permutation_test(classifier, X_test, y_test, outpath):
-
+    """
+    Performs permutation test on the logistic regression classifier to assess statistical
+    significance of classifier's performance. The permutation test will be plotted and saved.
+    """
     score, permutation_scores, pvalue = permutation_test_score(classifier, X_test, y_test, cv = 5, 
                                                                 n_permutations = 100, n_jobs = -1,
                                                                 random_state = 123, verbose = True,
                                                                 scoring = None)
-
     n_classes = 10
 
     plt.figure(figsize = (8, 6))
@@ -121,6 +132,7 @@ def permutation_test(classifier, X_test, y_test, outpath):
     plt.savefig(outpath)
     plt.show()
     return print("The permutation test has been saved to the out folder")
+
 
 
 def main():
