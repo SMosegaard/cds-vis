@@ -117,8 +117,8 @@ Both multiclass classification tasks significantly surpasses chance level of 10%
 
 
 <p float="left">
-    <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LG_permutation.png" width="300">
-    <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LG_permutation.png" width="300">
+    <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LR_permutation.png" width="300">
+    <img src="https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png" width="300">
 </p>
 
 Finally, the loss curve during training of the NN classifier was visualized to assess the models training process and performance:
