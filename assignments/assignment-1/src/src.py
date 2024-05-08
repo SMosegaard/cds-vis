@@ -1,8 +1,6 @@
 import os, sys
 import cv2
 import numpy as np
-from utils.imutils import jimshow as show
-from utils.imutils import jimshow_channel as show_channel
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from numpy.linalg import norm
