@@ -82,7 +82,10 @@ def fit_classifier(classifier, X_train, y_train):
     """
     Function that fits the LR classifier to the data
     """
-    classifier = classifier.fit(X_train, y_train)
+    classifier = classifier.fit(X_train, y_train,
+                                validation_split = 0.1,
+                                verbose = 1)
+
     return classifier
 
 
@@ -115,6 +118,7 @@ def plot_loss_curve(classifier, outpath):
     plt.plot(classifier.loss_curve_)
     plt.title("Loss curve during training for the neural network classifier")
     plt.ylabel('Loss score')
+    plt.xlabel("Iterations")
     plt.savefig(outpath)
     plt.show()
     return print("The loss curve has been saved to the out folder")
