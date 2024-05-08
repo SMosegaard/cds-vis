@@ -53,6 +53,10 @@ The model will then be compiled with the given optimizer (i.e., sgd/adam).
 
 Please note that the bash script will run all three models (baseline, with batch normalization, and with data augmentation) sequentially. If you wish to run only specific models, you can uncomment the corresponding scripts within the run.sh file.
 
+---
+* for grid search, batch size and number of epocs are set to.. Difficult to estimate how and how long a model needs to train, but given the nature of the data, this is an estimate...
+---
+
 ## Summary of results
 
 The reported results are based on training the models for 10 epochs with a batch size of 32.
