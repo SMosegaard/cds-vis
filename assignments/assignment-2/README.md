@@ -128,7 +128,6 @@ Both multiclass classification tasks significantly surpasses chance level of 10%
 
 </div>
 
-
 Finally, the loss curve during training of the NN classifier was visualized to assess the models training process and performance:
 
 <div align="center">
