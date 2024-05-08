@@ -114,6 +114,7 @@ def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test, outpath):
         file.write(classifier_metrics)
     return print("The classification report has been saved to the out folder")
 
+
 def plot_loss_curve(classifier, outpath):
     """
     Function that plots the loss curve during training 
@@ -126,6 +127,30 @@ def plot_loss_curve(classifier, outpath):
     plt.savefig(outpath)
     plt.show()
     return print("The loss curve has been saved to the out folder")
+
+
+def plot_loss_curve(classifier, iterations, outpath):
+    """
+    Plots the training and validation loss and accuracy curves and saves the plot.
+    """
+    plt.figure(figsize = (12,6))
+    plt.subplot(1,2,1)
+    plt.plot(np.arange(0, iterations), classifier.history["loss"], label = "train_loss")
+    plt.plot(np.arange(0, iterations), classifier.history["val_loss"], label = "val_loss", linestyle = ":")
+    plt.title("Loss curve")
+    plt.xlabel("Iterations")
+    plt.ylabel("Loss")
+    plt.tight_layout()
+    plt.legend()
+    plt.subplot(1,2,2)
+    plt.plot(np.arange(0, iterations), classifier.history["accuracy"], label = "train_acc")
+    plt.plot(np.arange(0, iterations), classifier.history["val_accuracy"], label = "val_acc", linestyle = ":")
+    plt.title("Accuracy curve")
+    plt.xlabel("Iterations")
+    plt.ylabel("Accuracy")
+    plt.tight_layout()
+    plt.legend()
+    plt.savefig(outpath)
 
 
 def permutation_test(classifier, X_test, y_test, outpath):
