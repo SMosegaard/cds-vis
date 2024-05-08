@@ -62,6 +62,10 @@ The input will be converted to lowercase, so it makes no difference how it's spe
 
 Based on the input (i.e., yes/no), the script will perform GridSearch or simply use default parameters. The GridSearch will be performed in other scripts. The parameters will be tuned through k-fold cross-validation with 5 folds to improve robustness of the model and the tested parameters. Natrually, the grid of parameters to be tuned can be adjusted in the 'XX_gridsearch.py' sctipts.
 
+-
+- *skriv kommentar om hvad, der bliver tunet. Hvorfor er de parametre, udvalgt
+-
+
 In your terminal, it will print the grid results and used parameters like so:
 
 ```python
