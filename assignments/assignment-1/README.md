@@ -76,7 +76,7 @@ The algorithm's primary objective is to retrieve visually similar images to a sp
  
 The results present the most similar images to the target image based on their distances, indicating their level of similarity. A lower distance indicates a higher degree of resemblance, while a higher distance equals greater dissimilarity. The target image itself serves as the reference point, denoted by a distance of 0.0.
 
-For example, using image 0001 of a daffodil from the flower dataset, the histogram comparison pipeline yields the following results::
+For example, using image 0001 of a daffodil from the flower dataset, the histogram comparison pipeline yields the following results:
 
 |Filename|Distance
 |---|---|
@@ -101,6 +101,9 @@ In comparison, the pretrained pipeline provides the following results:
 |image_0049|0.164|
 
 ![Visualisation of results for the pretrained pipeline](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_pretrained.png)
+
+(rephrase:)
+**It is important to note, that the distances in the two tables are not comparable, as they are calculated using two different methods and therefore metrics... But the images shows....**
 
 The pretrained pipeline outperforms the histogram comparison method, showing significantly smaller distances and presenting images of the same flower variety as the target. Contrary, the histogram method finds images with varying degrees of similarity, including other yellow flowers.
 
