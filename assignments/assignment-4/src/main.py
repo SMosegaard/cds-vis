@@ -105,6 +105,7 @@ def save_df_to_csv(df, csv_outpath):
 
 
 def main():
+    
     filepath = os.path.join("in")
 
     mtcnn = initialize_MTCNN()
