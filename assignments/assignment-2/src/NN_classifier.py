@@ -73,10 +73,10 @@ def define_classifier():
     """
     classifier = MLPClassifier(max_iter = 1000,
                                 random_state = 123,
-                                activation: 'logistic',
+                                activation = 'logistic',
                                 learning_rate_init = 0.001,
-                                solver: 'adam',
-                                hidden_layer_sizes: 20,
+                                solver = 'adam',
+                                hidden_layer_sizes = 20,
                                 verbose = True)
 
     return classifier
