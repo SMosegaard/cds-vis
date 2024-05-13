@@ -7,8 +7,7 @@ import matplotlib.pyplot as plt
 import tensorflow
 from tensorflow.keras.datasets import cifar10
 import argparse
-from LR_gridsearch import main as grid_search_main 
-
+from LR_gridsearch import main as gridsearch 
 
 def parser():
     """
@@ -144,7 +143,7 @@ def main():
     X_train_scaled_reshape, X_test_scaled_reshape = preprocess_data(X_train, X_test)
 
     if args.GridSearch.lower() == 'yes':
-        best_LR_classifier = grid_search_main()
+        best_LR_classifier = gridsearch()
     else:
         best_LR_classifier = define_classifier()
     
