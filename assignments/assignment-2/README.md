@@ -86,7 +86,7 @@ The best parameters will then be imported to the main script and used to fit the
 
 If you choose to use the default parameters, the models will use the parameters:
 -   LR: {'max_iter': 100, 'tol': 0.1}
--   NN: {'activation': 'logistic', 'learning_rate_init' = 0.001, 'solver': 'adam', 'hidden_layer_sizes': 20}
+-   NN: {'activation': 'logistic', 'learning_rate_init' = 0.001, 'solver': 'adam', 'hidden_layer_sizes': 100}
 
 *** nævn at NN validates + early stopping
 As the classification task is multiclass, the validation split is random. Therefore, it could in theory
@@ -100,6 +100,8 @@ Also it improved the loss score (from 1.6 to 1.4) and made the model run faster,
 The bash script for execution of the code will run both classifiers sequentially. If you wish to run a specific model, you can uncomment the corresponding scripts within the run.sh file.
 
 *Be aware that permutation tuning using GridSearch is very computationally heavy and will take some time to perform.*
+
+When the code has finished running, it will print that the results have been saved in the terminal.
 
 ## Summary of results
 
@@ -150,6 +152,8 @@ Finally, the loss curve during training of the NN classifier was visualized to a
 </div>
 
 The loss curve indicates a consistent decrease in the loss function as the model undergoes training. This suggests that the model is effectively learning from the training data and gradually improving its ability to make accurate predictions.
+
+... kommenter på validation
 
 ## Discussion
 
