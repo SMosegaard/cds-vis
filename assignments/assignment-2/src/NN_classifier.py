@@ -21,6 +21,10 @@ def parser():
                         "-gs",
                         required = True,
                         help = "Perform GridSearch (yes or no)")
+    parser.add_argument("--PermutationTest",
+                        "-pt",
+                        required = True,
+                        help = "Perform permutation test (yes or no)")    
     args = parser.parse_args()
     return args
 
@@ -80,35 +84,15 @@ def define_classifier():
                                 random_state = 123,
                                 early_stopping = True,
                                 verbose = True)
-
-def define_classifier():
-    """
-    Function that defines neural network classifier with specified parameters
-    """
-    classifier = MLPClassifier(max_iter = 1000,
-                                random_state = 123,
-                                activation = 'logistic',
-                                hidden_layer_sizes = (100,),
-                                early_stopping = True,
-                                verbose = True)
-
     return classifier
 
-    param_grid = {'activation': ('logistic', 'relu'),
-                'solver': ('adam', 'sgd'),
-                'learning_rate_init': [0.01, 0.001],
-                'hidden_layer_sizes': [20, 50, 100]}
 
 def fit_classifier(classifier, X_train, y_train):
     """
     Function that fits the LR classifier to the data
-    ....
-    validate
-    .......
+
     """
-    classifier = classifier.fit(X_train, y_train,
-                                validation_split = 0.1,
-                                verbose = 1)
+    classifier = classifier.fit(X_train, y_train)
 
     return classifier
 
@@ -197,11 +181,12 @@ def main():
     best_NN_classifier = fit_classifier(best_NN_classifier, X_train_scaled_reshape, y_train)
 
     evaluate_classifier(best_NN_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape,
-                        y_test, "out/NN_classification_report_2.txt")
+                        y_test, "out/NN_classification_report.txt")
 
-    plot_loss_curve(best_NN_classifier, "out/NN_loss_curve_2.png")
+    plot_loss_curve(best_NN_classifier, "out/NN_loss_curve.png")
 
-    permutation_test(best_NN_classifier, X_test_scaled_reshape, y_test, "out/NN_permutation_2.png")
+    if args.PermutationTest.lower() == 'yes':
+        permutation_test(best_NN_classifier, X_test_scaled_reshape, y_test, "out/NN_permutation.png")
 
 if __name__ == "__main__":
     main()
