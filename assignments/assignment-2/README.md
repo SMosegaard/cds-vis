@@ -88,6 +88,15 @@ If you choose to use the default parameters, the models will use the parameters:
 -   LR: {'max_iter': 100, 'tol': 0.1}
 -   NN: {'activation': 'logistic', 'learning_rate_init' = 0.001, 'solver': 'adam', 'hidden_layer_sizes': 20}
 
+*** nævn at NN validates + early stopping
+As the classification task is multiclass, the validation split is random. Therefore, it could in theory
+only improve the accuracy and robustness of the classes, that are being validated. However, I cant 
+if any classes are not included in the validation split
+-
+validation improved the results by 2% acc and made the classes a bit more balanced.
+Also it improved the loss score (from 1.6 to 1.4) and made the model run faster, due to implementaiton of early stopping
+***
+
 The bash script for execution of the code will run both classifiers sequentially. If you wish to run a specific model, you can uncomment the corresponding scripts within the run.sh file.
 
 *Be aware that permutation tuning using GridSearch is very computationally heavy and will take some time to perform.*
@@ -99,21 +108,21 @@ The results present the performance metrics for both the logistic regression and
 <div align="center">
 
 |*LR*|precision|recall|f1-score||*NN*|precision|recall|f1-score|support|
-|---|---|---|---|---|---|---|---|---|---|
-|airplane|0.29|0.35|0.32|||0.41|0.46|0.43|1000|
-|automobile|0.36|0.39|0.37|||0.48|0.51|0.49|1000|
-|bird|0.25|0.20|0.22|||0.30|0.39|0.34|1000|
-|cat|0.23|0.16|0.19|||0.29|0.19|0.23|1000|
-|deer|0.25|0.21|0.23|||0.30|0.31|0.31|1000|
-|dog|0.31|0.30|0.31|||0.39|0.33|0.36|1000|
-|frog|0.28|0.28|0.28|||0.38|0.40|0.39|1000|
-|horse|0.30|0.31|0.31|||0.42|0.50|0.46|1000|
-|ship|0.33|0.41|0.37|||0.51|0.47|0.49|1000|
-|truck|0.38|0.43|0.41|||0.49|0.41|0.44|1000|
-|||||||||||
-|accuracy|||0.30|||||0.40|10000|
-|macro avg|0.30|0.30|0.30|||0.40|0.40|0.39|10000|
-|weighted avg|0.30|0.30|0.30|||0.40|0.40|0.39|10000|
+||---|---|---|---|---|---|---|---|---|---|
+|airplane||0.29|0.35|0.32|||0.41|0.46|0.43|1000|
+|automobile||0.36|0.39|0.37|||0.48|0.51|0.49|1000|
+|bird||0.25|0.20|0.22|||0.30|0.39|0.34|1000|
+|cat||0.23|0.16|0.19|||0.29|0.19|0.23|1000|
+|deer||0.25|0.21|0.23|||0.30|0.31|0.31|1000|
+|dog||0.31|0.30|0.31|||0.39|0.33|0.36|1000|
+|frog||0.28|0.28|0.28|||0.38|0.40|0.39|1000|
+|horse||0.30|0.31|0.31|||0.42|0.50|0.46|1000|
+|ship||0.33|0.41|0.37|||0.51|0.47|0.49|1000|
+|truck||0.38|0.43|0.41|||0.49|0.41|0.44|1000|
+||||||||||||
+|accuracy||||0.30|||||0.40|10000|
+|macro avg||0.30|0.30|0.30|||0.40|0.40|0.39|10000|
+|weighted avg||0.30|0.30|0.30|||0.40|0.40|0.39|10000|
 
 </div>
 
