@@ -54,11 +54,11 @@ $ source setup.sh
 
 ## Usage
 
-Run the run bash script in the terminal and specify, whether you want to perform GridSearch (--GridSearch / -gs):
+Run the run bash script in the terminal and specify, whether you want to perform GridSearch (--GridSearch / -gs) and/or permutation testing (--PermutationTest / -pt):
 ```python
-$ source run.sh --gs {yes/no}
+$ source run.sh -gs {yes/no} -pt {yes/no}
 ```
-The input will be converted to lowercase, so it makes no difference how it's spelled.
+The inputs will be converted to lowercase, so it makes no difference how it's spelled.
 
 Based on the input (i.e., yes/no), the script will perform GridSearch or simply use default parameters. The GridSearch will be performed in other scripts. The parameters will be tuned through k-fold cross-validation with 5 folds to improve robustness of the model and the tested parameters. Natrually, the grid of parameters to be tuned can be adjusted in the 'XX_gridsearch.py' sctipts.
 
@@ -81,6 +81,10 @@ Best Accuracy for 0.30062 using the parameters {'max_iter': 100, 'tol': 0.1}
  mean=0.2812, std=0.008556 using {'max_iter': 300, 'tol': 1}
 ```
 *(This is the output of the LR tuning)*
+
+"Best Accuracy for 0.30138 using the parameters {'max_iter': 100, 'penalty': 'l1', 'tol': 0.1} "
+the table will only be printed and not saved...
+
 
 The best parameters will then be imported to the main script and used to fit the classifier.
 
