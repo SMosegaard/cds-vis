@@ -69,22 +69,42 @@ def preprocess_data(X_train, X_test):
 
 def define_classifier():
     """
+    Function that defines neural network classifier with specified parameters. The default solver adam
+    and default initial learning rate of 0.001 will be used.
+    Additionally, 10% of the training data will be used for validation. When the validation score is
+    not improving during training, the training will stop due to early stopping.
+    """
+    classifier = MLPClassifier(max_iter = 1000,
+                                hidden_layer_sizes = (100,),
+                                activation = 'logistic',
+                                random_state = 123,
+                                early_stopping = True,
+                                verbose = True)
+
+def define_classifier():
+    """
     Function that defines neural network classifier with specified parameters
     """
     classifier = MLPClassifier(max_iter = 1000,
                                 random_state = 123,
                                 activation = 'logistic',
-                                learning_rate_init = 0.001,
-                                solver = 'adam',
-                                hidden_layer_sizes = 20,
+                                hidden_layer_sizes = (100,),
+                                early_stopping = True,
                                 verbose = True)
 
     return classifier
 
+    param_grid = {'activation': ('logistic', 'relu'),
+                'solver': ('adam', 'sgd'),
+                'learning_rate_init': [0.01, 0.001],
+                'hidden_layer_sizes': [20, 50, 100]}
 
 def fit_classifier(classifier, X_train, y_train):
     """
     Function that fits the LR classifier to the data
+    ....
+    validate
+    .......
     """
     classifier = classifier.fit(X_train, y_train,
                                 validation_split = 0.1,
@@ -117,40 +137,24 @@ def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test, outpath):
 
 def plot_loss_curve(classifier, outpath):
     """
-    Function that plots the loss curve during training 
+    Plots the training and validation loss curves and saves the plot.
     """
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize = (12, 6))
+    plt.subplot(1, 2, 1)
     plt.plot(classifier.loss_curve_)
-    plt.title("Loss curve during training for the neural network classifier")
-    plt.ylabel('Loss score')
-    plt.xlabel("Iterations")
+    plt.title("Loss curve during training for the neural network classifier", fontsize = 10)
+    plt.ylabel('Loss score', fontsize = 9)
+    plt.xlabel("Iterations", fontsize = 9)
+
+    plt.subplot(1, 2, 2)
+    plt.plot(classifier.validation_scores_)
+    plt.title("Loss curve during validation for the neural network classifier", fontsize = 10)
+    plt.ylabel('Loss score', fontsize = 9)
+    plt.xlabel("Iterations", fontsize = 9)
+
     plt.savefig(outpath)
     plt.show()
     return print("The loss curve has been saved to the out folder")
-
-
-def plot_loss_curve(classifier, iterations, outpath):
-    """
-    Plots the training and validation loss and accuracy curves and saves the plot.
-    """
-    plt.figure(figsize = (12,6))
-    plt.subplot(1,2,1)
-    plt.plot(np.arange(0, iterations), classifier.history["loss"], label = "train_loss")
-    plt.plot(np.arange(0, iterations), classifier.history["val_loss"], label = "val_loss", linestyle = ":")
-    plt.title("Loss curve")
-    plt.xlabel("Iterations")
-    plt.ylabel("Loss")
-    plt.tight_layout()
-    plt.legend()
-    plt.subplot(1,2,2)
-    plt.plot(np.arange(0, iterations), classifier.history["accuracy"], label = "train_acc")
-    plt.plot(np.arange(0, iterations), classifier.history["val_accuracy"], label = "val_acc", linestyle = ":")
-    plt.title("Accuracy curve")
-    plt.xlabel("Iterations")
-    plt.ylabel("Accuracy")
-    plt.tight_layout()
-    plt.legend()
-    plt.savefig(outpath)
 
 
 def permutation_test(classifier, X_test, y_test, outpath):

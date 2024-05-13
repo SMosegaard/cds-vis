@@ -36,9 +36,9 @@ def preprocess_data(X_train, X_test):
 def define_classifier():
     classifier = MLPClassifier(max_iter = 1000,
                                 random_state = 123,
+                                early_stopping = True,
                                 verbose = True)
     return classifier
-
 
 def grid_search():
 
@@ -48,10 +48,10 @@ def grid_search():
 
     NN_classifier = define_classifier()
 
-    param_grid = {'activation': ('logistic', 'relu'),
+    param_grid = {'hidden_layer_sizes': [50, 100, 150],
+                'activation': ('logistic', 'relu'),
                 'solver': ('adam', 'sgd'),
-                'learning_rate_init': [0.01, 0.001],
-                'hidden_layer_sizes': [20, 50, 100]}
+                'learning_rate_init': [0.01, 0.001]}
 
     grid_search = GridSearchCV(estimator = NN_classifier, param_grid = param_grid, cv = 5, n_jobs = -1)
     grid_result = grid_search.fit(X_train_scaled_reshape, y_train)

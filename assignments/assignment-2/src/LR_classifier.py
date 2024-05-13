@@ -73,6 +73,7 @@ def define_classifier():
     classifier = LogisticRegression(tol = 0.1,
                                     max_iter = 100,
                                     solver = 'saga',
+                                    penalty = 'l2',
                                     multi_class = 'multinomial',
                                     random_state = 123,
                                     verbose = True)

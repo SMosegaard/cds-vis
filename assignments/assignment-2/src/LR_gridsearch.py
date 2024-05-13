@@ -53,7 +53,9 @@ def grid_search():
 
     LR_classifier = define_classifier()
 
-    param_grid = {'tol': [0.01, 0.1, 1], 'max_iter': [100, 200, 300]}
+    param_grid = {'tol': [0.01, 0.1, 1],
+                'max_iter': [100, 200, 300],
+                'penalty': ('l1', 'l2', 'elasticnet', None)}
     
     grid_search = GridSearchCV(estimator = LR_classifier, param_grid = param_grid, cv = 5, n_jobs = -1)
     grid_result = grid_search.fit(X_train_scaled_reshape, y_train)
