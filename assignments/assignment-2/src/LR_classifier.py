@@ -19,6 +19,10 @@ def parser():
                         "-gs",
                         required = True,
                         help = "Perform GridSearch (yes or no)")
+    parser.add_argument("--PermutationTest",
+                        "-pt",
+                        required = True,
+                        help = "Perform permutation test (yes or no)")    
     args = parser.parse_args()
     return args
 
@@ -152,7 +156,8 @@ def main():
     evaluate_classifier(best_LR_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape,
                         y_test, "out/LR_classification_report.txt")
 
-    permutation_test(best_LR_classifier, X_test_scaled_reshape, y_test, "out/LR_permutation.png")
+    if args.PermutationTest.lower() == 'yes':
+        permutation_test(best_LR_classifier, X_test_scaled_reshape, y_test, "out/LR_permutation.png")
 
 if __name__ == "__main__":
     main()
