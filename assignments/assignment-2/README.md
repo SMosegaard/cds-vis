@@ -107,7 +107,7 @@ The results present the performance metrics for both the logistic regression and
 
 <div align="center">
 
-|*LR*|precision|recall|f1-score||*NN*|precision|recall|f1-score|support|
+||*LR*|precision|recall|f1-score||*NN*|precision|recall|f1-score|support|
 ||---|---|---|---|---|---|---|---|---|---|
 |airplane||0.29|0.35|0.32|||0.41|0.46|0.43|1000|
 |automobile||0.36|0.39|0.37|||0.48|0.51|0.49|1000|
