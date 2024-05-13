@@ -55,6 +55,8 @@ Please note that the bash script will run all three models (baseline, with batch
 
 ---
 * for grid search, batch size and number of epocs are set to.. Difficult to estimate how and how long a model needs to train, but given the nature of the data, this is an estimate...
+
+Da det er svært hvis ikke umuligt at estimere, hvordan et neuralt netværk model træner, er det også vanskeligt at opstille de parametre, den skal tune. Derfor havde det muligvis været relevanat at implementer Baysian optimization eller Optuna tuning, da det bliver mere struktueret og kræver mindre af brugeren i forhold til at opstille og estimere relevant epochs or batch
 ---
 
 ## Summary of results
