@@ -62,7 +62,7 @@ def grid_search():
     stds = grid_result.cv_results_['std_test_score']
     params = grid_result.cv_results_['params']
     for mean, stdev, param in zip(means, stds, params):
-        print(f' mean={mean:.4}, std={stdev:.4} using {param}')
+        print(f' mean = {mean:.4}, std = {stdev:.4} using {param}')
 
     best_estimator = grid_result.best_estimator_
     return best_estimator

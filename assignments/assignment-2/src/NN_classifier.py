@@ -180,8 +180,8 @@ def main():
 
     best_NN_classifier = fit_classifier(best_NN_classifier, X_train_scaled_reshape, y_train)
 
-    evaluate_classifier(best_NN_classifier, X_train_scaled_reshape, y_train, X_test_scaled_reshape,
-                        y_test, "out/NN_classification_report.txt")
+    evaluate_classifier(best_NN_classifier, X_train_scaled_reshape, y_train,
+                        X_test_scaled_reshape, y_test,"out/NN_classification_report.txt")
 
     plot_loss_curve(best_NN_classifier, "out/NN_loss_curve.png")
 
