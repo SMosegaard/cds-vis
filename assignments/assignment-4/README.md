@@ -3,7 +3,7 @@
 
 This repository is designed to utilize a pretrained Convolutional Neural Network (CNN) for extracting meaningful information from image data. With the increase in image content in print media and advancements in technology, exploring this trend through automated face detection in newspapers becomes interesting.
 
-In recent years, face detection has emerged as a crucial technology for a wide range of applications. With the advancements in machine learning and computer vision, face detection algorithms have gained great accuracy and efficiency. The project employ the pretrained Multi-Task Cascaded Convolutional Network (MTCNN), which is a deep learning algorithm used for face detection. The model uses a cascading series of neural networks to detect, localise, and align facial features from images. More detailed information about the MTCNN model can be found [here](https://medium.com/@danushidk507/facenet-pytorch-pretrained-pytorch-face-detection-mtcnn-and-facial-recognition-b20af8771144).
+In recent years, face detection has emerged as a crucial technology for a wide range of applications. With the advancements in machine learning and computer vision, face detection algorithms have gained great accuracy and efficiency. The project employ the pretrained Multi-Task Cascaded CNN (MTCNN), which is a deep learning algorithm used for face detection. The model uses a cascading series of neural networks to detect, localise, and align facial features from images. More detailed information about the MTCNN model can be found [here](https://medium.com/@danushidk507/facenet-pytorch-pretrained-pytorch-face-detection-mtcnn-and-facial-recognition-b20af8771144).
 
 This project will specifically investigate the prevelance of images of human faces in historic newspapers over the last 200 years, by doing the following:
 - Load the MTCNN model and initialize a dataframe with columns to store the results.
@@ -12,11 +12,11 @@ This project will specifically investigate the prevelance of images of human fac
 - Visualize the percentage of issues with faces per decade across newspapers.
 - Save the dataframe and the plot in the out folder.
 
-To gain a better understanding of the code, all functions in the script ```main.py``` will have a short descriptive text.
+To gain a better understanding of the code, all functions in the script ```face_detector.py``` will have a short descriptive text.
 
 ## Data source
 
-In this repository, the pretrained MTCNN will detect faces in newspapers. The dataset is a collection of three historic Swiss newspapers: Gazette de Lausanne (GDL), Impartial (IMP), and Journal de Genève (JDG). The newspapers spans over 4000 issues ranging from 1790s to 2010s. All newspapers are in black and white format and contains metadata in their titles. 
+In this repository, the pretrained MTCNN will detect faces in newspapers. The dataset is a collection of three historic Swiss newspapers: Gazette de Lausanne (GDL), Impartial (IMP), and Journal de Genève (JDG). The newspapers spans over 4,000 issues ranging from 1790s to 2010s. All newspapers are in black and white format and contains metadata in their titles. 
 
 You can download the dataset [here](https://zenodo.org/records/3706863) and place it in the ```in``` folder. Ensure to unzip the data within the folder before executing the code.
 
