@@ -116,7 +116,7 @@ Finally, the loss curve during training and accuracy during validation of the NN
 
 <div align = "center">
 
-<img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png" width = "600"/>
+<img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png" width = "800"/>
 
 </div>
 
