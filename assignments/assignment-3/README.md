@@ -1,35 +1,53 @@
-# Assignment 3 - Document classification using pretrained image embeddings
+# Portfolio 3 - Document Classification using Pretrained Image Embeddings
 *By Sofie Mosegaard, 12-04-2024*
 
-This repository is designed to perform document classification using transfer learning with pretrained Convolutional Neural Networks (CNNs). The project aims to investigate whether document types can be predicted based on appearance rather than contents. Leveraging the differences in appearance for example between scientific papers and poems, the repository seeks to exploit these variations for accurate document classification.
+This repository is designed to perform document classification using Transfer Learning (TL) with a pretrained Convolutional Neural Network (CNN). The project aims to investigate whether document types can be predicted based on appearance rather than contents. Leveraging the differences in appearance for example between scientific papers and emails, the repository seeks to exploit these variations for accurate document classification.
 
-#### Pretrained CNN
+The project utilizes the VGG16 model, which is a state-of-the-art CNN architecture. VGG16 has a deep and complex architecture with 16 layers, totaling 134 million trainable parameters. The model expects input tensors of size (224, 224) with 3 RGB channels. Training deep CNNs are very time-consuming and computationally heavy. Luckily, VGG16 is well-suited for transfer learning. TL is the process of applying pretrained models to new classification tasks and data.
 
-The project utilizes the VGG16 model, which is a state-of-the-art CNN architecture. VGG16 has a deep and complex architecture with 16 layers, totaling 134 million trainable parameters. The model expects input tensors of size (224, 224) with 3 RGB channels.
+CNNs are prone to overfitting, particularly when dealing with limited datasets. To enhance model robustness and generalizability, the user will be given the opportunity to implement batch normalization and data augmentation. The batch normalization technique makes the training process more stable through normalization of the layers' inputs by recentering and rescaling, while data augmentation avoids overfitting by increasing the amout of data by augmenting already existing data.
 
-#### Transfer Learning
+Specifically, the project will conduct document classification using pretrained image embeddings, by doing the following:
+1. Data preparation:
+    - Load the data and generate labels for all images
+    - Preprocess the images using TensorFlow's preprocess_input function
+2. Data splitting:
+    - Split the data into 80% training and 20% testing sets by stratifying the labels (y). Later, 10% of the training data will used for validation.
+    - Scale the input data (X) and perform label binarization on the labels (y)
+3. Model definition and compilation:
+    - Define and compile the model architecture
+    - Optionally, implement batch normalization to mitigate overfitting
+4. Hyperparameter tuning:
+    - Optionally, conduct GridSearch to tune hyperparameters through k-fold cross-validation with 5 folds to enhance classification accuracy and robustness
+    - The optimizer, learning rate, number of epochs, and batch size will be tuned, as they are anticipated to significantly impact model performance
+5.  Model training:
+    - Fit the compiled classifier on the training data
+    - Optionally, implement data augmentation by generating new data through horizontal flipping and rotation of the original data, which then will be used for model fitting
+6. Model evaluation:
+    - Evaluate the trained classifier on new, unseen test data
+6. Generate results:
+    - Generate a classification report and save it for further analysis
+    - Plot and save training and validation loss and accuracy curves to visualize model performance
 
-Training deep CNNs are very time-consuming and computationally heavy. However, VGG16 is well-suited for transfer learning. Transfer learning is the process of applying pretrained models to new classification tasks and data.
-
-In this repository, the pretrained VGG16 CNN is transferred and finetuned to classify a new dataset comprising image data of documents from the ```Tobacco3482``` dataset.
-
-#### Mitigating Overfitting
-
-CNNs are prone to overfitting, particularly when dealing with limited datasets. To enhance model robustness and generalizability, batch normalization and data augmentation techniques are implemented. All results will be summarized and discussed below. 
+For the purpose of comparing different model adjustments, three parameters were modified: the optimizer, batch normalization, and data augmentation. This resulted in six distinct model architectures, including two baseline models with the adam and SGD optimizers, two implementing batch normalization, and two with data augmentation. The results will be summarized and discussed below. 
 
 ## Data source
 
-The model will be finetuned and trained on image data from the ```Tobacco3482``` dataset, which can be found [here](https://www.kaggle.com/datasets/patrickaudriaz/tobacco3482jpg?resource=download). The data comprises 3842 images in black and white across 10 different document types.
+In this repository, the pretrained VGG16 CNN is transferred and finetuned to classify a new dataset comprising image data of documents from the ```Tobacco3482``` dataset. The dataset comprises 3,842 images in black and white across 10 classes. The different document types represent ADVE, email, form, letter, memo, news, note, report, resume, and scientific paper.
 
-To proceed, download the dataset and place it in the 'in' folder. Note that you'll need to unzip the data within the folder before executing the code (see: Reproducibility)..
+You can download the dataset [here](https://www.kaggle.com/datasets/patrickaudriaz/tobacco3482jpg?resource=download) and place it in the in folder. Ensure to unzip the data within the folder before executing the code.
 
 ## Repository structure
 
-The repository consists of 2 bash scripts, 1 README.md file, 1 txt file, and 3 folders. The folders contains the following:
+The repository consists of the following elements:
 
--   in: for storing input data
--   src: consists of three scipt to achieve the repository's objectives: one baseline model (TransferLearning.py), one implementing batch normalization (TransferLearning_BatchNorm.py), and one incorporating data augmentation (TransferLearning_DatAug.py)
--   out: holds the saved results, including classification reports in .txt format and loss curves in .png format for all models.
+- 2 bash scripts for setup of the virtual environments, installation of requirements, and execution of the code
+- 1 .txt file specifying the required packages including versioned dependencies
+- 1 README.md file
+- 3 folders
+    - in: contains data to be processed
+    - src: consists of the Python code to be executed. Specifically, it consists of three script to achieve the repository's objectives: one baseline model (TransferLearning.py), one implementing batch normalization (TransferLearning_BatchNorm.py), and one incorporating data augmentation (TransferLearning_DatAug.py)
+    - out: stores the saved results, i.e., classification reports in .txt format loss curves in .png format.
 
 ## Reproducibility
 
@@ -38,47 +56,97 @@ The repository consists of 2 bash scripts, 1 README.md file, 1 txt file, and 3 f
 $ git clone "https://github.com/SMosegaard/cds-vis/tree/main/assignments/assignment-3"
 ```
 2.  Navigate into the folder in your terminal.
-3.  Run the setup bash script to create a virtual envoriment and install required packages specified in the requirement.txt:
+```python
+$ cd assignment-3
+```
+3.  Run the setup bash script to create a virtual environment and install required packages specified in the requirement.txt:
 ```python
 $ source setup.sh
 ```
 
 ## Usage
 
-Run the run bash script in the terminal and specify, which optimizer you want to use(--optimizer / -o):
+Run the run bash script in the terminal and specify, which optimizer you want to use (--optimizer / -o) and whether you want to perform GridSearch (--GridSearch / -gs), batch normalization (--BatchNorm / -bn), and/or data augmentation (--DatAug / -da):
 ```python
-$ source run.sh -o {sgd/adam}
+$ source run.sh -o {adam/sgd} -gs {yes/no} -bn {yes/no} -da {yes/no}
 ```
-The model will then be compiled with the given optimizer (i.e., sgd/adam).
+*Be aware that hyperparameter tuning using GridSearch are very computationally heavy and will take some time to perform.*
 
-Please note that the bash script will run all three models (baseline, with batch normalization, and with data augmentation) sequentially. If you wish to run only specific models, you can uncomment the corresponding scripts within the run.sh file.
+The inputs will be converted to lowercase, so it makes no difference how it's spelled.
 
----
-* for grid search, batch size and number of epocs are set to.. Difficult to estimate how and how long a model needs to train, but given the nature of the data, this is an estimate...
+Based on the user input, the script will perform GridSearch or simply use default parameters. The results from the GridSearch will be printed in the terminal. The best parameters will then be used to fit the classifier. If you choose to use default parameters, the models will use the default learning rates for the optimizers respectively 0.001 for 'adam' and 0.01 for 'SGD', 10 epochs, and a batch size of 32. The selection of 10 epochs and a batch size of 32 was made considering the small size of the dataset and through iterative testing.
 
-Da det er svært hvis ikke umuligt at estimere, hvordan et neuralt netværk model træner, er det også vanskeligt at opstille de parametre, den skal tune. Derfor havde det muligvis været relevanat at implementer Baysian optimization eller Optuna tuning, da det bliver mere struktueret og kræver mindre af brugeren i forhold til at opstille og estimere relevant epochs or batch
----
+*Might delete: 
+Please note that the bash script will run all three models (baseline, with batch normalization, and with data augmentation) sequentially. If you wish to run only specific models, you can uncomment the corresponding scripts within the run.sh file.*
 
 ## Summary of results
 
 The reported results are based on training the models for 10 epochs with a batch size of 32.
 
-In the baseline model trained with the SGD optimizer, the overall accuracy stands at 48%. Certain classes like Email and Memo exhibit relatively high precision and recall, while others such as Report and Resume show significantly low performance metrics. When changing the optimizer to Adam, there's a notable improvement in the model's performance, with an average classification accuracy at 69%. Both learning curves demonstrated a good fit for the model. The curves showed a steady decrease in training loss and an increase in training accuracy over the epochs, suggesting effective learning and model optimization
+<div align="center">
 
-Greater average classification accuracy is observed with the inclusion of batch normalization in the model architecture. This modification leads to a higher accuracy of 71% with SGD optimizer and 76% with Adam optimizer. Both reports demonstrates balanced performance across all classes, which suggests a well-optimized and effective model configuration. However, the learning curve of the batch normalized model with Adam optimizer do suggest overfitting. It can be seen, that the model becomes to specialized in learning the training data, so it is not able to generalize to new data.
+|classifier|optimizer|batch normalization|data augmentation|accuracy|macro accuracy|weighted accuracy|
+|---|---|---|---|---|---|---|
+1|adam|no|no|0.69|0.63|0.67|
+2|adam|yes|no|0.76|0.73|0.75|
+3|adam|yes|yes|0.62|0.57|0.60|
+4|sgd|no|no|0.48|0.33|0.41|
+5|sgd|yes|no|0.71|0.66|0.70|
+6|sgd|yes|yes|0.62|0.57|0.61|
+
+</div>
+
+The training and validation loss and accuracy curves were  visualized to assess the models training process and performance: 
+
+<div align = "center">
+
+<p float = "left">
+    <img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-3/out/VGG16_losscurve_adam.png" width = "400">
+    <img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-3/out/VGG16_losscurve_BatchNorm_adam.png" width = "400">
+    <img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-3/out/VGG16_losscurve_DatAug_adam.png" width = "400">
+</p>
+
+</div>
+
+<div align = "center">
+
+<p float = "left">
+    <img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-3/out/VGG16_losscurve_sgd.png" width = "400">
+    <img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-3/out/VGG16_losscurve_BatchNorm_sgd1.png" width = "400">
+    <img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-3/out/VGG16_losscurve_DatAug_sgd.png" width = "400">
+</p>
+
+</div>
+
+In the baseline model trained with the SGD optimizer, the overall accuracy stands at 48%. Certain classes like Email and Memo exhibit relatively high precision and recall, while others such as Report and Resume show significantly low performance metrics. When changing the optimizer to adam, there's a notable improvement in the model's performance, with an average classification accuracy at 69%. Both learning curves demonstrated a good fit for the model. The curves showed a steady decrease in training loss and an increase in training accuracy over the epochs, suggesting effective learning and model optimization
+
+Greater average classification accuracy is observed with the inclusion of batch normalization in the model architecture. This modification leads to a higher accuracy of 71% with SGD optimizer and 76% with adam optimizer. Both reports demonstrate balanced performance across all classes, which suggests a well-optimized and effective model configuration. However, the learning curve of the batch normalized model with adam optimizer does suggest overfitting. It can be seen that the model becomes too specialized in learning the training data, so it is not able to generalize to new data.
 
 Finally, models incorporating data augmentation show mixed results. While they both optimizers achieve an average accuracy of 62% and exhibit some improvements over the baseline, their learning curves do not reflect the same good fit.
 
-It can be concluded, that inclusion of batch normalization and SGD optimizer yields the best reulsts while not overfitting.
+It can be concluded that inclusion of batch normalization and SGD optimizer yields the best results while not overfitting.
 
 ## Discussion
 
 Several factors have been identified that may influence the model's effectiveness:
 
-Firstly, the utilization of the data augmentation technique, including horizontal flipping and rotation of 90 degrees, have not yielded significant improvements in performance. It could be that the generated images were too different from the real data, which leads to a steep learning curve and a model struggeling to navigate.
+Firstly, the utilization of the data augmentation technique, including horizontal flipping and rotation of 90 degrees, have not yielded significant improvements in performance. It could be that the generated images were too different from the real data, which leads to a steep learning curve and a model struggling to navigate.
 
-The dataset itself posses challenges as its classes are imbalanced, which is possibly the reason why some classes are extremely difficult for the model to classify. A solution could be to balance all classes using upsampling or downsampling. It is also relevant to consider, that the pretrained VGG16 model is trained on specific sets of images. If reports and resumes were not included, it could potentially result in poorer performance even after finetuning.
+The dataset itself possesses challenges as its classes are imbalanced, which is possibly the reason why some classes are extremely difficult for the model to classify. A solution could be to balance all classes using upsampling or downsampling. It is also relevant to consider that the pretrained VGG16 model is trained on specific sets of images. If reports and resumes were not included, it could potentially result in poorer performance even after finetuning.
 
-Additionally, the choice of optimizer plays a crucial role in model training. The models were tested with both SGD and Adam optimizers to assess their performance under different optimization strategies. Generally, the Adam optimizer performs very well on complex data such as images and is robust to noisy data, which likely likely contributed to its effectiveness in optimizing the models on the Tobacco3482 dataset.
+Additionally, the choice of optimizer plays a crucial role in model training. The models were tested with both SGD and adam optimizers to assess their performance under different optimization strategies. Generally, the adam optimizer performs very well on complex data such as images and is robust to noisy data, which likely contributed to its effectiveness in optimizing the models on the Tobacco3482 dataset.
 
 Finally, it is worth noting that the models were trained for a relatively small number of epochs (10 epochs) and a batch size of 32 due to computational constraints. While the models may not have fully converged within this setup, the results still provide valuable insights into their performance and capabilities. It would be relevant to further explore the potential of the models with longer training.
+
+
+
+...
+The project offers the option for hyperparameter tuning, which has the potential to enhance classification accuracy. However, tuning of hyperparameters is very computationally heavy and should be considered, as potential performance advantages does not necessarily rationalize additional costs. Given the inherent complexity of neural networks, it is very difficult if not impossible to estimate how a CNN trains. Therefore, one could argue for conducting GridSearch in order to have evidence for one's selection of parameters. Considering the nature of the data, the parameter grid for batch size was set to [16, 32, 64] and [10, 15, 20] for the number of epochs, however, these are primarily educated guesses.
+
+Likewise, the method employed for hyperparameter tuning can also be discussed. GridSearch tests all predefined parameters and combinations slavishly, which leads to a long execution time and requires user interference in setting up and estimating relevant paramter values. It would have been relevant to implement Bayesian optimization or Optuna tuning, as they provide a more systematic approach and require less of the user, as the parameter grid only needs to be a range of values. Therefore, Bayesian optimization or Optuna tuning might also be less computationally heavy, as they do not have to exhaustively search through all possible combinations. 
+    
+
+
+...
+
+The validation loss curve shows an increase over time, which suggests that the model performs well on the training data, but might struggle to generalise to unseen data. This could indicate overfitting, as the model becomes too specialized in the training data and fails to generalize well. 
