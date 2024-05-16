@@ -157,3 +157,8 @@ classes:
 
 implementing a class to handle the default values for the model --> to enhance the structure and flexibility of the code. Also it might make it easier to manage configurations across different parts of the repo/application.
 
+___
+
+
+SHAP
+- Uses the original model (model) rather than the fitted model H for SHAP explanations. SHAP explanations are based on the model's structure and weights, not on its training history.
