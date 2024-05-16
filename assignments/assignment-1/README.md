@@ -20,7 +20,7 @@ Specifically, the project will conduct image search on flower images. In order t
     - Saves a dataframe with the target image, the most similar images, and their distances
     - Visualizes the target image and its five most similar images
 
-To gain a better understanding of the code, all functions in the script ```src.py``` have a short description.
+To gain a better understanding of the code, all functions in the script ```image_search.py``` have a short description.
 
 ## Data source
 
@@ -110,7 +110,7 @@ In summary, the results provide insights into image similarity and potential pat
 
 The comparison between the two methods utilized in this project, color histogram comparison and pretrained models (VGG16 and K-NN), sheds light on their respective strengths and limitations in image search.
 
-The color histogram comparison method offers a computationally lightweight approach. By quantifying the distribution of colors in images, it provides a simple yet effective way of assessing similarity. However, the method struggles to capture more nuanced visual patterns and variations.
+The color histogram comparison method offers a computationally lightweight approach. By quantifying only the distribution of colors in images, it provides a simple yet effective way of assessing similarity. However, the method struggles to capture more nuanced visual patterns and variations.
 
 In contrast, the pretrained pipeline presents a more sophisticated solution by using advanced deep learning techniques. By extracting high-level features from images and utilizing a classification algorithm, it can recognize similarities and identify subtle variations between complex images. Naturally, this method also has limitations, as it is more computationally heavy and time-consuming.
 
