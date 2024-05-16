@@ -62,7 +62,7 @@ $ source run.sh -gs {yes/no} -pt {yes/no}
 
 The inputs will be converted to lowercase, so it makes no difference how it's spelled.
 
-Based on the user input, the script will perform GridSearch or simply use default parameters. The GridSearch will be performed in other scripts and the results will be printed in the terminal. The best parameters will then be imported to the main script and used to fit the classifier.
+Based on the user input, the script will perform GridSearch or simply use default parameters. The GridSearch will be performed in other scripts and the results will be printed in the terminal output. The best parameters will then be imported to the main script and used to fit the classifier.
 
 If you choose to use the default parameters, the models will use the parameters:
 -   LR: {'tol': 0.1, 'max_iter': 100, 'penalty': 'l2'}
