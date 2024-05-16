@@ -150,3 +150,10 @@ Likewise, the method employed for hyperparameter tuning can also be discussed. G
 ...
 
 The validation loss curve shows an increase over time, which suggests that the model performs well on the training data, but might struggle to generalise to unseen data. This could indicate overfitting, as the model becomes too specialized in the training data and fails to generalize well. 
+
+----
+
+classes:
+
+implementing a class to handle the default values for the model --> to enhance the structure and flexibility of the code. Also it might make it easier to manage configurations across different parts of the repo/application.
+
