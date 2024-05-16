@@ -1,9 +1,8 @@
+from sklearn.model_selection import GridSearchCV
 
 def grid_search(model, X_train, y_train):
     
-    param_grid = {'optimizer': ['sgd', 'adam'],
-                'learning_rate': [0.1, 0.01, 0.001, 0.0001],
-                'epochs': [10, 15, 20],
+    param_grid = {'epochs': [10, 15, 20],
                 'batch_size': [16, 32, 64]}
 
     grid_search = GridSearchCV(estimator = model, param_grid = param_grid, cv = 5, n_jobs = -1,
