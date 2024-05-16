@@ -132,8 +132,8 @@ def plot_loss_curve(classifier, outpath):
 
     plt.subplot(1, 2, 2)
     plt.plot(classifier.validation_scores_)
-    plt.title("Loss curve during validation for the neural network classifier", fontsize = 10)
-    plt.ylabel('Loss score', fontsize = 9)
+    plt.title("Accuracy curve during validation for the neural network classifier", fontsize = 10)
+    plt.ylabel('Accuracy', fontsize = 9)
     plt.xlabel("Iterations", fontsize = 9)
 
     plt.savefig(outpath)
