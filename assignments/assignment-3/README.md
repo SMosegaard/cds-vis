@@ -29,6 +29,8 @@ Specifically, the project will conduct document classification using pretrained 
     - Generate a classification report and save it for further analysis
     - Plot and save training and validation loss and accuracy curves to visualize model performance
 
+To gain a better understanding of the code, all functions in the script ```document_classifier.py``` have a short description.
+
 For the purpose of comparing different model adjustments, three parameters were modified: the optimizer, batch normalization, and data augmentation. This resulted in six distinct model architectures, including two baseline models with the adam and SGD optimizers, two implementing batch normalization, and two with data augmentation. The results will be summarized and discussed below. 
 
 ## Data source
@@ -144,16 +146,27 @@ The project offers the option for hyperparameter tuning, which has the potential
 Likewise, the method employed for hyperparameter tuning can also be discussed. GridSearch tests all predefined parameters and combinations slavishly, which leads to a long execution time and requires user interference in setting up and estimating relevant paramter values. It would have been relevant to implement Bayesian optimization or Optuna tuning, as they provide a more systematic approach and require less of the user, as the parameter grid only needs to be a range of values. Therefore, Bayesian optimization or Optuna tuning might also be less computationally heavy, as they do not have to exhaustively search through all possible combinations. 
     
 
-## Exploratory - what the model sees
+## Exploratory - what does the model see?
 
+While neural networks yield remarkable outcomes, they often operate as black boxes. This makes them difficult to understand what actually happens and thus validate the results. To grasp what the model "sees" and how it predicts, an activation heatmaps can be employed as a mean to unravel the inner workings.
 
-explain the model
+Heatmaps ...
+By visualizing these influential regions of the image, we can gain insights into the specific features that drive the model's classifications.
+- It generates explanations for specific input images to help us understand why the model made a particular prediction...
 
-SHAP
-- Uses the original model (model) rather than the fitted model H for SHAP explanations. SHAP explanations are based on the model's structure and weights, not on its training history.
+To explain individual predictions, the python script ```src/explainer.py``` has been developed. The script can be executed using the following bash command and specify which image to investigate by writing ```--image / -i``` . If no image is specified, the script will by default use the first image within the first folder, i.e., 'ADVE/0000136188.jpg'.
+```python
+$ source explainer.sh -i {folder name/xxxx.jpg}
+```
 
+Heatmaps will be generated both from the baseline model and the model with the implementation of batch normalization:
 
+<div align = "center">
 
-Neural networks are powerful instruments that yield remarkable outcomes. The method has been criticized for functioning a bit like a black box, as it is difficult to understand what actually happens and thus validate the results.  
-A helpful method for understanding CNNs is ...
+<img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-3/out/heatmap_Scientific10064589_10064594.jpg.png" width = "800"/>
 
+</div>
+
+The red-yellow representations highlight the most informative features within the input images, which is what the models have used to form the predictions. The two heatmaps also looks different, as they represent different architectures.
+
+By employing heatmaps, we can visually explain how the models predicts. The methodology becomes more interpretable, as we can see, how the CNNs operates in practise.
