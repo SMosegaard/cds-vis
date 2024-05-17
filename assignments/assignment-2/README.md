@@ -6,6 +6,7 @@ This repository hosts two pipelines for multiclass image classification: Logisti
 LR and NN are both popular benchmark machine learning models within the field. In this repository, the models will be compared and offer insights into their respective strengths and weaknesses for multiclass image classification tasks. LR offers a simple yet effective linear classification algorithm, whereas NN, in this case the Multi-Layer Perceptron (MLP) classifier, is a complex feedforward artificial neural network with fully connected neurons. Both models will be implemented using standard scikit-learn pipelines.
 
 Specifically, the project will conduct image classification utilizing the two benchmark machine learning models on image data from the CIFAR-10 dataset, by doing the following:
+- Load the CIFAR-10 dataset
 - Preprocesses the data which includes greyscaling, scaling, and reshaping
 - Optionally, conducts GridSearch to tune hyperparameters and enhance classification accuracy. For the LR classifier, the tolerance, maximum number of iterations, and penalty will be tuned, while the number of hidden layers, activation, solver, and initial learning rate will be tuned for the NN classifier. This will be done through k-fold cross-validation with 5 folds to improve robustness of the model and the tested parameters. 
 - Defines respectively the LR and NN classifier on tuned or default parameters. The NN classifier will also include validation and early stopping, where 10% of the training data will be used for validation. The training will stop, when the validation score stops improving during training.
@@ -21,9 +22,7 @@ To gain a better understanding of the code, all functions in the 'XX_classifier.
 
 In this repository, the two classification models will be trained on image data from CIFAR-10, which is one of the most used datasets for machine learning. The CIFAR-10 dataset consists of 60,000 32x32 color images in 10 classes. The classes represent airplanes, automobiles, birds, cats, deers, dogs, frogs, horses, ships, and trucks.
 
-You can download the dataset [here](https://www.cs.toronto.edu/~kriz/cifar.html) and place it in the ```in``` folder. Ensure to unzip the data within the folder before executing the code.
-
-The data has already been split into training (50,000 images) and test data (1,000 randomly selected images per class, meaning 10,000 images in total).
+You can read about the dataset [here](https://www.cs.toronto.edu/~kriz/cifar.html). The data will be imported directly from TensorFlow, with which you do not have to do anything. Additionally, the data has already been split into training (50,000 images) and test data (1,000 randomly selected images per class, meaning 10,000 images in total).
 
 ## Repository structure
 
@@ -32,8 +31,7 @@ The repository consists of the following elements:
 - 2 bash scripts for setup of the virtual environments, installation of requirements, and execution of the code
 - 1 .txt file specifying the required packages including versioned dependencies
 - 1 README.md file
-- 3 folders
-    - in: contains data to be processed
+- 1 folders
     - src: consists of the Python code to be executed. Specifically, scripts performing classification ('LR_classifier.py', 'NN_classifier.py') and GridSearch ('LR_gridsearch.py', 'NN_gridsearch.py').
     - out: stores the saved results, i.e., classification reports in .txt format, plots of permutation testing, and loss curve of the NN classifier.
 
