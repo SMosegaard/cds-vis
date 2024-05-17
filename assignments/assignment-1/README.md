@@ -64,9 +64,7 @@ $ source run.sh --method {hist/pretrained} --target {image_xxxx.jpg}
 ```
 The inputs will be converted to lowercase, so it makes no difference how it's spelled.
 
-Then, the code will perform image search utilizing the specified method and retrieve similar images to the provided target image.
-
-Once the script has finished running, it will print that the results have been saved in the terminal output.
+Then, the code will perform image search utilizing the specified method and retrieve similar images to the provided target image. Once the script has finished running, it will print that the results have been saved in the terminal output.
 
 ## Summary of results
 
@@ -100,9 +98,9 @@ In comparison, the pretrained pipeline provides the following results:
 
 ![Visualisation of results for the pretrained pipeline](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_pretrained.png)
 
-The distances presented in the two tables are non-comparable as they are calculated using different methods and metrics. However, a clear trend do emerge, as the pretrained pipeline outperforms the color histogram comparison method with significantly smaller distances between the target image and retrieved similar images. Additionally, the pretrained method showcases images of the same flower variety as the target, whereas the histogram method retrieves images with varying degrees of similarity, encompassing other yellow flowers as well.
+The distances presented in the two tables are not directly comparable as they are calculated using different methods and metrics. However, a clear trend do emerge, as the pretrained pipeline yields significantly smaller distances between the target image and retrieved similar images. Additionally, the pretrained method showcases images of the same flower variety as the target, whereas the histogram method retrieves images with varying degrees of similarity, encompassing other yellow flowers as well.
 
-This pattern is consistent across multiple examples, which can be found in the out folder. This indicates the effectiveness and robustness of the pretrained pipeline in identifying visually similar images within the dataset.
+It is a consistent pattern across multiple examples, that the pretrained pipeline outperforms the color histogram comparison method. All results can be found in the out folder. This indicates the effectiveness and robustness of the pretrained pipeline in identifying visually similar images within the dataset.
 
 In summary, the results provide insights into image similarity and potential patterns within a dataset.
 
@@ -114,6 +112,6 @@ The color histogram comparison method offers a computationally lightweight appro
 
 In contrast, the pretrained pipeline presents a more sophisticated solution by using advanced deep learning techniques. By extracting high-level features from images and utilizing a classification algorithm, it can recognize similarities and identify subtle variations between complex images. Naturally, this method also has limitations, as it is more computationally heavy and time-consuming.
 
-In conclusion, the first method is less computationally heavy, but struggles to accurately capture subtle differences between objects in complex images, as it only extracts color distributions. The sencond method has enhanced performance and is capable of extracting complex featureas as edges, shapes, and textures, however at the cost of increased computational resources.
+In conclusion, the first method is less computationally heavy, but struggles to accurately capture differences between objects in complex images, as it only extracts color distributions. The sencond method has enhanced performance and is capable of extracting complex featureas as edges, shapes, and textures, however at the cost of increased computational resources.
 
-The image search algorithm can be applied to numerous image datasets. The choice between the two methods depends on the specific application: if the data is simple and one just wants a general trends within a dataset, method one might be sufficient. Contrary, method two probably is preferred if the data is more complex.
+The image search algorithm can be applied to numerous image datasets. The choice between the two methods depends on the specific application. If the data is simple and one just wants a general trends within a dataset, method one might be sufficient. Contrary, method two probably is preferred if the data is more complex.
