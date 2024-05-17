@@ -6,7 +6,7 @@ This repository hosts two pipelines for multiclass image classification: Logisti
 LR and NN are both popular benchmark machine learning models within the field. In this repository, the models will be compared and offer insights into their respective strengths and weaknesses for multiclass image classification tasks. LR offers a simple yet effective linear classification algorithm, whereas NN, in this case the Multi-Layer Perceptron (MLP) classifier, is a complex feedforward artificial neural network with fully connected neurons. Both models will be implemented using standard scikit-learn pipelines.
 
 Specifically, the project will conduct image classification utilizing the two benchmark machine learning models on image data from the CIFAR-10 dataset, by doing the following:
-- Load the CIFAR-10 dataset
+- Loads the CIFAR-10 dataset
 - Preprocesses the data which includes greyscaling, scaling, and reshaping
 - Optionally, conducts GridSearch to tune hyperparameters and enhance classification accuracy. For the LR classifier, the tolerance, maximum number of iterations, and penalty will be tuned, while the number of hidden layers, activation, solver, and initial learning rate will be tuned for the NN classifier. This will be done through k-fold cross-validation with 5 folds to improve robustness of the model and the tested parameters. 
 - Defines respectively the LR and NN classifier on tuned or default parameters. The NN classifier will also include validation and early stopping, where 10% of the training data will be used for validation. The training will stop, when the validation score stops improving during training.
