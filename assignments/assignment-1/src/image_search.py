@@ -11,11 +11,12 @@ from sklearn.neighbors import NearestNeighbors
 import pandas as pd
 import argparse
 
+
 def parser():
     """
-    The user can specify whether to perform image search using color histograms or a pretrained CNN VGG16 model
-    and K-Nearst Neighbour.
-    Additionally, the user must provide a target image, that will form the basis of the image search.
+    The user can specify whether to perform image search using color histograms or a pretrained CNN VGG16
+    model and K-Nearst Neighbour. Additionally, the user must provide a target image, that will form the
+    basis of the image search. The function will then parse command-line arguments and make them lower case.
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--method",
@@ -35,21 +36,23 @@ def parser():
 
 def read_image(filepath):
     """
-    Reads an image file from a specified filepath.
+    The function loads an image from a specified filepath using OpenCV.
     The returned image will be a NumPy array.
     """
     return cv2.imread(filepath)
 
 
 def calculate_histogram(image):
-    """Calculates a histogram encompassing all color channel of an image"""
+    """
+    Calculates a histogram encompassing all color channel of an image.
+    """
     return cv2.calcHist([image], [0, 1, 2], None, [255, 255, 255], [0, 256, 0, 256, 0, 256])
 
 
 def normalize_histogram(hist):
     """
-    Normalizes the full histogram using MinMax, which involces subtracting the minimum pixel value for all pixels
-    in the image, then dividing that difference by the range of pixel values (max minus min).
+    Normalizes the full histogram using MinMax, which involces subtracting the minimum pixel value for
+    all pixels in the image, then dividing that difference by the range of pixel values (max minus min).
     All pixel values will now be between 0 and 1. 
     """
     return cv2.normalize(hist, hist, 0, 1.0, cv2.NORM_MINMAX)
@@ -57,26 +60,30 @@ def normalize_histogram(hist):
 
 def update_distance_df(distance_df, filename, distance):
     """
-    Updates the distance dataframe with a new entry containing the filename and its corresponding 
-    distance from the target image.
+    The function updates the distance dataframe with a new entry containing the filename and its
+    corresponding distance from the target image.
     """
     distance_df.loc[len(distance_df.index)] = [filename, distance]
 
 
 def compare_histograms(hist1, hist2):
-    """ Compares two histograms using the chi-squared distance metric """
+    """
+    The function compares the color distributions of two histogram using the chi-squared distance metric.
+    """
     return round(cv2.compareHist(hist1, hist2, cv2.HISTCMP_CHISQR), 3)
 
 
 def save_dataframe_to_csv(distance_df, csv_outpath):
-    """ Saves the dataframe as a .csv file"""
+    """
+    Saves the dataframe as a .csv file to a specified outpath.
+    """
     distance_df.to_csv(csv_outpath)
     return print("The results have been saved in the out folder")
 
 
 def process_images(target_image, filepath):    
     """
-    The process_images function systematically analyzes images by extracting and comparing normalized histograms.
+    The function systematically analyzes images by extracting and comparing normalized histograms.
     Initially, a normalized histogram encompassing all color channels is extracted from the target image (f1).
 
     Subsequently, a pandas dataframe is initialized to store image filenames and their corresponding distance. As
@@ -92,7 +99,6 @@ def process_images(target_image, filepath):
     image_f1 = read_image(target_image)
     hist_f1 = calculate_histogram(image_f1)
     norm_hist_f1 = normalize_histogram(hist_f1)
-
 
     distance_df = pd.DataFrame(columns=("Filename", "Distance"))
 
@@ -123,7 +129,7 @@ def process_images(target_image, filepath):
 
 def pretrained_model():
     """
-    Load pretrained VGG16 model with default weights
+    The function loads the pretrained VGG16 model with default weights.
     """
     model = VGG16(weights = 'imagenet',
                 include_top = False,          
@@ -134,7 +140,8 @@ def pretrained_model():
 
 def extract_features_input(filepath, model):
     """
-    Extract features from the preprocessed target image using the pretrained VGG16 model
+    This function extracts features from an input image using the pretrained VGG16 model.
+    Flattened and normalized features will be returned.
     """
     input_shape = (224, 224, 3)
     img = load_img(filepath, target_size = (input_shape[0], input_shape[1]))
@@ -149,7 +156,7 @@ def extract_features_input(filepath, model):
 
 def load_classifier(feature_list):
     """
-    Load the K-Nearst Neighbour classification model
+    The function loads the K-Nearst Neighbour classification model from scikit-learn.
     """
     neighbors = NearestNeighbors(n_neighbors = 10,
                              algorithm = 'brute',
@@ -160,7 +167,7 @@ def load_classifier(feature_list):
 def extract_features_image(model, filenames):
     """
     Extracts features for all images in the filepath using the pretrainged VGG16 model
-    and returns a list of numpy arrays
+    and returns a list of numpy arrays.
     """
     feature_list = []
     for i in range(len(filenames)):
@@ -170,7 +177,8 @@ def extract_features_image(model, filenames):
 
 def find_target_index(target_image, filenames):
     """
-    Finds the index of the target image in the list of filenames
+    The function finds the index of the target image in the list of filenames.
+    If the target image is not found, it prints a message and returns None.
     """
     for i, filename in enumerate(filenames):
         if filename == target_image:
@@ -183,10 +191,9 @@ def find_target_index(target_image, filenames):
     return target_image_index
 
 
-
 def calculate_nn(neighbors, feature_list, target_image_index):
     """
-    Calculate the nearest neighbours for target image and returns
+    The function calculates the nearest neighbours for target image and returns
     their index and distances to the target image
     """
     distances, indices = neighbors.kneighbors([feature_list[target_image_index]])
