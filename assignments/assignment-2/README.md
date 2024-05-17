@@ -21,7 +21,7 @@ To gain a better understanding of the code, all functions in the 'XX_classifier.
 
 In this repository, the two classification models will be trained on image data from CIFAR-10, which is one of the most used datasets for machine learning. The CIFAR-10 dataset consists of 60,000 32x32 color images in 10 classes. The classes represent airplanes, automobiles, birds, cats, deers, dogs, frogs, horses, ships, and trucks.
 
-You can download the dataset [here](https://www.cs.toronto.edu/~kriz/cifar.html) and place it in the in folder. Ensure to unzip the data within the folder before executing the code.
+You can download the dataset [here](https://www.cs.toronto.edu/~kriz/cifar.html) and place it in the ```in``` folder. Ensure to unzip the data within the folder before executing the code.
 
 The data has already been split into training (50,000 images) and test data (1,000 randomly selected images per class, meaning 10,000 images in total).
 
