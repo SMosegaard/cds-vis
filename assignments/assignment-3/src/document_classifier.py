@@ -7,14 +7,16 @@ from tensorflow.keras.layers import (Flatten, Dense, Dropout, BatchNormalization
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers.schedules import ExponentialDecay
 from tensorflow.keras.optimizers import SGD, Adam
-import keras
-from keras.callbacks import EarlyStopping
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split, GridSearchCV
 import numpy as np
 import matplotlib.pyplot as plt
 from scikeras.wrappers import KerasClassifier
+import keras
+from keras.callbacks import EarlyStopping
+import argparse
+
 
 def parser():
     """
@@ -100,14 +102,13 @@ def data_split(X, y):
     return X_train, X_test, y_train, y_test
 
 
-def define_model(BatchNorm, Optimizer):
+def define_model(BatchNorm):
     """
     Defines the model architecture. First, the VGG16 model is loaded from TensorFlow without the classification
     layers. The convolutional layers are marked as not trainable to retain their pretrained weights. The
     user specifies whether the model should be defined with or without batch normalization. Subsequently, a
     new fully connected layer with ReLU activation is added followed by an output layer with softmax
-    activation for multi-class classification. Finally, the model will be compiled with the specified
-    optimizer and respective learning rate.
+    activation for multi-class classification.
     """
     model = VGG16(include_top = False, pooling = 'avg', input_shape = (224, 224, 3))
 
@@ -127,23 +128,22 @@ def define_model(BatchNorm, Optimizer):
     
     model = Model(inputs = model.inputs, outputs = output)
 
+    return model
+
+
+def compile_model(model, optimizer):
+    """
+    The function compiles the model with the specified optimizer and respective learning rate
+    """
     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(initial_learning_rate = 0.01, 
                                                                 decay_steps = 10000, decay_rate = 0.9)
-    if Optimizer == "adam":
+    if optimizer == "adam":
         optimizer = Adam(learning_rate = lr_schedule)
-    if Optimizer == "sgd":
+    if optimizer == "sgd":
         optimizer = SGD(learning_rate = lr_schedule)
     model.compile(optimizer = optimizer, loss = 'categorical_crossentropy', metrics = ['accuracy'])
 
-    return model
-
-
-def sklearn_object(model):
-    """
-    Convert the model from a KerasClassifier to an object, that can be used in a scikit-learn pipeline.
-    """
-    model = KerasClassifier(model = model, verbose = 0)
-    return model
+    return model 
 
 
 def data_generator():
@@ -174,32 +174,31 @@ def fit_model(model, X_train, y_train, DatAug, batchsize = 32, epochs = 10):
     When the model is fitted the function returns the fitted model, H.
     """
 
-    callback = [keras.callbacks.EarlyStopping(monitor = "val_loss", patience = 3)]
-
     if DatAug == "no":
         H = model.fit(X_train, y_train, 
                     validation_split = 0.1,
                     batch_size = batchsize,
-                    epochs = epochs,
-                    callbacks = callbacks)
+                    epochs = epochs)
+                    #callbacks = EarlyStopping(monitor = 'val_loss', patience = 3, mode='min')
     
     elif DatAug == "yes":
-        DatAug = data_generator()
+        datagen = data_generator()
         datagen.fit(X_train)
         H = model.fit(datagen.flow(X_train, y_train, batch_size = batchsize),
                                     validation_data = datagen.flow(X_train, y_train, 
                                                                     batch_size = batchsize,
                                                                     subset = "validation"),
-                                                                    epochs = epochs,
-                                                                    callbacks = callbacks) 
-    return H
+                                                                    epochs = epochs)
+                                                                    # callbacks = EarlyStopping(monitor = 'val_loss', patience = 3, mode='min') 
+    return H, batchsize, epochs
 
 
-def plot_history(H, epochs, outpath):
+def plot_history(H, epochs, model_param, optimizer, outpath):
     """
     Plots the training and validation loss and accuracy curves and saves the plot to a specified outpath.
     """
     plt.figure(figsize = (12,6))
+    plt.suptitle(f"Training and validation curves with {model_param} paramters and {optimizer} optimizer", fontsize = 8)
 
     plt.subplot(1,2,1)
     plt.plot(np.arange(0, epochs), H.history["loss"], label = "training loss")
@@ -222,17 +221,16 @@ def plot_history(H, epochs, outpath):
     plt.show()
 
 
-def evaluate(model, X_test, y_test, H, BatchSize, epochs, BatchNorm, DatAug, Optimizer):
+def evaluate(model, X_test, y_test, H, batchsize, epochs, BatchNorm, DatAug, optimizer):
     """
     Evaluates the model on the test data, generates classification reports, and saves the results.
     """
     label_names = ["ADVE", "Email", "Form", "Letter", "Memo", "News", "Note", "Report", "Resume", "Scientific"]
-    predictions = model.predict(X_test, batch_size = BatchSize)
-    #y_preds = model.predict(X_test)
+    predictions = model.predict(X_test, batch_size = batchsize)
     classifier_metrics = classification_report(y_test.argmax(axis = 1),
                                                predictions.argmax(axis = 1),
                                                target_names = label_names)
-
+    
     if BatchNorm == "yes":
         if DatAug == "yes": 
             model_param = "BatchNorm_DatAug"
@@ -244,15 +242,43 @@ def evaluate(model, X_test, y_test, H, BatchSize, epochs, BatchNorm, DatAug, Opt
         elif DatAug == "no": 
             model_param = "baseline"
 
-    filepath_metrics = open(f'out/{model_param}_metrics_{Optimizer}.txt', 'w')
+    filepath_metrics = open(f'out/{model_param}_metrics_{optimizer}.txt', 'w')
     filepath_metrics.write(classifier_metrics)
     filepath_metrics.close()
 
-    plot_history(H, epochs, f"out/{model_param}_losscurve_{Optimizer}.png")
+    plot_history(H, epochs, model_param, optimizer, f"out/{model_param}_losscurve_{optimizer}.png")
 
     return print("Results have been saved to the out folder")
 
 
+def grid_search(model, X_train, y_train):
+    """
+    The function initially converts the model from a KerasClassifier to an object, that can be used in a
+    scikit-learn pipeline. Afterwards, it performs GridSearch to find the best hyperparameters for the model.
+    The best parameters will be returned.
+    """
+    
+    model = KerasClassifier(model = model, verbose = 1)
+
+    param_grid = {'epochs': [10, 15, 20],
+                'batch_size': [16, 32, 64]}
+
+    grid_search = GridSearchCV(estimator = model, param_grid = param_grid, cv = 2, n_jobs = -1,
+                                scoring = 'accuracy', verbose = 1)
+
+    grid_result = grid_search.fit(X_train, y_train)
+
+    print(f'Best Accuracy for {grid_result.best_score_} using the parameters {grid_result.best_params_}')
+
+    means = grid_result.cv_results_['mean_test_score']
+    stds = grid_result.cv_results_['std_test_score']
+    params = grid_result.cv_results_['params']
+    for mean, stdev, param in zip(means, stds, params):
+        print(f' mean = {mean:.4}, std = {stdev:.4} using {param}')
+
+    best_estimator = grid_result.best_estimator_
+    batchsize, epochs = list(grid_result.best_params_.values())
+    return best_estimator, batchsize, epochs
 
 
 def main():
@@ -264,21 +290,17 @@ def main():
     X, y = load_images(folder_path)
     X_train, X_test, y_train, y_test = data_split(X, y)
     
-    # define model - BatchNorm yes/no
-    model = define_model(args.BatchNorm, args.Optimizer)
+    model = define_model(args.BatchNorm)
 
-    # grid search
-    # fit
+    model = compile_model(model, args.optimizer)
+
     if args.GridSearch == 'yes':
-        model = sklearn_object(model)
-        model, batchsize, epochs = gridsearch(model, X_train, y_train, batchsize = batchsize, epochs = epoch) #DatAug
+        model, batchsize, epochs = grid_search(model, X_train, y_train)
         H = fit_model(model, X_train, y_train, args.DatAug, batchsize = batchsize, epochs = epochs)
     else:
-        H = fit_model(odel, X_train, y_train, args.DatAug, batchsize = batchsize, epochs = epochs)
-
+        H, batchsize, epochs = fit_model(model, X_train, y_train, args.DatAug, batchsize = 32, epochs = 10)
   
-    # evaluate
-    evaluate(model, X_test, y_test, H, BatchSize, epochs, args.BatchNorm, args.DatAug, args.Optimizer)
+    evaluate(model, X_test, y_test, H, batchsize, epochs, args.BatchNorm, args.DatAug, args.optimizer)
 
 if __name__ == "__main__":
     main()
