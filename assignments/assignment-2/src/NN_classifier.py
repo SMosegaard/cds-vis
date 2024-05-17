@@ -13,8 +13,8 @@ import matplotlib
 
 def parser():
     """
-    The user can specify whether to perform GridSearch by typing --GridSearch/-gs yes/no when executing
-    the script. The function will then parse command-line arguments.
+    The user can specify whether to perform GridSearch and/or permutation testing when executing
+    the script. The function will then parse command-line arguments and make them lower case.
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--GridSearch",
@@ -26,11 +26,14 @@ def parser():
                         required = True,
                         help = "Perform permutation test (yes or no)")    
     args = parser.parse_args()
+    args.GridSearch = args.GridSearch.lower()
+    args.PermutationTest = args.PermutationTest.lower()
     return args
+
 
 def greyscale(X):
     """
-    Converts images to greyscale
+    The function converts images to greyscale using OpenCV.
     """
     greyscaled_images  = np.zeros((X.shape[0], X.shape[1], X.shape[2]))
     for i in range(X.shape[0]):
@@ -40,15 +43,17 @@ def greyscale(X):
 
 def scale(X):
     """
-    Scale image features to range between 0 and 1-
+    The function scale the input data (X) by dividing by the maximum possible. 
+    All pixel values will now be between 0 and 1. 
     """
     scaled_images  = X  / 255.0
     return scaled_images 
 
 
 def reshape(X):
+    
     """
-    Reshape images to 2D
+    The function reshapes images to 2D.
     """
     reshaped_images = X.reshape(-1, 1024)
     return reshaped_images
@@ -56,9 +61,8 @@ def reshape(X):
 
 def preprocess_data(X_train, X_test):
     """
-    Preprocesses train and test data, which includes greyscaling, scaling, and reshaping.
+    The function preprocesses the train and test data, which includes greyscaling, scaling, and reshaping.
     """
-
     X_train_greyed = greyscale(X_train)
     X_test_greyed = greyscale(X_test)
 
@@ -73,8 +77,8 @@ def preprocess_data(X_train, X_test):
 
 def define_classifier():
     """
-    Function that defines neural network classifier with specified parameters. The default solver adam
-    and default initial learning rate of 0.001 will be used.
+    Function that defines neural network classifier with specified, default parameters. The default solver
+    adam and its respective initial learning rate of 0.001 will be utilized.
     Additionally, 10% of the training data will be used for validation. When the validation score is
     not improving during training, the training will stop due to early stopping.
     """
@@ -89,8 +93,7 @@ def define_classifier():
 
 def fit_classifier(classifier, X_train, y_train):
     """
-    Function that fits the LR classifier to the data
-
+    The function fits the NN classifier to the training data.
     """
     classifier = classifier.fit(X_train, y_train)
 
@@ -100,14 +103,12 @@ def fit_classifier(classifier, X_train, y_train):
 def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test, outpath):
     """
     Function that evaluates the trained classifier on new, unseen data. This includes plotting a confusion
-    matrix and calculating a classification report, which will be saved.
+    matrix and calculating a classification report, which will be saved to a specified outpath.
     """
     y_pred = classifier.predict(X_test)
-
     metrics.ConfusionMatrixDisplay.from_estimator(classifier,
-                                                X_train,
-                                                y_train,
-                                                cmap = plt.cm.Blues)
+                                                    X_train, y_train,
+                                                    cmap = plt.cm.Blues)
 
     labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
@@ -121,7 +122,7 @@ def evaluate_classifier(classifier, X_train, y_train, X_test,  y_test, outpath):
 
 def plot_loss_curve(classifier, outpath):
     """
-    Plots the training and validation loss curves and saves the plot.
+    Plots the training loss and validation accuracy curves and saves the plot to a specified outpath.
     """
     plt.figure(figsize = (12, 6))
     plt.subplot(1, 2, 1)
@@ -143,8 +144,8 @@ def plot_loss_curve(classifier, outpath):
 
 def permutation_test(classifier, X_test, y_test, outpath):
     """
-    Performs permutation test on the logistic regression classifier to assess statistical
-    significance of classifier's performance. The permutation test will be plotted and saved.
+    Performs permutation test on the NN classifier to assess statistical significance of classifier's
+    performance. The permutation test will be plotted and saved to a specified outpath.
     """
     score, permutation_scores, pvalue = permutation_test_score(classifier, X_test, y_test, cv = 5, 
                                                                 n_permutations = 100, n_jobs = -1,
