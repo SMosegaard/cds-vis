@@ -1,11 +1,11 @@
 # Portfolio 3 - Document Classification using Pretrained Image Embeddings
 *By Sofie Mosegaard, 12-04-2024*
 
-This repository is designed to perform document classification using Transfer Learning (TL) with a pretrained Convolutional Neural Network (CNN). The project aims to investigate whether document types can be predicted based on appearance rather than contents. Leveraging the differences in appearance for example between scientific papers and emails, the repository seeks to exploit these variations for accurate document classification.
+This repository is designed to perform document classification using Transfer Learning (TL) with a pretrained Convolutional Neural Network (CNN). The project aims to investigate whether document types can be predicted based on appearance rather than content. Leveraging the differences in appearance for example between scientific papers and emails, the repository seeks to exploit these variations for accurate document classification.
 
 The project utilizes the VGG16 model, which is a state-of-the-art CNN architecture. VGG16 has a deep and complex architecture with 16 layers, totaling 134 million trainable parameters. The model expects input tensors of size (224, 224) with 3 RGB channels. Training deep CNNs are very time-consuming and computationally heavy. Luckily, VGG16 is well-suited for transfer learning. TL is the process of applying pretrained models to new classification tasks and data.
 
-CNNs are prone to overfitting, particularly when dealing with limited datasets. To enhance model robustness and generalizability, the user will be given the opportunity to implement batch normalization and data augmentation. The batch normalization technique makes the training process more stable through normalization of the layers' inputs by recentering and rescaling, while data augmentation avoids overfitting by increasing the amout of data by augmenting already existing data.
+Despite CNN's remarkable performances, they are prone to overfitting, particularly when dealing with limited datasets. To enhance model robustness and generalizability, the user will be given the opportunity to implement batch normalization and data augmentation. The batch normalization technique makes the training process more stable through normalization of the layers' inputs by recentering and rescaling, while data augmentation avoids overfitting by increasing the amout of data by augmenting already existing data.
 
 Specifically, the project will conduct document classification using pretrained image embeddings, by doing the following:
 1. Data preparation:
@@ -19,7 +19,7 @@ Specifically, the project will conduct document classification using pretrained 
     - Optionally, implement batch normalization to mitigate overfitting
 4. Hyperparameter tuning:
     - Optionally, conduct GridSearch to tune hyperparameters through k-fold cross-validation with 5 folds to enhance classification accuracy and robustness
-    - The optimizer, learning rate, number of epochs, and batch size will be tuned, as they are anticipated to significantly impact model performance
+    - The number of epochs and batch size will be tuned, as they are anticipated to significantly impact model performance
 5.  Model training:
     - Fit the compiled classifier on the training data
     - Optionally, implement data augmentation by generating new data through horizontal flipping and rotation of the original data, which then will be used for model fitting
@@ -46,8 +46,8 @@ The repository consists of the following elements:
 - 1 README.md file
 - 3 folders
     - in: contains data to be processed
-    - src: consists of the Python code to be executed. Specifically, it consists of three script to achieve the repository's objectives: one baseline model (TransferLearning.py), one implementing batch normalization (TransferLearning_BatchNorm.py), and one incorporating data augmentation (TransferLearning_DatAug.py)
-    - out: stores the saved results, i.e., classification reports in .txt format loss curves in .png format.
+    - src: consists of the Python code to be executed
+    - out: stores the saved results, i.e., classification reports in .txt format loss curves in .png format
 
 ## Reproducibility
 
@@ -68,16 +68,14 @@ $ source setup.sh
 
 Run the run bash script in the terminal and specify, which optimizer you want to use (--optimizer / -o) and whether you want to perform GridSearch (--GridSearch / -gs), batch normalization (--BatchNorm / -bn), and/or data augmentation (--DatAug / -da):
 ```python
-$ source run.sh -o {adam/sgd} -gs {yes/no} -bn {yes/no} -da {yes/no}
+$ source run.sh -o {'adam'/'sgd'} -gs {yes/no} -bn {yes/no} -da {yes/no}
 ```
 *Be aware that hyperparameter tuning using GridSearch are very computationally heavy and will take some time to perform.*
 
 The inputs will be converted to lowercase, so it makes no difference how it's spelled.
 
-Based on the user input, the script will perform GridSearch or simply use default parameters. The results from the GridSearch will be printed in the terminal. The best parameters will then be used to fit the classifier. If you choose to use default parameters, the models will use the default learning rates for the optimizers respectively 0.001 for 'adam' and 0.01 for 'SGD', 10 epochs, and a batch size of 32. The selection of 10 epochs and a batch size of 32 was made considering the small size of the dataset and through iterative testing.
-
-*Might delete: 
-Please note that the bash script will run all three models (baseline, with batch normalization, and with data augmentation) sequentially. If you wish to run only specific models, you can uncomment the corresponding scripts within the run.sh file.*
+Based on the user input, the script will perform GridSearch or simply use default parameters. The results from the GridSearch will be printed in the terminal output. The best parameters will then be used to fit the classifier. If you choose to use default parameters, the models will use a learning rate of 0.01 for both optimizers, 10 
+epochs, and a batch size of 32. The selection of 10 epochs and a batch size of 32 was made considering the small size of the dataset and through iterative testing.
 
 ## Summary of results
 
@@ -96,7 +94,7 @@ The reported results are based on training the models for 10 epochs with a batch
 
 </div>
 
-The training and validation loss and accuracy curves were  visualized to assess the models training process and performance: 
+The training loss and validation accuracy curves were visualized to assess the models training process and performance: 
 
 <div align = "center">
 
@@ -118,11 +116,11 @@ The training and validation loss and accuracy curves were  visualized to assess 
 
 </div>
 
-In the baseline model trained with the SGD optimizer, the overall accuracy stands at 48%. Certain classes like Email and Memo exhibit relatively high precision and recall, while others such as Report and Resume show significantly low performance metrics. When changing the optimizer to adam, there's a notable improvement in the model's performance, with an average classification accuracy at 69%. Both learning curves demonstrated a good fit for the model. The curves showed a steady decrease in training loss and an increase in training accuracy over the epochs, suggesting effective learning and model optimization
+In the baseline model trained with the SGD optimizer, the overall accuracy stands at 48%. Certain classes like Email and Memo exhibit relatively high precision and recall, while others such as Report and Resume show significantly low performance metrics. When changing the optimizer to adam, there's a notable improvement in the model's performance, with an average classification accuracy at 69%. Both learning curves demonstrated a good fit for the model. The curves showed a steady decrease in training loss and an increase in training accuracy over the epochs, suggesting effective learning and model optimization.
 
-Greater average classification accuracy is observed with the inclusion of batch normalization in the model architecture. This modification leads to a higher accuracy of 71% with SGD optimizer and 76% with adam optimizer. Both reports demonstrate balanced performance across all classes, which suggests a well-optimized and effective model configuration. However, the learning curve of the batch normalized model with adam optimizer does suggest overfitting. It can be seen that the model becomes too specialized in learning the training data, so it is not able to generalize to new data.
+Greater average classification accuracy is observed with the inclusion of batch normalization in the model architecture. This modification leads to a higher accuracy of 71% with SGD optimizer and 76% with adam optimizer. Both reports demonstrate balanced performance across all classes, which suggests a well-optimized and effective model configuration. However, the learning curve of the batch normalized model with adam optimizer does suggest overfitting. It can be seen that the model becomes too specialized in learning the training data, so it is not able to generalize to unseen data.
 
-Finally, models incorporating data augmentation show mixed results. While they both optimizers achieve an average accuracy of 62% and exhibit some improvements over the baseline, their learning curves do not reflect the same good fit.
+Finally, models incorporating data augmentation show mixed results. While they both optimizers achieve an average accuracy of 62% and exhibit some improvements over the baseline, their learning curves do not reflect an optimal training nor fit.
 
 It can be concluded that inclusion of batch normalization and SGD optimizer yields the best results while not overfitting.
 
@@ -146,19 +144,16 @@ The project offers the option for hyperparameter tuning, which has the potential
 Likewise, the method employed for hyperparameter tuning can also be discussed. GridSearch tests all predefined parameters and combinations slavishly, which leads to a long execution time and requires user interference in setting up and estimating relevant paramter values. It would have been relevant to implement Bayesian optimization or Optuna tuning, as they provide a more systematic approach and require less of the user, as the parameter grid only needs to be a range of values. Therefore, Bayesian optimization or Optuna tuning might also be less computationally heavy, as they do not have to exhaustively search through all possible combinations. 
     
 
+## Exploratory - what the model sees
 
-...
 
-The validation loss curve shows an increase over time, which suggests that the model performs well on the training data, but might struggle to generalise to unseen data. This could indicate overfitting, as the model becomes too specialized in the training data and fails to generalize well. 
-
-----
-
-classes:
-
-implementing a class to handle the default values for the model --> to enhance the structure and flexibility of the code. Also it might make it easier to manage configurations across different parts of the repo/application.
-
-___
-
+explain the model
 
 SHAP
 - Uses the original model (model) rather than the fitted model H for SHAP explanations. SHAP explanations are based on the model's structure and weights, not on its training history.
+
+
+
+Neural networks are powerful instruments that yield remarkable outcomes. The method has been criticized for functioning a bit like a black box, as it is difficult to understand what actually happens and thus validate the results.  
+A helpful method for understanding CNNs is ...
+
