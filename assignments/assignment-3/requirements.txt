@@ -1,6 +1,7 @@
-tensorflow
-scikit-learn
-numpy
-matplotlib
-argparse
-scikeras
+tensorflow == 2.16.1
+scikit-learn == 1.4.2
+numpy == 1.26.4
+matplotlib == 3.9.0
+argparse == 1.1
+scikeras == 0.13.0
+keras == 3.3.3
