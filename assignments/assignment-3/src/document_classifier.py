@@ -131,7 +131,7 @@ def define_model(BatchNorm):
 
 def compile_model(model, optimizer):
     """
-    The function compiles the model with the specified optimizer and respective learning rate
+    The function compiles the model with the specified optimizer and respective learning rate.
     """
     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(initial_learning_rate = 0.01, 
                                                                 decay_steps = 10000, decay_rate = 0.9)

@@ -30,8 +30,8 @@ def define_model_baseline():
     """
     The function defines the model architecture. First, VGG16 model is loaded from TensorFlow without
     the classification layers. The convolutional layers are marked as not trainable to retain their
-    pretrained weights. Subsequently, a new fully connected layer with ReLU activation is added followed
-    by an output layer with softmax activation for multi-class classification.
+    pretrained weights. Subsequently, a new fully connected layer with ReLU activation is added
+    followed by an output layer with softmax activation for multi-class classification.
     """
     model = VGG16(include_top = False, pooling = 'avg', input_shape = (224, 224, 3))
     for layer in model.layers:
