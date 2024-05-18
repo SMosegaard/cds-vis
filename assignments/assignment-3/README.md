@@ -28,6 +28,7 @@ Specifically, the project will conduct document classification using pretrained 
 6. Generate results:
     - Generate a classification report and save it for further analysis
     - Plot and save training and validation loss and accuracy curves to visualize model performance
+7. Explorative analysis
 
 To gain a better understanding of the code, all functions in the script ```document_classifier.py``` have a short description.
 
@@ -50,6 +51,7 @@ The repository consists of the following elements:
     - in: contains data to be processed
     - src: consists of the Python code to be executed
     - out: stores the saved results, i.e., classification reports in .txt format loss curves in .png format
+- (Additionally, there is 1 bash script, 1 .txt file, and one python script for the explorative analysis. This analysis will be descriped in the last section)
 
 ## Reproducibility
 
@@ -70,14 +72,15 @@ $ source setup.sh
 
 Run the run bash script in the terminal and specify, which optimizer you want to use (--optimizer / -o) and whether you want to perform GridSearch (--GridSearch / -gs), batch normalization (--BatchNorm / -bn), and/or data augmentation (--DatAug / -da):
 ```python
-$ source run.sh -o {'adam'/'sgd'} -gs {yes/no} -bn {yes/no} -da {yes/no}
+$ source run.sh -o {adam/sgd} -gs {yes/no} -bn {yes/no} -da {yes/no}
 ```
-*Be aware that hyperparameter tuning using GridSearch are very computationally heavy and will take some time to perform.*
+*Be aware that hyperparameter tuning using GridSearch are computationally heavy and will take some time to perform.*
 
 The inputs will be converted to lowercase, so it makes no difference how it's spelled.
 
-Based on the user input, the script will perform GridSearch or simply use default parameters. The results from the GridSearch will be printed in the terminal output. The best parameters will then be used to fit the classifier. If you choose to use default parameters, the models will use a learning rate of 0.01 for both optimizers, 10 
-epochs, and a batch size of 32. The selection of 10 epochs and a batch size of 32 was made considering the small size of the dataset and through iterative testing.
+Based on the user input, the script will perform GridSearch or simply use default parameters. The results from the GridSearch will be printed in the terminal output. The best parameters will then be used to fit the classifier. If you choose to use default parameters, the models will use 10 epochs, and a batch size of 32. The selection of number of epochs and batch size was made considering the small size of the dataset and through iterative testing.
+
+Once the script has finished running, it will print that the results have been saved in the terminal output.
 
 ## Summary of results
 
@@ -85,14 +88,14 @@ The reported results are based on training the models for 10 epochs with a batch
 
 <div align="center">
 
-|classifier|optimizer|batch normalization|data augmentation|accuracy|macro accuracy|weighted accuracy|
-|---|---|---|---|---|---|---|
-1|adam|no|no|0.69|0.63|0.67|
-2|adam|yes|no|0.76|0.73|0.75|
-3|adam|yes|yes|0.62|0.57|0.60|
-4|sgd|no|no|0.48|0.33|0.41|
-5|sgd|yes|no|0.71|0.66|0.70|
-6|sgd|yes|yes|0.62|0.57|0.61|
+|classifier|optimizer|accuracy|macro accuracy|weighted accuracy|
+|---|---|---|---|---|
+baseline|adam|0.69|0.66|0.69|
+baseline|sgd|0.46|0.28|0.38|
+BatchNorm|adam|0.71|0.66|0.69|
+BatchNorm|sgd|0.68|0.63|0.67|
+BatchNorm + DatAug|adam|0.63|0.59|0.61|
+BatchNorm + DatAug|sgd|0.63|0.59|0.62|
 
 </div>
 
@@ -118,41 +121,35 @@ The training loss and validation accuracy curves were visualized to assess the m
 
 </div>
 
-In the baseline model trained with the SGD optimizer, the overall accuracy stands at 48%. Certain classes like Email and Memo exhibit relatively high precision and recall, while others such as Report and Resume show significantly low performance metrics. When changing the optimizer to adam, there's a notable improvement in the model's performance, with an average classification accuracy at 69%. Both learning curves demonstrated a good fit for the model. The curves showed a steady decrease in training loss and an increase in training accuracy over the epochs, suggesting effective learning and model optimization.
+In the baseline model trained with the SGD optimizer, the overall accuracy stands at 46%. Certain classes like Email and ADVE exhibit relatively high precision and recall, while others such as Resume and Scientific show significantly low performance metrics. The learning curve demonstrated a good fit for the model. The curve showed a steady decrease in training loss and an increase in training accuracy over the epochs, suggesting effective learning and model optimization. When changing the optimizer to adam, there's a notable improvement in the model's performance, with an average classification accuracy at 69%. However, its learning curve do suggest some overfitting. The model becomes too in learning the training data, so it is not able to generalize to unseen data.
 
-Greater average classification accuracy is observed with the inclusion of batch normalization in the model architecture. This modification leads to a higher accuracy of 71% with SGD optimizer and 76% with adam optimizer. Both reports demonstrate balanced performance across all classes, which suggests a well-optimized and effective model configuration. However, the learning curve of the batch normalized model with adam optimizer does suggest overfitting. It can be seen that the model becomes too specialized in learning the training data, so it is not able to generalize to unseen data.
+Greater average classification accuracy is observed with the inclusion of batch normalization in the model architecture. This modification leads to a higher accuracy of 68% with SGD optimizer and 71% with adam optimizer. Both reports demonstrate balanced performance across all classes, which suggests a well-optimized and effective model configuration. However, the learning curves of both models suggest some overfitting, especially the model with the adam optimizer.
 
-Finally, models incorporating data augmentation show mixed results. While they both optimizers achieve an average accuracy of 62% and exhibit some improvements over the baseline, their learning curves do not reflect an optimal training nor fit.
+Finally, models incorporating data augmentation show mixed results. While they both optimizers achieve an average accuracy of 63%, their learning curves do not reflect an optimal training nor fit.
 
-It can be concluded that inclusion of batch normalization and SGD optimizer yields the best results while not overfitting.
+It can be concluded that inclusion of batch normalization and SGD optimizer yields the best results while not overfitting too much.
 
 ## Discussion
 
-Several factors have been identified that may influence the model's effectiveness:
+Several limitations and factors have been identified that may influence the model's effectiveness:
 
-Firstly, the utilization of the data augmentation technique, including horizontal flipping and rotation of 90 degrees, have not yielded significant improvements in performance. It could be that the generated images were too different from the real data, which leads to a steep learning curve and a model struggling to navigate.
+Firstly, the utilization of the data augmentation technique, including horizontal flipping and rotation of 90 degrees, have not yielded significant improvements in performance. It could be that the generated images were too different from the real data, which leads to a steep learning curve and a model struggling to navigate. Besides  implementing batch normalization and data augmentation, where the latter is very dominant, it would have been interesting to implement early stopping when fitting the model. Early stopping also migrates oversitting and minimises loss, however it does not improve robustness and generalizability as the other methods.
 
 The dataset itself possesses challenges as its classes are imbalanced, which is possibly the reason why some classes are extremely difficult for the model to classify. A solution could be to balance all classes using upsampling or downsampling. It is also relevant to consider that the pretrained VGG16 model is trained on specific sets of images. If reports and resumes were not included, it could potentially result in poorer performance even after finetuning.
 
 Additionally, the choice of optimizer plays a crucial role in model training. The models were tested with both SGD and adam optimizers to assess their performance under different optimization strategies. Generally, the adam optimizer performs very well on complex data such as images and is robust to noisy data, which likely contributed to its effectiveness in optimizing the models on the Tobacco3482 dataset.
 
-Finally, it is worth noting that the models were trained for a relatively small number of epochs (10 epochs) and a batch size of 32 due to computational constraints. While the models may not have fully converged within this setup, the results still provide valuable insights into their performance and capabilities. It would be relevant to further explore the potential of the models with longer training.
+It is also worth noting that the models were trained for a relatively small number of epochs (10 epochs) and a batch size of 32 due to computational constraints. While the models may not have fully converged within this setup, the results still provide valuable insights into their performance and capabilities. It would be relevant to further explore the potential of the models with longer training.
 
-
-
-...
-The project offers the option for hyperparameter tuning, which has the potential to enhance classification accuracy. However, tuning of hyperparameters is very computationally heavy and should be considered, as potential performance advantages does not necessarily rationalize additional costs. Given the inherent complexity of neural networks, it is very difficult if not impossible to estimate how a CNN trains. Therefore, one could argue for conducting GridSearch in order to have evidence for one's selection of parameters. Considering the nature of the data, the parameter grid for batch size was set to [16, 32, 64] and [10, 15, 20] for the number of epochs, however, these are primarily educated guesses.
+Which is also why, the project offers the option for hyperparameter tuning on batch size and number of epochs, which has the potential to enhance classification accuracy. However, tuning of hyperparameters is very computationally heavy and should be considered, as potential performance advantages does not necessarily rationalize additional costs. Given the inherent complexity of neural networks, it is very difficult if not impossible to estimate how a CNN trains. Therefore, one could argue for conducting GridSearch in order to have evidence for one's selection of parameters. Considering the nature of the data, the parameter grid for batch size was set to [16, 32, 64] and [10, 15, 20] for the number of epochs, however, these are primarily educated guesses.
 
 Likewise, the method employed for hyperparameter tuning can also be discussed. GridSearch tests all predefined parameters and combinations slavishly, which leads to a long execution time and requires user interference in setting up and estimating relevant paramter values. It would have been relevant to implement Bayesian optimization or Optuna tuning, as they provide a more systematic approach and require less of the user, as the parameter grid only needs to be a range of values. Therefore, Bayesian optimization or Optuna tuning might also be less computationally heavy, as they do not have to exhaustively search through all possible combinations. 
-    
 
 ## Exploratory - what does the model see?
 
-While neural networks yield remarkable outcomes, they often operate as black boxes. This makes them difficult to understand what actually happens and thus validate the results. To grasp what the model "sees" and how it predicts, an activation heatmaps can be employed as a mean to unravel the inner workings.
+While neural networks yield remarkable outcomes, they often operate as black boxes. This makes them difficult to understand what actually happens and thus validate the results. To address this, activation heatmaps can be employed. Heatmaps are a smart tool that unveils the regions in an image that significantly influence the model's predictions.
 
-Heatmaps ...
-By visualizing these influential regions of the image, we can gain insights into the specific features that drive the model's classifications.
-- It generates explanations for specific input images to help us understand why the model made a particular prediction...
+Heatmaps offer a visual representation of the model's attention by highlighting the influential areas in an image that contribute the most to its classification decision. By superimposing these heatmaps onto the original image, we can interpret the specific features that drive the predictions.
 
 To explain individual predictions, the python script ```src/explainer.py``` has been developed. The script can be executed using the following bash command and specify which image to investigate by writing ```--image / -i``` . If no image is specified, the script will by default use the first image within the first folder, i.e., 'ADVE/0000136188.jpg'.
 ```python
@@ -163,10 +160,14 @@ Heatmaps will be generated both from the baseline model and the model with the i
 
 <div align = "center">
 
-<img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-3/out/heatmap_Scientific10064589_10064594.jpg.png" width = "800"/>
+<img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-3/out/heatmap_Scientific10064589_10064594.jpg.png" width = "800">
 
 </div>
 
-The red-yellow representations highlight the most informative features within the input images, which is what the models have used to form the predictions. The two heatmaps also looks different, as they represent different architectures.
+The red-yellow representations highlight the most informative features within the input images, which is what the models have used to form the predictions. In the example, we can see, that when the model classifies an image as a scientific report, the heatmap highlights its characteristic layout and the presence of graphs/equations. This indicates, that these features played an important role in the classification. It can also be seen, that the two heatmaps also looks different, as they represent different architectures. 
 
-By employing heatmaps, we can visually explain how the models predicts. The methodology becomes more interpretable, as we can see, how the CNNs operates in practise.
+In the example, we can see, that when the model classifies an image as a scientific report, the heatmap highlights its characteristic layout and the presence of graphs/equations. This indicates, that these features played an important role in the classification. 
+
+For example, it can be seen in the scientific image that the model focuses on its specific layout with abstract, columns and graphs, where the model bases its prediction about the email based on the very white.
+
+In summary, by employing heatmaps, we can visually explore and explain the behavior of the model. By visualizing the important regions in a given image, the heatmaps offer a glimpse into the model's perception and decision-making process. The methodology becomes more interpretable, as we can see, how the CNNs operates in practise.
