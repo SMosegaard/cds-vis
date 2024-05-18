@@ -1,0 +1,16 @@
+              precision    recall  f1-score   support
+
+        ADVE       0.84      0.80      0.82        46
+       Email       0.91      0.88      0.90       120
+        Form       0.73      0.69      0.71        86
+      Letter       0.67      0.71      0.69       114
+        Memo       0.54      0.80      0.64       124
+        News       0.75      0.87      0.80        38
+        Note       0.69      0.68      0.68        40
+      Report       0.37      0.19      0.25        53
+      Resume       0.62      0.33      0.43        24
+  Scientific       0.52      0.29      0.37        52
+
+    accuracy                           0.68       697
+   macro avg       0.66      0.62      0.63       697
+weighted avg       0.68      0.68      0.67       697
