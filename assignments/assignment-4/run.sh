@@ -1,7 +1,8 @@
 # Activate the envoriment
 source ./env/bin/activate 
+
 # Run the code
-python src/main.py
+python src/face_detector.py
 
 # Close the envoriment
 deactivate
