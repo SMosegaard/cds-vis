@@ -257,9 +257,9 @@ def main():
 
     args = parser()
 
-    target_image = os.path.join("..", "..", "..", "..", "cds-vis-data", "flowers", args.target) # "in", args.target
+    target_image = os.path.join("in", args.target)
     image_number = target_image.split("_")[1].replace(".jpg", "")
-    filepath = os.path.join("..", "..", "..", "..", "cds-vis-data", "flowers") # "in"
+    filepath = os.path.join("in")
 
     if args.method == 'hist':
 
@@ -276,7 +276,7 @@ def main():
         
         model = pretrained_model()
 
-        root_dir = os.path.join("..", "..", "..", "..", "cds-vis-data", "flowers") # # "in", args.target
+        root_dir = os.path.join("in")
         filenames = [root_dir + "/" + name for name in sorted(os.listdir(root_dir))]
 
         feature_list = extract_features_image(model, filenames)
