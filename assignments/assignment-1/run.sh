@@ -2,7 +2,7 @@
 source ./env/bin/activate 
 
 # Run the code
-python src/src.py "$@"
+python src/image_search.py "$@"
 
 # Close the virtual envoriment
 deactivate 
