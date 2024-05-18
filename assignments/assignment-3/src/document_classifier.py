@@ -13,8 +13,6 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 import numpy as np
 import matplotlib.pyplot as plt
 from scikeras.wrappers import KerasClassifier
-import keras
-from keras.callbacks import EarlyStopping
 import argparse
 
 
@@ -235,11 +233,11 @@ def evaluate(model, X_test, y_test, H, batchsize, epochs, BatchNorm, DatAug, opt
         elif DatAug == "no": 
             model_param = "baseline"
 
-    filepath_metrics = open(f'out/{model_param}_metrics_{optimizer}.txt', 'w')
+    filepath_metrics = open(f'out/{model_param}_metrics_{optimizer}_gs.txt', 'w')
     filepath_metrics.write(classifier_metrics)
     filepath_metrics.close()
 
-    plot_history(H, epochs, model_param, optimizer, f"out/{model_param}_losscurve_{optimizer}.png")
+    plot_history(H, epochs, model_param, optimizer, f"out/{model_param}_losscurve_{optimizer}_gs.png")
     return print("Results have been saved to the out folder")
 
 
@@ -255,7 +253,7 @@ def grid_search(model, X_train, y_train):
     param_grid = {'epochs': [10, 15, 20],
                 'batch_size': [16, 32, 64]}
 
-    grid_search = GridSearchCV(estimator = model, param_grid = param_grid, cv = 2, n_jobs = -1,
+    grid_search = GridSearchCV(estimator = model, param_grid = param_grid, cv = 5, n_jobs = -1,
                                 scoring = 'accuracy', verbose = 1)
 
     grid_result = grid_search.fit(X_train, y_train)
@@ -277,7 +275,7 @@ def main():
     
     args = parser()
 
-    folder_path = os.path.join("../../../../cds-vis-data/Tobacco3482") # ("in/Tobacco3482")
+    folder_path = os.path.join("in/Tobacco3482") 
 
     X, y = load_images(folder_path)
     X_train, X_test, y_train, y_test = data_split(X, y)
@@ -288,7 +286,8 @@ def main():
 
     if args.GridSearch == 'yes':
         model, batchsize, epochs = grid_search(model, X_train, y_train)
-        H = fit_model(model, X_train, y_train, args.DatAug, batchsize = batchsize, epochs = epochs)
+        model = model.model_
+        H, batchsize, epochs = fit_model(model, X_train, y_train, args.DatAug, batchsize = batchsize, epochs = epochs)
     else:
         H, batchsize, epochs = fit_model(model, X_train, y_train, args.DatAug, batchsize = 32, epochs = 10)
   
