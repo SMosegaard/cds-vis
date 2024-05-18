@@ -233,11 +233,11 @@ def evaluate(model, X_test, y_test, H, batchsize, epochs, BatchNorm, DatAug, opt
         elif DatAug == "no": 
             model_param = "baseline"
 
-    filepath_metrics = open(f'out/{model_param}_metrics_{optimizer}_gs.txt', 'w')
+    filepath_metrics = open(f'out/{model_param}_metrics_{optimizer}.txt', 'w')
     filepath_metrics.write(classifier_metrics)
     filepath_metrics.close()
 
-    plot_history(H, epochs, model_param, optimizer, f"out/{model_param}_losscurve_{optimizer}_gs.png")
+    plot_history(H, epochs, model_param, optimizer, f"out/{model_param}_losscurve_{optimizer}.png")
     return print("Results have been saved to the out folder")
 
 
