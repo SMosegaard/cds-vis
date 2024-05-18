@@ -20,9 +20,9 @@ import argparse
 
 def parser():
     """
-    The user can specify which optimizer to use, whether to perform GridSearch to tune the hyperparameters, and
-    to implement batch normalization and/or data augmentation.
-    The function will then parse command-line arguments and make them lower case.
+    The user needs to provide some inputs when executing the code. This includes which optimizer
+    to use, whether to perform GridSearch, and whether to implement batch normalization and/or data
+    augmentation. The function will then parse command-line arguments and make them lower case.
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--optimizer",
@@ -55,10 +55,9 @@ def parser():
 
 def load_images(folder_path):
     """
-    Loads the data from the specified folder path, generates labels for each image, 
-    and preprocesses them for model input.
-    The dataset contains certain files, i.e., Thumbs.db, could not be loaded and
-    returned the error 'UnidentifiedImageError'. These will simplt be ignored.
+    Loads the data from the specified folder path, generates labels for each image, and preprocesses
+    them for model input. The dataset contains certain files, i.e., Thumbs.db, that could not be loaded
+    and returned the error 'UnidentifiedImageError'. These will simplty be ignored.
     """
     list_of_images = [] 
     list_of_labels = []
@@ -105,7 +104,7 @@ def data_split(X, y):
 def define_model(BatchNorm):
     """
     Defines the model architecture. First, the VGG16 model is loaded from TensorFlow without the classification
-    layers. The convolutional layers are marked as not trainable to retain their pretrained weights. The
+    layers. The convolutional layers are marked as not trainable to retain their pretrained weights. Then, the
     user specifies whether the model should be defined with or without batch normalization. Subsequently, a
     new fully connected layer with ReLU activation is added followed by an output layer with softmax
     activation for multi-class classification.
@@ -123,11 +122,10 @@ def define_model(BatchNorm):
     elif BatchNorm == "yes":
         flat1 = Flatten()(model.layers[-1].output)
         bn = BatchNormalization()(flat1)
-        class1 = Dense(128, activation='relu')(bn)
-        output = Dense(10, activation='softmax')(class1)
+        class1 = Dense(128, activation = 'relu')(bn)
+        output = Dense(10, activation = 'softmax')(class1)
     
     model = Model(inputs = model.inputs, outputs = output)
-
     return model
 
 
@@ -160,18 +158,13 @@ def data_generator():
 
 def fit_model(model, X_train, y_train, DatAug, batchsize = 32, epochs = 10):
     """
-    The function fits the defined and compiled model to the training data.
+    The function fits the defined and compiled model to the training data. The user had to specify
+    wteher to implement data augmentation. If data augmentation is chosen, new data will be generated
+    using the data_generator() function and fitted to X_train.
 
-    If the parameters have not been gridsearch to obtain the best parameters, the model will use a batch
-    size of 32 and 10 epochs as default. 
-
-    The user specifies whether to implement data augmentation...
-    Fits the compiled model to the training data with or without data augmentation and returns the training history.
-
-    early stopping implemented to minimise loss and avoid overfitting. Monitors val_loss
-    After 3 epochs with no improvement, the training will be stopped
-    
-    When the model is fitted the function returns the fitted model, H.
+    The model will be trained with either a default batch size of 32 and 10 epochs or the best parameters
+    obtained through GridSearch tuning. The fitted model, along with the batch size and epochs used, are
+    returned by the function.
     """
 
     if DatAug == "no":
@@ -179,7 +172,6 @@ def fit_model(model, X_train, y_train, DatAug, batchsize = 32, epochs = 10):
                     validation_split = 0.1,
                     batch_size = batchsize,
                     epochs = epochs)
-                    #callbacks = EarlyStopping(monitor = 'val_loss', patience = 3, mode='min')
     
     elif DatAug == "yes":
         datagen = data_generator()
@@ -189,16 +181,16 @@ def fit_model(model, X_train, y_train, DatAug, batchsize = 32, epochs = 10):
                                                                     batch_size = batchsize,
                                                                     subset = "validation"),
                                                                     epochs = epochs)
-                                                                    # callbacks = EarlyStopping(monitor = 'val_loss', patience = 3, mode='min') 
     return H, batchsize, epochs
 
 
 def plot_history(H, epochs, model_param, optimizer, outpath):
     """
-    Plots the training and validation loss and accuracy curves and saves the plot to a specified outpath.
+    Plots the training loss and validation accuracy curves and saves the plot to a specified outpath.
     """
     plt.figure(figsize = (12,6))
-    plt.suptitle(f"Training and validation curves with {model_param} paramters and {optimizer} optimizer", fontsize = 8)
+    plt.suptitle(f"Training and validation curves with {model_param} paramters and {optimizer} optimizer",
+                fontsize = 8)
 
     plt.subplot(1,2,1)
     plt.plot(np.arange(0, epochs), H.history["loss"], label = "training loss")
@@ -223,7 +215,8 @@ def plot_history(H, epochs, model_param, optimizer, outpath):
 
 def evaluate(model, X_test, y_test, H, batchsize, epochs, BatchNorm, DatAug, optimizer):
     """
-    Evaluates the model on the test data, generates classification reports, and saves the results.
+    This function evaluates the performance of the trained model on the test data and generates
+    classification reports and plots. The results are saved to a specified outpath.
     """
     label_names = ["ADVE", "Email", "Form", "Letter", "Memo", "News", "Note", "Report", "Resume", "Scientific"]
     predictions = model.predict(X_test, batch_size = batchsize)
@@ -247,7 +240,6 @@ def evaluate(model, X_test, y_test, H, batchsize, epochs, BatchNorm, DatAug, opt
     filepath_metrics.close()
 
     plot_history(H, epochs, model_param, optimizer, f"out/{model_param}_losscurve_{optimizer}.png")
-
     return print("Results have been saved to the out folder")
 
 
@@ -257,7 +249,7 @@ def grid_search(model, X_train, y_train):
     scikit-learn pipeline. Afterwards, it performs GridSearch to find the best hyperparameters for the model.
     The best parameters will be returned.
     """
-    
+
     model = KerasClassifier(model = model, verbose = 1)
 
     param_grid = {'epochs': [10, 15, 20],

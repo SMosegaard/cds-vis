@@ -13,6 +13,9 @@ import argparse
 
 
 def parser():
+    """
+    The user must specify which image to investigate. The function will then parse the command-line argument.
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("--image",
                         "-i",
@@ -24,6 +27,12 @@ def parser():
 
 
 def define_model_baseline():
+    """
+    The function defines the model architecture. First, VGG16 model is loaded from TensorFlow without
+    the classification layers. The convolutional layers are marked as not trainable to retain their
+    pretrained weights. Subsequently, a new fully connected layer with ReLU activation is added followed
+    by an output layer with softmax activation for multi-class classification.
+    """
     model = VGG16(include_top = False, pooling = 'avg', input_shape = (224, 224, 3))
     for layer in model.layers:
         layer.trainable = False
@@ -35,6 +44,10 @@ def define_model_baseline():
 
 
 def define_model_BatchNorm():
+    """
+    The function defines the model architecture. This model is identical to the baseline model
+    only with the additional implementation of batch normalization.
+    """
     model = VGG16(include_top = False, pooling = 'avg', input_shape = (224, 224, 3))
     for layer in model.layers:
         layer.trainable = False
@@ -47,6 +60,11 @@ def define_model_BatchNorm():
 
 
 def plot_heatmap(filepath):
+    """
+    This function generates heatmaps for the baseline and batch normalization models, superimposing them on
+    the original image. The heatmaps will visualize the regions in the given image that contribute the most
+    to the model's predictions. The resulting plot is saved to the specified output folder.
+    """
     folder_name = os.path.dirname(filepath).split('/')[-1]
     image_name = os.path.basename(filepath)
 
@@ -86,7 +104,6 @@ def plot_heatmap(filepath):
 
     baseline_model = define_model_baseline()
     generate_heatmap(baseline_model, axes[0], 'Baseline model')
-
     batchnorm_model = define_model_BatchNorm()
     generate_heatmap(batchnorm_model, axes[1], 'BatchNorm model')
 
