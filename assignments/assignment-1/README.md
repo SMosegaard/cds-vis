@@ -83,7 +83,7 @@ For example, using image 0001 of a daffodil from the flower dataset, the color h
 |image_0142|190.209|
 |image_1316|190.222|
 
-![Visualisation of results for the pretrained pipeline](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_hist.png)
+![Visualisation of results for the pretrained pipeline](https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-1/out/target_closest_0001_hist.png)
 
 In comparison, the pretrained pipeline provides the following results:
 
@@ -96,7 +96,7 @@ In comparison, the pretrained pipeline provides the following results:
 |image_0017|0.162|
 |image_0049|0.164|
 
-![Visualisation of results for the pretrained pipeline](https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-1/out/target_closest_0001_pretrained.png)
+![Visualisation of results for the pretrained pipeline](https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-1/out/target_closest_0001_pretrained.png)
 
 The distances presented in the two tables are not directly comparable as they are calculated using different methods and metrics. However, a clear trend do emerge, as the pretrained pipeline yields significantly smaller distances between the target image and retrieved similar images. Additionally, the pretrained method showcases images of the same flower variety as the target, whereas the histogram method retrieves images with varying degrees of similarity, encompassing other yellow flowers as well.
 
