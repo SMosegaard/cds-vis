@@ -26,7 +26,7 @@ To gain a better understanding of the code, all functions in the script ```image
 
 In this repository, image search will be done on images of flowers. The dataset is a collection of over 1000 images of flowers, sampled from 17 different species. The dataset comes from the Visual Geometry Group at the University of Oxford. All images are in color.
 
-You can download the dataset [here](https://www.robots.ox.ac.uk/~vgg/data/flowers/17/) and place it in the ```in``` folder. Ensure to unzip the data within the folder before executing the code.
+You can download the dataset [here](https://www.robots.ox.ac.uk/~vgg/data/flowers/17/) and place it in the ```in``` folder. Make sure to unzip the data within the folder before executing the code.
 
 ## Repository structure
 
@@ -98,9 +98,9 @@ In comparison, the pretrained pipeline provides the following results:
 
 ![Visualisation of results for the pretrained pipeline](https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-1/out/target_closest_0001_pretrained.png)
 
-The distances presented in the two tables are not directly comparable as they are calculated using different methods and metrics. However, a clear trend do emerge, as the pretrained pipeline yields significantly smaller distances between the target image and retrieved similar images. Additionally, the pretrained method showcases images of the same flower variety as the target, whereas the histogram method retrieves images with varying degrees of similarity, encompassing other yellow flowers as well.
+The distances presented in the two tables are not directly comparable as they are calculated using different methods and metrics. However, a clear trend does emerge, as the pretrained pipeline yields significantly smaller distances between the target image and retrieved similar images. Additionally, the pretrained method showcases images of the same flower variety as the target, whereas the histogram method retrieves images with varying degrees of similarity, encompassing other yellow flowers as well.
 
-It is a consistent pattern across multiple examples, that the pretrained pipeline outperforms the color histogram comparison method. All results can be found in the out folder. This indicates the effectiveness and robustness of the pretrained pipeline in identifying visually similar images within the dataset.
+It is a consistent pattern across multiple examples, that the pretrained pipeline outperforms the color histogram comparison method. All results can be found in the ```out``` folder. This indicates the effectiveness and robustness of the pretrained pipeline in identifying visually similar images within the dataset.
 
 In summary, the results provide insights into image similarity and potential patterns within a dataset.
 
@@ -112,6 +112,6 @@ The color histogram comparison method offers a computationally lightweight appro
 
 In contrast, the pretrained pipeline presents a more sophisticated solution by using advanced deep learning techniques. By extracting high-level features from images and utilizing a classification algorithm, it can recognize similarities and identify subtle variations between complex images. Naturally, this method also has limitations, as it is more computationally heavy and time-consuming.
 
-In conclusion, the first method is less computationally heavy, but struggles to accurately capture differences between objects in complex images, as it only extracts color distributions. The sencond method has enhanced performance and is capable of extracting complex featureas as edges, shapes, and textures, however at the cost of increased computational resources.
+In conclusion, the first method is less computationally heavy, but struggles to accurately capture differences between objects in complex images, as it only extracts color distributions. The second method has enhanced performance and is capable of extracting complex featureas as edges, shapes, and textures, however at the cost of increased computational resources.
 
 The image search algorithm can be applied to numerous image datasets. The choice between the two methods depends on the specific application. If the data is simple and one just wants a general trends within a dataset, method one might be sufficient. Contrary, method two probably is preferred if the data is more complex.
