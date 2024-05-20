@@ -117,7 +117,7 @@ def plot_heatmap(filepath):
 def main():
 
     args = parser()
-    plot_heatmap(f'../../../../cds-vis-data/Tobacco3482/{args.image}')
+    plot_heatmap(f'in/Tobacco3482/{args.image}')
 
 if __name__ == "__main__":
     main()
