@@ -86,8 +86,6 @@ Once the script has finished running, it will print that the results have been s
 
 The reported results are based on training the models for 10 epochs with a batch size of 32.
 
-<div align="center">
-
 |classifier|optimizer|accuracy|macro accuracy|weighted accuracy|
 |---|---|---|---|---|
 baseline|adam|0.69|0.66|0.69|
@@ -97,7 +95,6 @@ BatchNorm|sgd|0.68|0.63|0.67|
 BatchNorm + DatAug|adam|0.63|0.59|0.61|
 BatchNorm + DatAug|sgd|0.63|0.59|0.62|
 
-</div>
 
 *The full classification reports and visualisations of the training loss and validation accuracy curves can be found in the ```out``` folder.*
 
