@@ -104,8 +104,8 @@ Both multiclass classification tasks significantly surpasses the chance level of
 <div align = "center">
 
 <p float = "left">
-    <img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/LR_permutation.png" width = "400">
-    <img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_permutation.png" width = "400">
+    <img src = "https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-2/out/LR_permutation.png" width = "400">
+    <img src = "https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-2/out/NN_permutation.png" width = "400">
 </p>
 
 </div>
@@ -114,7 +114,7 @@ Finally, the loss curve during training and accuracy during validation of the NN
 
 <div align = "center">
 
-<img src = "https://github.com/SMosegaard/cds-vis/blob/main/assignments/assignment-2/out/NN_loss_curve.png" width = "800"/>
+<img src = "https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-2/out/NN_loss_curve.png" width = "800"/>
 
 </div>
 
