@@ -31,7 +31,7 @@ The repository consists of the following elements:
 - 2 bash scripts for setup of the virtual environments, installation of requirements, and execution of the code
 - 1 .txt file specifying the required packages including versioned dependencies
 - 1 README.md file
-- 1 folders
+- 2 folders
     - src: consists of the Python code to be executed. Specifically, scripts performing classification ('LR_classifier.py', 'NN_classifier.py') and GridSearch ('LR_gridsearch.py', 'NN_gridsearch.py').
     - out: stores the saved results, i.e., classification reports in .txt format, plots of permutation testing, and loss curve of the NN classifier.
 
