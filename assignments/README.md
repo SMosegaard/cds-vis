@@ -7,6 +7,9 @@
 
 *24th of May 2024*
 
+<br>
+<br>
+
 ## Portfolio exam structure
 
 This portfolio exam consists of four portfolios: 
@@ -15,5 +18,3 @@ This portfolio exam consists of four portfolios:
 - **Portfolio 2** - Classification Benchmarks with Logistic Regression and Neural Networks
 - **Portfolio 3** - Document Classification using Pretrained Image Embeddings
 - **Portfolio 4** - Detecting Faces in Historical Newspapers
-
-Each portfolio have a folder containing detailed instructions in its respective README file.
