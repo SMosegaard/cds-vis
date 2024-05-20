@@ -56,11 +56,9 @@ Once the script has finished running, it will print that the results have been s
 
 The project aims to highlight the increase in images of human faces in historic newspapers over a span of 200 years. The findings reveal a rise in the prevalence of images of human faces per decade. This is indeed anticipated with the advent of new technology in the 19th century and the adoption of personal cameras in the 20th century.
 
-<div align = "center">
-
-<img src = "https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-4/out/face_plot.png" width = "800"/>
-
-</div>
+<p align = "center">
+    <img src = "https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-4/out/face_plot.png" width = "400">
+</p>
 
 The visualisation of the percentage of issues with faces illustrate this trend across all three newspapers. 
 However, the growth patternes of the newspapers are not identical. The newspaper IMP exhibits a very steep increase and generally maintains a higher percentage of pages with faces compared to GDL and JDG, whose developments are remarkably similar. It could be that GDL and JDG are more traditional newspapers and therefore do not fully embrace technological advancements. Contrary, IMG is a newer newpaper and also the only one with issues from the 21th century. Therefore, it may feature content that aligns more closely with norms and technological trends.
