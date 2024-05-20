@@ -14,9 +14,9 @@ Specifically, the project will conduct image classification utilizing the two be
 - Evaluates the trained classifier on new, unseen test data
 - Generates a classification report and saves it for further analysis
 - Plots the loss curve during training of the NN classifier to visualize model performance
-- Optionally, conduct permutation tests to assess the significance of the classifiers' performance.
+- Optionally, conducts permutation tests to assess the significance of the classifiers' performance.
 
-To gain a better understanding of the code, all functions in the 'XX_classifier.py' scripts have short descriptions.
+To gain a better understanding of the code, all functions in the ```XX_classifier.py``` scripts have short descriptions.
 
 ## Data source
 
@@ -58,7 +58,7 @@ $ source run.sh -gs {yes/no} -pt {yes/no}
 ```
 *Be aware that hyperparameter tuning using GridSearch and permutation testing are very computationally heavy and will take some time to perform.*
 
-The inputs will be converted to lowercase, so it makes no difference how it's spelled.
+The inputs will be converted to lowercase, so it makes no difference whether it's spelled with or without capital letters.
 
 Based on the user input, the script will perform GridSearch or simply use default parameters. The GridSearch will be performed in other scripts and the results will be printed in the terminal output. The best parameters will then be imported to the main script and used to fit the classifier.
 
@@ -128,4 +128,4 @@ Implementing validation and early stopping improved the accuracy of the NN class
 
 Despite its superior performance, the NN model is significantly more computationally heavy to run compared to the simple LR classifier. This raises the question of whether the improvement in accuracy justifies the increased computational resources required for training. 
 
-Additionally, the importance of hyperparameter tuning should be considered. While the project includes code for hyperparameter tuning with parameters anticipated to substantially impact model performance, it is important to consider whether the potential performance advantages justifies the additional costs. Therefore, it might not be essential for this particular project, but it might be crucial if the models were to be deployed on real-life situations and critical data.
+Additionally, the importance of hyperparameter tuning should be considered. While the project includes code for hyperparameter tuning with parameters anticipated to substantially impact model performance, it is important to consider whether the potential performance advantages justifies the additional costs. Therefore, it might not be essential for this particular project, but it could be crucial if the models were to be deployed on real-life situations and critical data.
