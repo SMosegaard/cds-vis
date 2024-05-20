@@ -1,4 +1,4 @@
-# Assignment 4 - Detecting faces in historical newspapers
+# Portfolio 4 - Detecting Faces in Historical Newspapers
 *By Sofie Mosegaard, 26-04-2024*
 
 This repository is designed to utilize a pretrained Convolutional Neural Network (CNN) for extracting meaningful information from image data. With the increase in image content in print media and advancements in technology, exploring this trend through automated face detection in newspapers becomes interesting.
@@ -10,7 +10,7 @@ This project will specifically investigate the prevelance of images of human fac
 - Iterate through historic newspapers to detect human faces using the MTCNN model and update the dataframe accordingly.
 - Calculate the total number of faces per decade and the percentage of issues with faces per dacade.
 - Visualize the percentage of issues with faces per decade across newspapers.
-- Save the dataframe and the plot in the out folder.
+- Save the dataframe and the plot in the ```out``` folder.
 
 To gain a better understanding of the code, all functions in the script ```face_detector.py``` will have a short descriptive text.
 
@@ -18,14 +18,14 @@ To gain a better understanding of the code, all functions in the script ```face_
 
 In this repository, the pretrained MTCNN will detect faces in newspapers. The dataset is a collection of three historic Swiss newspapers: Gazette de Lausanne (GDL), Impartial (IMP), and Journal de Genève (JDG). The newspapers spans over 4,000 issues ranging from 1790s to 2010s. All newspapers are in black and white format and contains metadata in their titles. 
 
-You can download the dataset [here](https://zenodo.org/records/3706863) and place it in the ```in``` folder. Ensure to unzip the data within the folder before executing the code.
+You can download the dataset [here](https://zenodo.org/records/3706863) and place it in the ```in``` folder. Make sure to unzip the data within the folder before executing the code.
 
 ## Repository structure
 
 The repository consists of the following elements:
-- 2 bash scripts for setup and execution of the code
+- 2 bash scripts for setup of the virtual environments, installation of requirements, and execution of the code
+- 1 .txt file specifying the required packages including versioned dependencies 
 - 1 README.md file
-- 1 .txt file specifying the required packages
 - 3 folders
     - in: contains data to be processed
     - src: consists of the Python code to be executed
@@ -50,12 +50,20 @@ $ source setup.sh
 $ source run.sh
 ```
 
+Once the script has finished running, it will print that the results have been saved in the terminal output.
+
 ## Summary of results
 
 The project aims to highlight the increase in images of human faces in historic newspapers over a span of 200 years. The findings reveal a rise in the prevalence of images of human faces per decade. This is indeed anticipated with the advent of new technology in the 19th century and the adoption of personal cameras in the 20th century.
 
+<div align = "center">
+
+<img src = "https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-4/out/face_plot.png" width = "800"/>
+
+</div>
+
 The visualisation of the percentage of issues with faces illustrate this trend across all three newspapers. 
-However, the growth patternes of the newspapers are not identical. The newspaper IMP exhibits a very steep increase and generally maintains a higher percentage of pages with faces compared to GDL and JDG, whose developments are remarkably similar. It could be that GDL and JDG, being more traditional newspapers, may not fully embrace technological advancements. Contrary, IMG is a newer newpaper and also the only one with issues from the 21th century. Therefore, it may feature content that aligns more closely with norms and technological trends.
+However, the growth patternes of the newspapers are not identical. The newspaper IMP exhibits a very steep increase and generally maintains a higher percentage of pages with faces compared to GDL and JDG, whose developments are remarkably similar. It could be that GDL and JDG are more traditional newspapers and therefore do not fully embrace technological advancements. Contrary, IMG is a newer newpaper and also the only one with issues from the 21th century. Therefore, it may feature content that aligns more closely with norms and technological trends.
 
 ## Discussion
 
