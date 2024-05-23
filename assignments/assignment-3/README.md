@@ -1,11 +1,11 @@
-# Portfolio 3 - Document Classification using Pretrained Image Embeddings
+# Assignment 3 - Document Classification using Pretrained Image Embeddings
 *By Sofie Mosegaard, 12-04-2024*
 
 This repository is designed to perform document classification using Transfer Learning (TL) with a pretrained Convolutional Neural Network (CNN). The project aims to investigate whether document types can be predicted based on appearance rather than content. Leveraging the differences in appearance for example between scientific papers and emails, the repository seeks to exploit these variations for accurate document classification.
 
-The project utilizes the VGG16 model, which is a state-of-the-art CNN architecture. VGG16 has a deep and complex architecture with 16 layers, totaling 134 million trainable parameters. The model expects input tensors of size (224, 224) with 3 RGB channels. Training deep CNNs are very time-consuming and computationally heavy. Luckily, VGG16 is well-suited for transfer learning. TL is the process of applying pretrained models to new classification tasks and data.
+The project utilizes the VGG16 model, which is a state-of-the-art CNN architecture. VGG16 has a deep and complex architecture with 16 layers, totalling 134 million trainable parameters. The model expects input tensors of size (224, 224) with 3 RGB channels. Training deep CNNs are very time-consuming and computationally heavy. Luckily, VGG16 is well-suited for transfer learning. TL is the process of applying pretrained models to new classification tasks and data.
 
-Despite CNN's remarkable performances, they are prone to overfitting, particularly when dealing with limited datasets. To enhance model robustness and generalizability, the user will be given the opportunity to implement batch normalization and data augmentation. The batch normalization technique makes the training process more stable through normalization of the layers' inputs by recentering and rescaling, while data augmentation avoids overfitting by increasing the amout of data by augmenting already existing data.
+Despite CNN's remarkable performances, they are prone to overfitting, particularly when dealing with limited datasets. To enhance model robustness and generalizability, the user will be given the opportunity to implement batch normalization and data augmentation. The batch normalization technique makes the training process more stable through normalization of the layers' inputs by recentering and rescaling, while data augmentation avoids overfitting by increasing the amount of data by augmenting already existing data.
 
 Specifically, the project will conduct document classification using pretrained image embeddings, by doing the following:
 1. Data preparation:
@@ -49,9 +49,9 @@ The repository consists of the following elements:
 - 1 README.md file
 - 3 folders
     - in: contains data to be processed
-    - src: consists of the Python code to be executed
+    - src: consists of the Python scripts to be executed
     - out: stores the saved results, i.e., classification reports in .txt format loss curves in .png format
-- (Additionally, there is 1 bash script, 1 .txt file, and one python script for the explorative analysis. This analysis will be descriped in the last section)
+- (Additionally, there is 1 bash script, 1 .txt file, and one python script for the explorative analysis. This analysis will be described in the last section)
 
 ## Reproducibility
 
@@ -98,7 +98,7 @@ BatchNorm + DatAug|sgd|0.63|0.59|0.62|
 
 *The full classification reports and visualisations of the training loss and validation accuracy curves can be found in the ```out``` folder.*
 
-In the baseline model trained with the SGD optimizer, the overall accuracy stands at 46%. Certain classes like Email and ADVE exhibit relatively high precision and recall, while others such as Resume and Scientific show significantly low performance metrics. The learning curve demonstrated a good fit for the model. The curve showed a steady decrease in training loss and an increase in training accuracy over the epochs, suggesting effective learning and model optimization. When changing the optimizer to adam, there's a notable improvement in the model's performance, with an average classification accuracy at 69%. However, its learning curve do suggest some overfitting. Here, th model becomes too in learning the training data, so it is not able to generalize to unseen data.
+In the baseline model trained with the SGD optimizer, the overall accuracy stands at 46%. Certain classes like Email and ADVE exhibit relatively high precision and recall, while others such as Resume and Scientific show significantly low performance metrics. The learning curve demonstrated a good fit for the model. The curve showed a steady decrease in training loss and an increase in training accuracy over the epochs, suggesting effective learning and model optimization. When changing the optimizer to adam, there's a notable improvement in the model's performance, with an average classification accuracy of 69%. However, its learning curve does suggest some overfitting. Here, the model becomes too specialized in learning the training data, so it is not able to generalize to unseen data.
 
 Greater average classification accuracy is observed with the inclusion of batch normalization in the model architecture. This modification leads to a higher accuracy of 68% with SGD optimizer and 71% with adam optimizer. Both reports demonstrate balanced performance across all classes, which suggests a well-optimized and effective model configuration. However, the learning curves of both models do suggest some overfitting, especially the model with the adam optimizer.
 
@@ -120,11 +120,11 @@ It is also worth noting that the models were trained for a relatively small batc
 
 Which is also why, the project offers the option for hyperparameter tuning on batch size and number of epochs, which has the potential to enhance classification accuracy. However, tuning of hyperparameters is very computationally heavy and should be considered, as potential performance advantages does not necessarily rationalize additional costs. Given the inherent complexity of neural networks, it is very difficult if not impossible to estimate how a CNN trains. Therefore, one could argue for conducting GridSearch in order to have evidence for one's selection of parameters. Considering the nature of the data, the parameter grid for batch size was set to [16, 32, 64] and [10, 15, 20] for the number of epochs, however, these are primarily educated guesses.
 
-Likewise, the method employed for hyperparameter tuning can also be discussed. GridSearch tests all predefined parameters and combinations slavishly, which leads to a long execution time and requires user interference in setting up and estimating relevant paramter values. It would have been relevant to implement Bayesian optimization or Optuna tuning, as they provide a more systematic approach and require less of the user, as the parameter grid only needs to be a range of values. Therefore, these methods might also be less computationally heavy, as they do not have to exhaustively search through all possible combinations. 
+Likewise, the method employed for hyperparameter tuning can also be discussed. GridSearch tests all predefined parameters and combinations slavishly, which leads to a long execution time and requires user interference in setting up and estimating relevant parameter values. It would have been relevant to implement Bayesian optimization or Optuna tuning, as they provide a more systematic approach and require less of the user, as the parameter grid only needs to be a range of values. Therefore, these methods might also be less computationally heavy, as they do not have to exhaustively search through all possible combinations. 
 
 ## Exploratory - what does the model see?
 
-While neural networks yield remarkable outcomes, they often operate as black boxes. This makes them difficult to understand and thus validate the results. To address this, activation heatmaps can be employed. Heatmaps are a smart tool that unveils the regions in an image that significantly influence the model's predictions.
+While neural networks yield remarkable outcomes, they often operate as black boxes. This makes them difficult to understand and thus validate the results. To address this, activation heatmaps can be employed.
 
 Heatmaps offer a visual representation of the model's attention by highlighting the influential areas in an image that contribute the most to its classification decision. By superimposing these heatmaps onto the original image, we can interpret the specific features that drive the predictions.
 
@@ -141,6 +141,6 @@ Heatmaps will be generated both from the baseline model and the model with the i
 
 </div>
 
-The red-yellow representations highlight the most informative features within the input images, which is what the models have used to form the predictions. In the example, we can see, that when the model classifies an image as a scientific report, the heatmap highlights its characteristic layout and the presence of graphs/equations. This indicates, that these features played an important role in the classification. It can also be seen, that the two heatmaps looks different, as they represent different architectures. 
+The red-yellow representations highlight the most informative features within the input images, which is what the models have used to form the predictions. In the example, we can see, that when the model classifies an image as a scientific report, the heatmap highlights its characteristic layout and the presence of graphs/equations. This indicates, that these features played an important role in the classification. It can also be seen, that the two heatmaps look different, as they represent different architectures. 
 
-In summary, by employing heatmaps, we can visually explore and explain the behavior of the model. By visualizing the important regions in a given image, the heatmaps offer a glimpse into the model's perception and decision-making process. The methodology becomes more interpretable, as we can see, how the CNNs operates in practise.
+In summary, by employing heatmaps, we can visually explore and explain the behavior of the model. By visualizing the important regions in a given image, the heatmaps offer a glimpse into the model's perception and decision-making process. The methodology becomes more interpretable, as we can see, how the CNNs operates in practice.
