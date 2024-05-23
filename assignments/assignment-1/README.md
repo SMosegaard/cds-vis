@@ -1,4 +1,4 @@
-# Portfolio 1 - Building a Simple Image Search Algorithm
+# Assignment 1 - Building a Simple Image Search Algorithm
 *By Sofie Mosegaard, 01-03-2024*
 
 This repository aims to design a simple image search algorithm. The algorithm allows its users to retrieve similar images to a given target image and potentially unveil patterns and similarities within a dataset.
@@ -37,7 +37,7 @@ The repository consists of the following elements:
 - 1 README.md file
 - 3 folders
     - in: contains data to be processed
-    - src: consists of the Python code to be executed
+    - src: consists of the Python script to be executed
     - out: stores the saved results, i.e., the dataframe in a .csv format and the visualization as .png.
 
 ## Reproducibility 
