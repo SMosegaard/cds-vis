@@ -126,7 +126,6 @@ def process_images(target_image, filepath):
     return distance_df
 
 
-
 def pretrained_model():
     """
     The function loads the pretrained VGG16 model with default weights.
