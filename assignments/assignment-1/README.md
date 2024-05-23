@@ -20,7 +20,7 @@ Specifically, the project will conduct image search on flower images. In order t
     - Saves a dataframe with the target image, the most similar images, and their distances
     - Visualizes the target image and its five most similar images
 
-To gain a better understanding of the code, all functions in the script ```image_search.py``` have a short description.
+To gain a better understanding of the code, all functions in the script ```src/image_search.py``` have a short description.
 
 ## Data source
 
