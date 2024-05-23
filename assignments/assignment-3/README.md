@@ -95,7 +95,6 @@ BatchNorm|sgd|0.68|0.63|0.67|
 BatchNorm + DatAug|adam|0.63|0.59|0.61|
 BatchNorm + DatAug|sgd|0.63|0.59|0.62|
 
-
 *The full classification reports and visualisations of the training loss and validation accuracy curves can be found in the ```out``` folder.*
 
 In the baseline model trained with the SGD optimizer, the overall accuracy stands at 46%. Certain classes like Email and ADVE exhibit relatively high precision and recall, while others such as Resume and Scientific show significantly low performance metrics. The learning curve demonstrated a good fit for the model. The curve showed a steady decrease in training loss and an increase in training accuracy over the epochs, suggesting effective learning and model optimization. When changing the optimizer to adam, there's a notable improvement in the model's performance, with an average classification accuracy of 69%. However, its learning curve does suggest some overfitting. Here, the model becomes too specialized in learning the training data, so it is not able to generalize to unseen data.
@@ -124,9 +123,7 @@ Likewise, the method employed for hyperparameter tuning can also be discussed. G
 
 ## Exploratory - what does the model see?
 
-While neural networks yield remarkable outcomes, they often operate as black boxes. This makes them difficult to understand and thus validate the results. To address this, activation heatmaps can be employed.
-
-Heatmaps offer a visual representation of the model's attention by highlighting the influential areas in an image that contribute the most to its classification decision. By superimposing these heatmaps onto the original image, we can interpret the specific features that drive the predictions.
+While neural networks yield remarkable outcomes, they often operate as black boxes. This makes them difficult to understand and thus validate the results. To address this, activation heatmaps can be employed. Heatmaps offer a visual representation of the model's attention by highlighting the influential areas in an image that contribute the most to its classification decision. By superimposing these heatmaps onto the original image, we can interpret the specific features that drive the predictions.
 
 To explain individual predictions, the python script ```src/explainer.py``` has been developed. The script can be executed using the following bash command and specify which image to investigate by writing ```--image / -i``` . If no image is specified, the script will by default use the first image within the first folder, i.e., 'ADVE/0000136188.jpg'.
 ```python
