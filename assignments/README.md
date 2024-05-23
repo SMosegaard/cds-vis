@@ -5,16 +5,15 @@
 *Cultural Data Science*  
 *Cognitive Science - Aarhus University*
 
-*24th of May 2024*
+*27th of May 2024*
 
-<br>
 <br>
 
 ## Portfolio exam structure
 
-This portfolio exam consists of four portfolios: 
+This portfolio exam consists of four assignments: 
 
-- **Portfolio 1** - Building a Simple Image Search Algorithm
-- **Portfolio 2** - Classification Benchmarks with Logistic Regression and Neural Networks
-- **Portfolio 3** - Document Classification using Pretrained Image Embeddings
-- **Portfolio 4** - Detecting Faces in Historical Newspapers
+- **Assignment 1** - Building a Simple Image Search Algorithm
+- **Assignment 2** - Classification Benchmarks with Logistic Regression and Neural Networks
+- **Assignment 3** - Document Classification using Pretrained Image Embeddings
+- **Assignment 4** - Detecting Faces in Historical Newspapers
