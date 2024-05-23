@@ -62,7 +62,7 @@ Run the run bash script in your terminal with the required input information. Th
 ```python
 $ source run.sh --method {hist/pretrained} --target {image_xxxx.jpg}
 ```
-The inputs will be converted to lowercase, so it makes no difference how it's spelled.
+The inputs will be converted to lowercase, so it makes no difference whether it's spelled with or without capital letters.
 
 Then, the code will perform image search utilizing the specified method and retrieve similar images to the provided target image. Once the script has finished running, it will print that the results have been saved in the terminal output.
 
