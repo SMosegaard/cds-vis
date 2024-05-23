@@ -1,12 +1,12 @@
 # Create virtual envoriment called env
 python -m venv env
 
-# Activate the virtual env
+# Activate the virtual envoriment
 source ./env/bin/activate
 
 # Install requirements
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Close the envoriment
+# Close the virtual envoriment
 deactivate
