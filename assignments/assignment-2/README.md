@@ -1,4 +1,4 @@
-# Portfolio 2 - Classification Benchmarks with Logistic Regression and Neural Networks
+# Assignment 2 - Classification Benchmarks with Logistic Regression and Neural Networks
 *By Sofie Mosegaard, 15-03-2023*
 
 This repository hosts two pipelines for multiclass image classification: Logistic Regression (LR) and Neural Network (NN). The pipelines utilize supervised machine learning techniques, where the models learn patterns from labeled data to make predictions on unseen data. 
@@ -32,7 +32,7 @@ The repository consists of the following elements:
 - 1 .txt file specifying the required packages including versioned dependencies
 - 1 README.md file
 - 2 folders
-    - src: consists of the Python code to be executed. Specifically, scripts performing classification ('LR_classifier.py', 'NN_classifier.py') and GridSearch ('LR_gridsearch.py', 'NN_gridsearch.py').
+    - src: consists of the Python scripts to be executed. Specifically, scripts performing classification ('LR_classifier.py', 'NN_classifier.py') and GridSearch ('LR_gridsearch.py', 'NN_gridsearch.py').
     - out: stores the saved results, i.e., classification reports in .txt format, plots of permutation testing, and loss curve of the NN classifier.
 
 ## Reproducibility 
