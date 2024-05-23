@@ -30,7 +30,7 @@ Specifically, the project will conduct document classification using pretrained 
     - Plot and save the training loss and validation accuracy curves to assess the models training process and performance
 7. Explorative analysis
 
-To gain a better understanding of the code, all functions in the script ```document_classifier.py``` have a short description.
+To gain a better understanding of the code, all functions in the script ```src/document_classifier.py``` have a short description.
 
 For the purpose of comparing different model adjustments, three parameters were modified: the optimizer, batch normalization, and data augmentation. This resulted in six distinct model architectures, including two baseline models with the adam and SGD optimizers, two implementing batch normalization, and two with data augmentation. The results will be summarized and discussed below. 
 
