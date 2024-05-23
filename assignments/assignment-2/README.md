@@ -16,7 +16,7 @@ Specifically, the project will conduct image classification utilizing the two be
 - Plots the loss curve during training of the NN classifier to visualize model performance
 - Optionally, conducts permutation tests to assess the significance of the classifiers' performance.
 
-To gain a better understanding of the code, all functions in the ```XX_classifier.py``` scripts have short descriptions.
+To gain a better understanding of the code, all functions in the ```src/XX_classifier.py``` scripts have short descriptions.
 
 ## Data source
 
