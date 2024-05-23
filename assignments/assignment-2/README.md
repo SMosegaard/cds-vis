@@ -102,8 +102,8 @@ The neural network model produced even better accuracies with an overall accurac
 Both multiclass classification tasks significantly surpasses the chance level of 10%. To examine whether the obtained accuracy scores are statistically significant, both models were permutation tested. The tests demonstrated that both models are statistically independent and that the classification accuracies are significantly better than what could be expected by chance. 
 
 <p align = "center">
-    <img src = "https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-2/out/LR_permutation.png" width = "300">
-    <img src = "https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-2/out/NN_permutation.png" width = "300">
+    <img src = "https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-2/out/LR_permutation.png" width = "400">
+    <img src = "https://raw.githubusercontent.com/SMosegaard/cds-vis/main/assignments/assignment-2/out/NN_permutation.png" width = "400">
 </p>
 
 Finally, the loss curve during training and accuracy during validation of the NN classifier was visualized to assess the models training process and performance:
