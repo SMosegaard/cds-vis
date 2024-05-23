@@ -12,7 +12,7 @@ This project will specifically investigate the prevelance of images of human fac
 - Visualize the percentage of issues with faces per decade across newspapers.
 - Save the dataframe and the plot in the ```out``` folder.
 
-To gain a better understanding of the code, all functions in the script ```face_detector.py``` will have a short descriptive text.
+To gain a better understanding of the code, all functions in the script ```src/face_detector.py``` will have a short descriptive text.
 
 ## Data source
 
